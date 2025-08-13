@@ -1,0 +1,41 @@
+// Utility function to combine classes (simplified version of cn)
+const cn = (...classes) => {
+    return classes.filter(Boolean).join(" ")
+  }
+  
+  const Button = ({ children, variant = "default", size = "default", className = "", disabled = false, ...props }) => {
+    // Base button styles
+    const baseStyles =
+      "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+  
+    // Variant styles
+    const variantStyles = {
+      default: "bg-blue-600 text-white shadow-sm hover:bg-blue-700 focus-visible:ring-blue-500",
+      destructive: "bg-red-600 text-white shadow-sm hover:bg-red-700 focus-visible:ring-red-500",
+      outline:
+        "border border-gray-300 bg-white shadow-sm hover:bg-gray-50 hover:text-gray-900 focus-visible:ring-gray-500",
+      secondary: "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 focus-visible:ring-gray-500",
+      ghost: "hover:bg-gray-100 hover:text-gray-900 focus-visible:ring-gray-500",
+      link: "text-blue-600 underline-offset-4 hover:underline focus-visible:ring-blue-500",
+    }
+  
+    // Size styles
+    const sizeStyles = {
+      default: "h-9 px-4 py-2",
+      sm: "h-8 rounded-md px-3 py-1.5 text-xs",
+      lg: "h-10 rounded-md px-6 py-2.5",
+      icon: "h-9 w-9 p-0",
+    }
+  
+    // Combine all styles
+    const buttonClasses = cn(baseStyles, variantStyles[variant], sizeStyles[size], className)
+  
+    return (
+      <button className={buttonClasses} disabled={disabled} {...props}>
+        {children}
+      </button>
+    )
+  }
+  
+  export default Button
+  

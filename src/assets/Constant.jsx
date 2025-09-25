@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import {
   MdDashboard,
   MdEventAvailable,
@@ -16,11 +15,9 @@ import {
   MdAssessment,
   MdNotifications,
 } from "react-icons/md";
-=======
 import { FaEye, FaHeart } from "react-icons/fa";
 import { FaDroplet } from "react-icons/fa6";
-import { MdDashboard, MdEventAvailable, MdHelp, MdLocalPharmacy, MdLogout, MdMedicalInformation, MdMenuBook, MdMessage, MdPayments, MdPeople, MdSettings, MdSmartToy } from "react-icons/md";
->>>>>>> afce74d4a9459c0dfb0af9aa735893bf5a9675c1
+
 
 const DashboardUrl = [
   {
@@ -131,9 +128,8 @@ const DashboardUrl = [
   },
 ];
 
-<<<<<<< HEAD
+
 export { DashboardUrl };
-=======
 
 export const healthMetrics = [
   {
@@ -228,4 +224,3 @@ export const appointments = [
     imgUrl: "/assets/images/dashboard/operation-preparation.jpg"
   },
 ]
->>>>>>> afce74d4a9459c0dfb0af9aa735893bf5a9675c1

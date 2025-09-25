@@ -1,14 +1,11 @@
 import { useState } from "react"
 import { FaHeart, FaEye, FaRobot, FaChevronDown } from "react-icons/fa"
 import { FaDroplet } from "react-icons/fa6"
-import { Card } from "../../components/Cards"
-import Button from "../../components/Button"
-import { appointments, diagnoses, healthMetrics, prescriptions } from "../../assets/Constant"
+import { Card } from "../../../components/Cards"
+import Button from "../../../components/Button"
+import { appointments, diagnoses, healthMetrics, prescriptions } from "../../../assets/Constant"
 
-<<<<<<< HEAD:src/pages/Dashboards_pages/dashboard/Patient_Dashboard.jsx
 const Patient_Dashboard = () => {
-=======
-const Dashboard = () => {
   const [selectedTab, setSelectedTab] = useState("Heart")
   const [selectedDay, setSelectedDay] = useState(new Date().getDate())
 
@@ -21,7 +18,6 @@ const Dashboard = () => {
   const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1)
 
->>>>>>> afce74d4a9459c0dfb0af9aa735893bf5a9675c1:src/pages/Dashboard/Dashboard.jsx
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
       {/* Main Content */}
@@ -226,9 +222,4 @@ const Dashboard = () => {
     </div>
   )
 }
-
-<<<<<<< HEAD:src/pages/Dashboards_pages/dashboard/Patient_Dashboard.jsx
 export default Patient_Dashboard
-=======
-export default Dashboard
->>>>>>> afce74d4a9459c0dfb0af9aa735893bf5a9675c1:src/pages/Dashboard/Dashboard.jsx

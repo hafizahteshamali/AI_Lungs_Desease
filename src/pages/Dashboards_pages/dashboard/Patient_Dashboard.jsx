@@ -1,7 +1,7 @@
 import { FiSearch, FiChevronDown } from "react-icons/fi"
 import { FaHeart, FaTint, FaLeaf, FaEye, FaEllipsisH } from "react-icons/fa"
 
-const Dashboard = () => {
+const Patient_Dashboard = () => {
   return (
     <div className="bg-gray-50 min-h-screen p-4 md:p-6">
       {/* Header */}
@@ -259,4 +259,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default Patient_Dashboard

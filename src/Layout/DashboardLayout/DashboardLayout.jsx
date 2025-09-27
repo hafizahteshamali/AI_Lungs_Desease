@@ -20,7 +20,7 @@ const DashboardLayout = () => {
       {/* Mobile menu button */}
       <button
         onClick={toggleSidebar}
-        className="md:hidden fixed bottom-6 right-6 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+        className="md:hidden fixed bottom-6 right-6 !z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors"
         aria-label="Toggle menu"
       >
         {isSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -36,7 +36,7 @@ const DashboardLayout = () => {
 
       {/* Mobile sidebar */}
       <div
-        className={`md:hidden fixed top-0 left-0 z-50 h-full w-[250px] bg-white shadow-md transform transition-transform duration-300 ease-in-out ${
+        className={`md:hidden fixed top-0 left-0 z-40 h-full w-[100%] bg-white shadow-md transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

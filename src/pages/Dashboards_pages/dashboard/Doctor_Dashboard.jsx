@@ -13,7 +13,6 @@ import {
   MdSearch,
   MdFilterList,
   MdArrowForward,
-  MdArrowBack,
   MdPlayArrow,
   MdMoreVert
 } from 'react-icons/md';
@@ -22,18 +21,6 @@ const Doctor_Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Check screen size for responsiveness
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
 
   // Mock data for appointments
   const upcomingAppointments = [
@@ -186,11 +173,11 @@ const Doctor_Dashboard = () => {
   // Get priority color
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case 'urgent': return 'bg-red-100 text-red-800 border-red-200';
-      case 'high': return 'bg-orange-100 text-orange-800 border-orange-200';
-      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'low': return 'bg-green-100 text-green-800 border-green-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'urgent': return 'bg-red-100 text-red-800';
+      case 'high': return 'bg-orange-100 text-orange-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'low': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -208,26 +195,75 @@ const Doctor_Dashboard = () => {
     setUnreadCount(0);
   };
 
-  // Mobile-friendly appointment card
-  const MobileAppointmentCard = ({ appointment }) => (
-    <div className="bg-white border rounded-lg p-3 mb-3 shadow-sm">
-      <div className="flex justify-between items-start mb-2">
-        <div className="flex-1">
-          <h4 className="font-semibold text-gray-800 text-sm">{appointment.patientName}</h4>
+  // Overview Cards Component
+  const OverviewCards = () => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">12</h3>
+            <p className="text-gray-600 text-sm">Today's Appointments</p>
+          </div>
+          <MdCalendarToday className="text-2xl text-blue-500" />
+        </div>
+        <div className="mt-1 text-xs text-green-600">↑ 2 from yesterday</div>
+      </div>
+
+      <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">8</h3>
+            <p className="text-gray-600 text-sm">Scans to Review</p>
+          </div>
+          <MdMedicalServices className="text-2xl text-green-500" />
+        </div>
+        <div className="mt-1 text-xs text-red-600">↓ 3 from yesterday</div>
+      </div>
+
+      <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-purple-500">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">{unreadCount}</h3>
+            <p className="text-gray-600 text-sm">Unread Notifications</p>
+          </div>
+          <MdNotifications className="text-2xl text-purple-500" />
+        </div>
+        <div className="mt-1 text-xs text-green-600">↑ 1 new today</div>
+      </div>
+
+      <div className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">94%</h3>
+            <p className="text-gray-600 text-sm">Patient Satisfaction</p>
+          </div>
+          <MdCheckCircle className="text-2xl text-orange-500" />
+        </div>
+        <div className="mt-1 text-xs text-green-600">↑ 2% from last month</div>
+      </div>
+    </div>
+  );
+
+  // Appointment Card Component
+  const AppointmentCard = ({ appointment }) => (
+    <div className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+        <div className="flex-1 min-w-0">
+          <h4 className="font-semibold text-gray-800 text-sm truncate">{appointment.patientName}</h4>
           <p className="text-xs text-gray-600">Age: {appointment.patientAge} • {appointment.type}</p>
         </div>
-        <span className={`px-2 py-1 rounded-full text-xs border ${getPriorityColor(appointment.priority)}`}>
+        <span className={`px-2 py-1 rounded-full text-xs ${getPriorityColor(appointment.priority)}`}>
           {appointment.priority}
         </span>
       </div>
       
       <div className="flex flex-wrap gap-2 text-xs mb-2">
         <span className="flex items-center gap-1 text-gray-600">
-          <MdCalendarToday className="text-blue-500 text-xs" />
+          <MdCalendarToday className="text-blue-500" />
           {formatDate(appointment.appointmentTime)}
         </span>
         <span className="flex items-center gap-1 text-gray-600">
-          <MdAccessTime className="text-green-500 text-xs" />
+          <MdAccessTime className="text-green-500" />
           {formatTime(appointment.appointmentTime)}
         </span>
       </div>
@@ -236,7 +272,7 @@ const Doctor_Dashboard = () => {
         <span className={`flex items-center gap-1 text-xs ${
           appointment.status === 'confirmed' ? 'text-green-600' : 'text-yellow-600'
         }`}>
-          {appointment.status === 'confirmed' ? <MdCheckCircle className="text-xs" /> : <MdPending className="text-xs" />}
+          {appointment.status === 'confirmed' ? <MdCheckCircle /> : <MdPending />}
           {appointment.status}
         </span>
         <button className="text-blue-600 hover:text-blue-800 p-1">
@@ -248,15 +284,15 @@ const Doctor_Dashboard = () => {
     </div>
   );
 
-  // Mobile-friendly scan card
-  const MobileScanCard = ({ scan }) => (
-    <div className="bg-white border rounded-lg p-3 mb-3 shadow-sm">
-      <div className="flex justify-between items-start mb-2">
-        <div className="flex-1">
-          <h4 className="font-semibold text-gray-800 text-sm">{scan.patientName}</h4>
+  // Scan Card Component
+  const ScanCard = ({ scan }) => (
+    <div className="bg-white border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+        <div className="flex-1 min-w-0">
+          <h4 className="font-semibold text-gray-800 text-sm truncate">{scan.patientName}</h4>
           <p className="text-xs text-gray-600">{scan.scanType} • {scan.bodyPart}</p>
         </div>
-        <span className={`px-2 py-1 rounded-full text-xs border ${getPriorityColor(scan.urgency)}`}>
+        <span className={`px-2 py-1 rounded-full text-xs ${getPriorityColor(scan.urgency)}`}>
           {scan.urgency}
         </span>
       </div>
@@ -269,7 +305,7 @@ const Doctor_Dashboard = () => {
         <span className={`flex items-center gap-1 text-xs ${
           scan.status === 'normal' ? 'text-green-600' : 'text-red-600'
         }`}>
-          {scan.status === 'normal' ? <MdCheckCircle className="text-xs" /> : <MdWarning className="text-xs" />}
+          {scan.status === 'normal' ? <MdCheckCircle /> : <MdWarning />}
           {scan.status}
         </span>
       </div>
@@ -280,135 +316,41 @@ const Doctor_Dashboard = () => {
       
       <div className="flex justify-between items-center">
         <button className="text-blue-600 text-xs flex items-center gap-1">
-          <MdFileDownload className="text-xs" /> Download
+          <MdFileDownload /> Download
         </button>
         <button className="text-gray-600 text-xs flex items-center gap-1">
-          <MdMoreVert className="text-xs" /> More
+          <MdMoreVert /> More
         </button>
       </div>
     </div>
   );
 
-  // Overview Cards Component using Flexbox
-  const OverviewCards = () => (
-    <div className="flex flex-col sm:flex-row flex-wrap gap-4 mb-6">
-      <div className="flex-1 min-w-[200px] bg-white p-4 rounded-lg shadow-md border-l-4 border-blue-500">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-800">12</h3>
-            <p className="text-gray-600 text-sm">Today's Appointments</p>
-          </div>
-          <MdCalendarToday className="text-3xl text-blue-500" />
-        </div>
-        <div className="mt-2 text-xs text-green-600">↑ 2 from yesterday</div>
-      </div>
-
-      <div className="flex-1 min-w-[200px] bg-white p-4 rounded-lg shadow-md border-l-4 border-green-500">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-800">8</h3>
-            <p className="text-gray-600 text-sm">Scans to Review</p>
-          </div>
-          <MdMedicalServices className="text-3xl text-green-500" />
-        </div>
-        <div className="mt-2 text-xs text-red-600">↓ 3 from yesterday</div>
-      </div>
-
-      <div className="flex-1 min-w-[200px] bg-white p-4 rounded-lg shadow-md border-l-4 border-purple-500">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-800">{unreadCount}</h3>
-            <p className="text-gray-600 text-sm">Unread Notifications</p>
-          </div>
-          <MdNotifications className="text-3xl text-purple-500" />
-        </div>
-        <div className="mt-2 text-xs text-green-600">↑ 1 new today</div>
-      </div>
-
-      <div className="flex-1 min-w-[200px] bg-white p-4 rounded-lg shadow-md border-l-4 border-orange-500">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-800">94%</h3>
-            <p className="text-gray-600 text-sm">Patient Satisfaction</p>
-          </div>
-          <MdCheckCircle className="text-3xl text-orange-500" />
-        </div>
-        <div className="mt-2 text-xs text-green-600">↑ 2% from last month</div>
-      </div>
-    </div>
-  );
-
-  // Upcoming Appointments Component using Flexbox
+  // Upcoming Appointments Component
   const UpcomingAppointments = () => (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg shadow-sm p-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
         <h3 className="text-lg font-bold text-gray-800">Upcoming Appointments</h3>
-        <button className="text-blue-600 text-sm flex items-center gap-1 self-end sm:self-auto">
+        <button className="text-blue-600 text-sm flex items-center gap-1">
           View All <MdArrowForward />
         </button>
       </div>
 
-      {isMobile ? (
-        <div>
-          {upcomingAppointments.map(appointment => (
-            <MobileAppointmentCard key={appointment.id} appointment={appointment} />
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {upcomingAppointments.map(appointment => (
-            <div key={appointment.id} className="border border-gray-300 rounded p-3 hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h4 className="font-semibold text-gray-800">{appointment.patientName}</h4>
-                  <p className="text-sm text-gray-600">Age: {appointment.patientAge} • {appointment.type}</p>
-                </div>
-                <span className={`px-2 py-1 rounded-full text-xs border ${getPriorityColor(appointment.priority)}`}>
-                  {appointment.priority}
-                </span>
-              </div>
-              
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-4">
-                  <span className="flex items-center gap-1 text-gray-600">
-                    <MdCalendarToday className="text-blue-500" />
-                    {formatDate(appointment.appointmentTime)}
-                  </span>
-                  <span className="flex items-center gap-1 text-gray-600">
-                    <MdAccessTime className="text-green-500" />
-                    {formatTime(appointment.appointmentTime)}
-                  </span>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <span className={`flex items-center gap-1 text-xs ${
-                    appointment.status === 'confirmed' ? 'text-green-600' : 'text-yellow-600'
-                  }`}>
-                    {appointment.status === 'confirmed' ? <MdCheckCircle /> : <MdPending />}
-                    {appointment.status}
-                  </span>
-                  <button className="text-blue-600 hover:text-blue-800 p-1">
-                    <MdPlayArrow className="text-lg" />
-                  </button>
-                </div>
-              </div>
-              
-              <p className="text-xs text-gray-500 mt-2">Reason: {appointment.reason}</p>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {upcomingAppointments.map(appointment => (
+          <AppointmentCard key={appointment.id} appointment={appointment} />
+        ))}
+      </div>
     </div>
   );
 
-  // Recently Reviewed Scans Component using Flexbox
+  // Recently Reviewed Scans Component
   const RecentlyReviewedScans = () => (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg shadow-sm p-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
         <h3 className="text-lg font-bold text-gray-800">Recently Reviewed Scans</h3>
-        <div className="flex gap-2 self-end sm:self-auto">
+        <div className="flex gap-2">
           <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">
-            <MdRefresh className="text-gray-600" />
+            <MdRefresh className="text-gray-600 text-sm" />
           </button>
           <button className="text-blue-600 text-sm flex items-center gap-1">
             View All <MdArrowForward />
@@ -416,63 +358,20 @@ const Doctor_Dashboard = () => {
         </div>
       </div>
 
-      {isMobile ? (
-        <div>
-          {recentScans.map(scan => (
-            <MobileScanCard key={scan.id} scan={scan} />
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {recentScans.map(scan => (
-            <div key={scan.id} className="border border-gray-300 rounded p-3 hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <h4 className="font-semibold text-gray-800">{scan.patientName}</h4>
-                  <p className="text-sm text-gray-600">{scan.scanType} • {scan.bodyPart}</p>
-                </div>
-                <span className={`px-2 py-1 rounded-full text-xs border ${getPriorityColor(scan.urgency)}`}>
-                  {scan.urgency}
-                </span>
-              </div>
-              
-              <div className="flex items-center justify-between text-sm mb-2">
-                <span className="text-gray-600">
-                  Reviewed: {formatDate(scan.reviewDate)} at {formatTime(scan.reviewDate)}
-                </span>
-                <span className={`flex items-center gap-1 text-xs ${
-                  scan.status === 'normal' ? 'text-green-600' : 'text-red-600'
-                }`}>
-                  {scan.status === 'normal' ? <MdCheckCircle /> : <MdWarning />}
-                  {scan.status}
-                </span>
-              </div>
-              
-              <p className="text-xs text-gray-700 bg-gray-50 p-2 rounded">
-                <strong>Findings:</strong> {scan.findings}
-              </p>
-              
-              <div className="flex justify-between items-center mt-2">
-                <button className="text-blue-600 text-xs flex items-center gap-1">
-                  <MdFileDownload className='text-xl' /> Download
-                </button>
-                <button className="text-gray-600 text-xs flex items-center gap-1">
-                  <MdMoreVert /> More
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {recentScans.map(scan => (
+          <ScanCard key={scan.id} scan={scan} />
+        ))}
+      </div>
     </div>
   );
 
-  // Notifications Center Component using Flexbox
+  // Notifications Center Component
   const NotificationsCenter = () => (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg shadow-sm p-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
         <h3 className="text-lg font-bold text-gray-800">Notifications Center</h3>
-        <div className="flex gap-2 self-end sm:self-auto">
+        <div className="flex gap-2">
           <button 
             onClick={markAllAsRead}
             className="text-blue-600 text-sm flex items-center gap-1"
@@ -480,7 +379,7 @@ const Doctor_Dashboard = () => {
             Mark All Read
           </button>
           <button className="p-2 border border-gray-300 rounded hover:bg-gray-50">
-            <MdFilterList className="text-gray-600" />
+            <MdFilterList className="text-gray-600 text-sm" />
           </button>
         </div>
       </div>
@@ -489,29 +388,29 @@ const Doctor_Dashboard = () => {
         {notifications.map(notification => (
           <div 
             key={notification.id} 
-            className={`border-l-4 rounded-r-lg p-3 hover:shadow-md transition-shadow cursor-pointer ${
+            className={`border-l-4 rounded-r p-3 hover:shadow-sm transition-shadow cursor-pointer ${
               notification.read ? 'border-gray-300 bg-gray-50' : 'border-blue-500 bg-blue-50'
             }`}
             onClick={() => !notification.read && markAsRead(notification.id)}
           >
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
-              <div className="flex items-center gap-2 flex-1">
-                <h4 className={`font-semibold text-sm sm:text-base ${notification.read ? 'text-gray-700' : 'text-blue-700'}`}>
+              <div className="flex items-center gap-2 flex-1 min-w-0">
+                <h4 className={`font-semibold text-sm truncate ${notification.read ? 'text-gray-700' : 'text-blue-700'}`}>
                   {notification.title}
                 </h4>
                 {!notification.read && (
-                  <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">New</span>
+                  <span className="bg-blue-500 text-white text-xs px-2 py-1 rounded-full shrink-0">New</span>
                 )}
               </div>
-              <span className="text-xs text-gray-500 whitespace-nowrap">
+              <span className="text-xs text-gray-500 whitespace-nowrap shrink-0">
                 {formatTime(notification.time)}
               </span>
             </div>
             
-            <p className="text-sm text-gray-600 mb-2">{notification.message}</p>
+            <p className="text-sm text-gray-600 mb-2 line-clamp-2">{notification.message}</p>
             
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs">
-              <span className={`px-2 py-1 rounded-full ${
+              <span className={`px-2 py-1 rounded-full shrink-0 ${
                 notification.priority === 'high' ? 'bg-red-100 text-red-800' :
                 notification.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
                 'bg-green-100 text-green-800'
@@ -527,24 +426,24 @@ const Doctor_Dashboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 p-3 sm:p-4 md:p-6">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       {/* Header */}
-      <div className="mb-4 sm:mb-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+      <div className="mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">Good Morning, Dr. Smith!</h1>
-            <p className="text-gray-600 text-sm sm:text-base">Welcome to your dashboard</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Good Morning, Dr. Smith!</h1>
+            <p className="text-gray-600">Welcome to your dashboard</p>
           </div>
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-3">
             <div className="relative">
-              <MdNotifications className="text-xl sm:text-2xl text-gray-600" />
+              <MdNotifications className="text-2xl text-gray-600" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {unreadCount}
                 </span>
               )}
             </div>
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-sm sm:text-base">
+            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
               DS
             </div>
           </div>
@@ -552,13 +451,13 @@ const Doctor_Dashboard = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="mb-4 sm:mb-6">
-        <div className="flex bg-white rounded-lg p-1 shadow-md overflow-x-auto">
+      <div className="mb-6">
+        <div className="flex flex-wrap gap-1 bg-white rounded-lg p-1 shadow-sm">
           {['overview', 'appointments', 'scans', 'notifications'].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-2 px-3 sm:px-4 rounded-md text-xs sm:text-sm font-medium transition-colors whitespace-nowrap min-w-max ${
+              className={`flex-1 min-w-[120px] py-3 px-4 rounded-md text-sm font-medium transition-colors ${
                 activeTab === tab
                   ? 'bg-blue-500 text-white'
                   : 'text-gray-600 hover:text-blue-600'
@@ -573,17 +472,13 @@ const Doctor_Dashboard = () => {
       </div>
 
       {/* Content Area */}
-      <div className="space-y-4 sm:space-y-6">
+      <div className="space-y-6">
         {activeTab === 'overview' && (
           <>
             <OverviewCards />
-            <div className="flex flex-col xl:flex-row gap-4 sm:gap-6">
-              <div className="flex-1">
-                <UpcomingAppointments />
-              </div>
-              <div className="flex-1">
-                <RecentlyReviewedScans />
-              </div>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+              <UpcomingAppointments />
+              <RecentlyReviewedScans />
             </div>
             <NotificationsCenter />
           </>

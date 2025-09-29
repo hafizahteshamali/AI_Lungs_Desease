@@ -457,7 +457,7 @@ const Doctor_Dashboard = () => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 min-w-[120px] py-3 px-4 rounded-md text-sm font-medium transition-colors ${
+              className={`flex-1 min-w-[120px] py-3 px-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === tab
                   ? 'bg-blue-500 text-white'
                   : 'text-gray-600 hover:text-blue-600'

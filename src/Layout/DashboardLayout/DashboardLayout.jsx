@@ -11,16 +11,16 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen w-full">
       {/* Sidebar for desktop - Fixed */}
-      <div className="hidden md:block fixed left-0 top-0 h-full w-[23%] bg-white shadow-md">
+      <div className="hidden lg:block fixed left-0 top-0 h-full w-[24%] shadow-md z-30">
         <Sidebar />
       </div>
 
       {/* Mobile menu button */}
       <button
         onClick={toggleSidebar}
-        className="md:hidden fixed bottom-6 right-6 !z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+        className="lg:hidden fixed bottom-6 right-6 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors"
         aria-label="Toggle menu"
       >
         {isSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -29,14 +29,14 @@ const DashboardLayout = () => {
       {/* Mobile sidebar overlay */}
       {isSidebarOpen && (
         <div
-          className="md:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
+          className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
           onClick={toggleSidebar}
         ></div>
       )}
 
       {/* Mobile sidebar */}
       <div
-        className={`md:hidden fixed top-0 left-0 z-40 h-full w-[100%] bg-white shadow-md transform transition-transform duration-300 ease-in-out ${
+        className={`lg:hidden fixed top-0 left-0 z-40 h-full w-[75%] shadow-md transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -44,7 +44,7 @@ const DashboardLayout = () => {
       </div>
 
       {/* Content Section */}
-      <div className="flex flex-1 md:ml-[23%] p-6 bg-gray-50 overflow-y-auto h-screen">
+      <div className="flex flex-1 lg:ml-[24%]  bg-gray-50 overflow-y-auto min-h-screen">
         <Outlet />
       </div>
     </div>

@@ -19,9 +19,9 @@ const Patient_Dashboard = () => {
   const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1)
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
+    <div className="flex flex-col lg:flex-row min-h-screen w-full">
       {/* Main Content */}
-      <div className="flex-1 p-4 md:p-6">
+      <div className="flex flex-col p-4 md:p-6 w-full lg:w-[75%]">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <h1 className="text-xl md:text-2xl font-semibold text-gray-800">Good Morning! 👋</h1>
@@ -144,7 +144,7 @@ const Patient_Dashboard = () => {
         {/* Upcoming Appointments */}
         <Card className="mb-6 p-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-gray-800">Upcoming Appointments</h3>
+            <h3 className="font-semibold text-sm text-gray-800">Upcoming Appointments</h3>
             <Button variant="ghost" size="sm">
               <FaChevronDown className="w-4 h-4" />
             </Button>
@@ -153,7 +153,7 @@ const Patient_Dashboard = () => {
           {/* Calendar */}
           <div className="grid grid-cols-7 gap-1 mb-4 text-center text-xs md:text-sm">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-              <div key={day} className="text-gray-500 font-medium">
+              <div key={day} className="text-gray-500 font-medium text-[12px]">
                 {day}
               </div>
             ))}
@@ -163,7 +163,7 @@ const Patient_Dashboard = () => {
                 key={day}
                 onClick={() => setSelectedDay(day)}
                 className={`p-2 rounded cursor-pointer ${
-                  day === selectedDay ? "bg-blue-500 text-white" : "text-gray-700 hover:bg-gray-100"
+                  day === selectedDay ? "bg-blue-500 text-white h-[30px] w-[30px] flex justify-center items-center" : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
                 {day}

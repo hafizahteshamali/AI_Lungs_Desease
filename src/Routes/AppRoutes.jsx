@@ -5,10 +5,10 @@ import Login from '../pages/Authentication/Login';
 import Register from '../pages/Authentication/Register';
 import Forgot_Password from '../pages/Authentication/Forgot_Password';
 import ResetPassword from '../pages/Authentication/Reset_Password';
-import Admin_Dashboard from '../pages/Dashboards_pages/dashboard/Admin_Dashboard';
-import Doctor_Dashboard from '../pages/Dashboards_pages/dashboard/Doctor_Dashboard';
+import Admin_Dashboard from '../pages/Dashboards_pages/dashboard/Admin_Dashboard/Admin_Dashboard';
+import Doctor_Dashboard from '../pages/Dashboards_pages/dashboard/Doctor_Dashboard/Doctor_Dashboard';
 import Patient_Dashboard from '../pages/Dashboards_pages/dashboard/Patient_Dashboard';
-import Radiographer_Dashboard from '../pages/Dashboards_pages/dashboard/Radiographer_Dashboard';
+import Radiographer_Dashboard from '../pages/Dashboards_pages/dashboard/Radiographer_Dashboard/Radiographer_Dashboard';
 
 const AppRoutes = () => {
   return (

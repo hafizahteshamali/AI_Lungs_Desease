@@ -39,9 +39,12 @@ const OverviewCards = ({ unreadCount = 0 }) => {
   ]
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div className="flex flex-wrap gap-4 mb-6">
       {cards.map((c) => (
-        <div key={c.id} className={`bg-card text-card-foreground p-4 rounded-lg shadow-sm border ${c.accent}`}>
+        <div 
+          key={c.id} 
+          className={`bg-card text-card-foreground p-4 rounded-lg shadow-sm border ${c.accent} flex-1 min-w-[200px]`}
+        >
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-xl font-semibold">{c.value}</h3>
@@ -56,4 +59,4 @@ const OverviewCards = ({ unreadCount = 0 }) => {
   )
 }
 
-export default OverviewCards;
+export default OverviewCards

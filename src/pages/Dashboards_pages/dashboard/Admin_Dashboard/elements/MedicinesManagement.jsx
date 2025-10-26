@@ -132,14 +132,15 @@ const MedicinesManagement = ({ medicines, onAdd, onUpdate, onDelete }) => {
                 {m.stock.toLocaleString()}
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-2 text-sm mb-3">
-              <div>
+            {/* Yahan grid ko flex mein change kiya hai */}
+            <div className="flex flex-wrap gap-2 text-sm mb-3">
+              <div className="flex items-center gap-1">
                 <span className="text-muted-foreground">Type:</span>
-                <span className="ml-2 bg-accent px-2 py-1 rounded-md text-xs">{m.type}</span>
+                <span className="bg-accent px-2 py-1 rounded-md text-xs">{m.type}</span>
               </div>
-              <div>
+              <div className="flex items-center gap-1">
                 <span className="text-muted-foreground">Price:</span>
-                <span className="ml-2 font-semibold">${m.price}</span>
+                <span className="font-semibold">${m.price}</span>
               </div>
             </div>
             <div className="flex justify-end gap-2">
@@ -159,28 +160,28 @@ const MedicinesManagement = ({ medicines, onAdd, onUpdate, onDelete }) => {
         ))}
       </div>
 
-      {/* Desktop Table */}
+      {/* Desktop Table - Yahan grid ko flex mein change kiya hai */}
       <div className="hidden sm:block overflow-x-auto">
-        <div className="grid grid-cols-1 gap-2 min-w-[800px]">
+        <div className="min-w-[800px]">
           {filtered.map((m) => (
             <div
               key={m.id}
-              className="grid grid-cols-12 gap-4 items-center p-4 border-b border-gray-300 hover:bg-accent rounded-md"
+              className="flex items-center p-4 border-b border-gray-300 hover:bg-accent rounded-md gap-4"
             >
-              <div className="col-span-3">
+              <div className="flex-1 min-w-0" style={{ flex: "3" }}>
                 <div className="font-medium">{m.name}</div>
                 <div className="text-sm text-muted-foreground">{m.dosage}</div>
               </div>
-              <div className="col-span-2">
+              <div className="flex-1 min-w-0" style={{ flex: "2" }}>
                 <span className="bg-accent px-2 py-1 rounded-md text-xs">{m.type}</span>
               </div>
-              <div className="col-span-2">
+              <div className="flex-1 min-w-0" style={{ flex: "2" }}>
                 <span className={m.stock < 500 ? "text-red-600 font-semibold" : "text-emerald-600"}>
                   {m.stock.toLocaleString()}
                 </span>
               </div>
-              <div className="col-span-2 font-semibold">${m.price}</div>
-              <div className="col-span-3 flex gap-2 justify-end">
+              <div className="flex-1 min-w-0 font-semibold" style={{ flex: "2" }}>${m.price}</div>
+              <div className="flex-1 min-w-0 flex gap-2 justify-end" style={{ flex: "3" }}>
                 <button className="text-primary hover:underline p-1" onClick={() => openEdit(m)}>
                   <MdEdit className="text-lg" />
                 </button>
@@ -214,8 +215,9 @@ const MedicinesManagement = ({ medicines, onAdd, onUpdate, onDelete }) => {
           </>
         }
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <label className="text-sm">
+        {/* Yahan grid ko flex mein change kiya hai */}
+        <div className="flex flex-wrap gap-3">
+          <label className="text-sm" style={{ flex: "1 1 calc(50% - 12px)", minWidth: "200px" }}>
             <span className="block mb-1 text-muted-foreground">Name</span>
             <input
               className="w-full border border-gray-300 rounded-md px-3 py-2 bg-card"
@@ -224,7 +226,7 @@ const MedicinesManagement = ({ medicines, onAdd, onUpdate, onDelete }) => {
               placeholder="e.g., Paracetamol"
             />
           </label>
-          <label className="text-sm">
+          <label className="text-sm" style={{ flex: "1 1 calc(50% - 12px)", minWidth: "200px" }}>
             <span className="block mb-1 text-muted-foreground">Dosage</span>
             <input
               className="w-full border border-gray-300 rounded-md px-3 py-2 bg-card"
@@ -233,7 +235,7 @@ const MedicinesManagement = ({ medicines, onAdd, onUpdate, onDelete }) => {
               placeholder="e.g., 500mg"
             />
           </label>
-          <label className="text-sm">
+          <label className="text-sm" style={{ flex: "1 1 calc(50% - 12px)", minWidth: "200px" }}>
             <span className="block mb-1 text-muted-foreground">Type</span>
             <select
               className="w-full border border-gray-300 rounded-md px-3 py-2 bg-card"
@@ -245,7 +247,7 @@ const MedicinesManagement = ({ medicines, onAdd, onUpdate, onDelete }) => {
               ))}
             </select>
           </label>
-          <label className="text-sm">
+          <label className="text-sm" style={{ flex: "1 1 calc(50% - 12px)", minWidth: "200px" }}>
             <span className="block mb-1 text-muted-foreground">Stock</span>
             <input
               type="number"
@@ -256,7 +258,7 @@ const MedicinesManagement = ({ medicines, onAdd, onUpdate, onDelete }) => {
               placeholder="0"
             />
           </label>
-          <label className="text-sm sm:col-span-2">
+          <label className="text-sm" style={{ flex: "1 1 100%", minWidth: "200px" }}>
             <span className="block mb-1 text-muted-foreground">Price (USD)</span>
             <input
               type="number"

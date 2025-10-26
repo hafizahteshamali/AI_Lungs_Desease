@@ -7,8 +7,11 @@ import Forgot_Password from '../pages/Authentication/Forgot_Password';
 import ResetPassword from '../pages/Authentication/Reset_Password';
 import Admin_Dashboard from '../pages/Dashboards_pages/dashboard/Admin_Dashboard/Admin_Dashboard';
 import Doctor_Dashboard from '../pages/Dashboards_pages/dashboard/Doctor_Dashboard/Doctor_Dashboard';
-import Patient_Dashboard from '../pages/Dashboards_pages/dashboard/Patient_Dashboard';
 import Radiographer_Dashboard from '../pages/Dashboards_pages/dashboard/Radiographer_Dashboard/Radiographer_Dashboard';
+import Patient_Dashboard from '../pages/Dashboards_pages/dashboard/Patient_Dashboard/Patient_Dashboard';
+import UploadXrays from '../pages/Dashboards_pages/x-rays-management/uploadXrays/UploadXrays';
+import XrayHistory from '../pages/Dashboards_pages/x-rays-management/XrayHistory/XrayHistory';
+import PredictionView from '../pages/Dashboards_pages/x-rays-management/PredictionView/PredictionView';
 
 const AppRoutes = () => {
   return (
@@ -31,6 +34,9 @@ const AppRoutes = () => {
         <Route path="doctor" element={<Doctor_Dashboard />} />
         <Route path="patient" element={<Patient_Dashboard />} />
         <Route path="radiographer" element={<Radiographer_Dashboard />} />
+        <Route path="xray/upload" element={<UploadXrays />} />
+        <Route path="xray/history" element={<XrayHistory />} />
+        <Route path="xray/prediction" element={<PredictionView />} />
       </Route>
     </Routes>
   );

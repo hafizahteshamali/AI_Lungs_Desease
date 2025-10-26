@@ -76,11 +76,13 @@ const DiseasesManagement = ({ diseases, onAdd, onUpdate, onDelete }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Yahan grid ko flex mein change kiya hai */}
+      <div className="flex flex-wrap gap-4">
         {filtered.map((disease) => (
           <div
             key={disease.id}
             className="border border-gray-300 rounded-lg p-4 hover:shadow-md transition-shadow bg-secondary"
+            style={{ flex: "1 1 calc(33.333% - 16px)", minWidth: "250px", maxWidth: "100%" }}
           >
             <div className="flex justify-between items-start mb-2">
               <h4 className="font-semibold break-words">{disease.name}</h4>
@@ -130,8 +132,9 @@ const DiseasesManagement = ({ diseases, onAdd, onUpdate, onDelete }) => {
           </>
         }
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <label className="text-sm">
+        {/* Yahan bhi grid ko flex mein change kiya hai */}
+        <div className="flex flex-wrap gap-3">
+          <label className="text-sm" style={{ flex: "1 1 calc(50% - 12px)", minWidth: "200px" }}>
             <span className="block mb-1 text-muted-foreground">Name</span>
             <input
               className="w-full border border-gray-300 rounded-md px-3 py-2 bg-card"
@@ -140,7 +143,7 @@ const DiseasesManagement = ({ diseases, onAdd, onUpdate, onDelete }) => {
               placeholder="e.g., Coronary Artery Disease"
             />
           </label>
-          <label className="text-sm">
+          <label className="text-sm" style={{ flex: "1 1 calc(50% - 12px)", minWidth: "200px" }}>
             <span className="block mb-1 text-muted-foreground">Category</span>
             <input
               className="w-full border border-gray-300 rounded-md px-3 py-2 bg-card"
@@ -149,7 +152,7 @@ const DiseasesManagement = ({ diseases, onAdd, onUpdate, onDelete }) => {
               placeholder="e.g., Cardiology"
             />
           </label>
-          <label className="text-sm">
+          <label className="text-sm" style={{ flex: "1 1 calc(50% - 12px)", minWidth: "200px" }}>
             <span className="block mb-1 text-muted-foreground">Severity</span>
             <select
               className="w-full border border-gray-300 rounded-md px-3 py-2 bg-card"
@@ -161,7 +164,7 @@ const DiseasesManagement = ({ diseases, onAdd, onUpdate, onDelete }) => {
               ))}
             </select>
           </label>
-          <label className="text-sm">
+          <label className="text-sm" style={{ flex: "1 1 calc(50% - 12px)", minWidth: "200px" }}>
             <span className="block mb-1 text-muted-foreground">Cases</span>
             <input
               type="number"

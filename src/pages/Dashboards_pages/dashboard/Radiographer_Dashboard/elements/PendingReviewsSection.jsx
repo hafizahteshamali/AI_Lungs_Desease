@@ -46,14 +46,16 @@ const PendingReviewsSection = ({ reviews }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* Yahan grid ko flex mein change kiya hai */}
+      <div className="flex flex-wrap gap-5">
         {filteredReviews.map((review) => (
-          <PendingReviewCard
-            key={review.id}
-            review={review}
-            onViewDetails={handleViewDetails}
-            onRemindDoctor={handleRemindDoctor}
-          />
+          <div key={review.id} className="flex-1 min-w-[calc(100%-10px)] md:min-w-[calc(50%-10px)] lg:min-w-[calc(33.333%-14px)]">
+            <PendingReviewCard
+              review={review}
+              onViewDetails={handleViewDetails}
+              onRemindDoctor={handleRemindDoctor}
+            />
+          </div>
         ))}
       </div>
 

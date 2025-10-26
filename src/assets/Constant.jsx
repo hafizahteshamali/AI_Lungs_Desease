@@ -14,10 +14,9 @@ import {
   MdHistory,
   MdAssessment,
   MdNotifications,
-} from "react-icons/md";
-import { FaEye, FaHeart } from "react-icons/fa";
-import { FaDroplet } from "react-icons/fa6";
-
+} from "react-icons/md"
+import { FaAppleAlt, FaEye, FaHeart } from "react-icons/fa"
+import { FaBottleDroplet, FaDroplet, FaLungs } from "react-icons/fa6"
 
 const DashboardUrl = [
   {
@@ -41,8 +40,18 @@ const DashboardUrl = [
         text: "X-ray Management",
         children: [
           { icon: <MdCloudUpload />, text: "Upload X-ray", url: "xray/upload", roles: ["doctor", "radiographer"] },
-          { icon: <MdHistory />, text: "All X-rays / History", url: "xray/history", roles: ["doctor", "radiographer", "patient"] },
-          { icon: <MdAssessment />, text: "Prediction View", url: "xray/prediction", roles: ["doctor", "radiographer", "patient"] },
+          {
+            icon: <MdHistory />,
+            text: "All X-rays / History",
+            url: "xray/history",
+            roles: ["doctor", "radiographer", "patient"],
+          },
+          {
+            icon: <MdAssessment />,
+            text: "Prediction View",
+            url: "xray/prediction",
+            roles: ["doctor", "radiographer", "patient"],
+          },
         ],
       },
     ],
@@ -55,7 +64,12 @@ const DashboardUrl = [
         children: [
           { icon: <MdEventAvailable />, text: "Book Appointment", url: "appointments/book", roles: ["patient"] },
           { icon: <MdPeople />, text: "Manage Appointments", url: "appointments/manage", roles: ["doctor"] },
-          { icon: <MdHistory />, text: "Appointment History", url: "appointments/history", roles: ["doctor", "patient"] },
+          {
+            icon: <MdHistory />,
+            text: "Appointment History",
+            url: "appointments/history",
+            roles: ["doctor", "patient"],
+          },
         ],
       },
     ],
@@ -93,7 +107,12 @@ const DashboardUrl = [
         icon: <MdNotifications />,
         text: "Notifications",
         children: [
-          { icon: <MdNotifications />, text: "Notifications", url: "notifications", roles: ["admin", "doctor", "patient", "radiographer"] },
+          {
+            icon: <MdNotifications />,
+            text: "Notifications",
+            url: "notifications",
+            roles: ["admin", "doctor", "patient", "radiographer"],
+          },
         ],
       },
     ],
@@ -104,10 +123,30 @@ const DashboardUrl = [
         icon: <MdSettings />,
         text: "Settings",
         children: [
-          { icon: <MdSettings />, text: "Profile Settings", url: "settings/profile", roles: ["admin", "doctor", "patient", "radiographer"] },
-          { icon: <MdSmartToy />, text: "Theme", url: "settings/theme", roles: ["admin", "doctor", "patient", "radiographer"] },
-          { icon: <MdMenuBook />, text: "Language Selection", url: "settings/language", roles: ["admin", "doctor", "patient", "radiographer"] },
-          { icon: <MdSmartToy />, text: "2FA Setup", url: "settings/2fa", roles: ["admin", "doctor", "patient", "radiographer"] },
+          {
+            icon: <MdSettings />,
+            text: "Profile Settings",
+            url: "settings/profile",
+            roles: ["admin", "doctor", "patient", "radiographer"],
+          },
+          {
+            icon: <MdSmartToy />,
+            text: "Theme",
+            url: "settings/theme",
+            roles: ["admin", "doctor", "patient", "radiographer"],
+          },
+          {
+            icon: <MdMenuBook />,
+            text: "Language Selection",
+            url: "settings/language",
+            roles: ["admin", "doctor", "patient", "radiographer"],
+          },
+          {
+            icon: <MdSmartToy />,
+            text: "2FA Setup",
+            url: "settings/2fa",
+            roles: ["admin", "doctor", "patient", "radiographer"],
+          },
         ],
       },
     ],
@@ -119,112 +158,185 @@ const DashboardUrl = [
         text: "Help & Support",
         children: [
           { icon: <MdHelp />, text: "FAQ", url: "help/faq", roles: ["admin", "doctor", "patient", "radiographer"] },
-          { icon: <MdMessage />, text: "Contact Support", url: "help/contact", roles: ["admin", "doctor", "patient", "radiographer"] },
-          { icon: <MdMenuBook />, text: "Documentation", url: "help/docs", roles: ["admin", "doctor", "patient", "radiographer"] },
-          { icon: <MdLogout />, text: "Logout", url: "/logout", danger: true, roles: ["admin", "doctor", "patient", "radiographer"] },
+          {
+            icon: <MdMessage />,
+            text: "Contact Support",
+            url: "help/contact",
+            roles: ["admin", "doctor", "patient", "radiographer"],
+          },
+          {
+            icon: <MdMenuBook />,
+            text: "Documentation",
+            url: "help/docs",
+            roles: ["admin", "doctor", "patient", "radiographer"],
+          },
+          {
+            icon: <MdLogout />,
+            text: "Logout",
+            url: "/logout",
+            danger: true,
+            roles: ["admin", "doctor", "patient", "radiographer"],
+          },
         ],
       },
     ],
   },
-];
+]
 
-
-export { DashboardUrl };
+export { DashboardUrl }
 
 export const healthMetrics = [
   {
     label: "Heart Rate",
-    value: "72 bpm",
+    value: "72",
     status: "Normal",
-    icon: <FaHeart className="text-red-500" />,
-    color: "bg-red-50",
     category: "Heart",
+    icon: <FaHeart className="text-red-500" />,
+    color: "text-red-500",
   },
   {
     label: "Blood Pressure",
     value: "120/80",
     status: "Normal",
-    icon: <FaDroplet className="text-blue-500" />,
-    color: "bg-blue-50",
     category: "Heart",
+    icon: <FaDroplet className="text-red-500" />,
+    color: "text-red-500",
   },
   {
     label: "Oxygen Level",
     value: "98%",
-    status: "Good",
-    icon: <FaDroplet className="text-green-500" />,
-    color: "bg-green-50",
+    status: "Normal",
     category: "Lungs",
+    icon: <FaDroplet className="text-blue-500" />,
+    color: "text-blue-500",
   },
   {
-    label: "Vision Test",
-    value: "20/20",
-    status: "Clear",
-    icon: <FaEye className="text-indigo-500" />,
-    color: "bg-indigo-50",
-    category: "Eye",
+    label: "Respiratory Rate",
+    value: "16",
+    status: "Normal",
+    category: "Lungs",
+    icon: <FaDroplet className="text-blue-500" />,
+    color: "text-blue-500",
   },
-];
-
+  {
+    label: "Digestion",
+    value: "Good",
+    status: "Normal",
+    category: "Stomach",
+    icon: <FaDroplet className="text-yellow-500" />,
+    color: "text-yellow-500",
+  },
+  {
+    label: "Hydration",
+    value: "85%",
+    status: "Normal",
+    category: "Stomach",
+    icon: <FaDroplet className="text-yellow-500" />,
+    color: "text-yellow-500",
+  },
+  {
+    label: "Temperature",
+    value: "98.6°F",
+    status: "Normal",
+    category: "Body",
+    icon: <FaDroplet className="text-orange-500" />,
+    color: "text-orange-500",
+  },
+  {
+    label: "Weight",
+    value: "72kg",
+    status: "Normal",
+    category: "Body",
+    icon: <FaDroplet className="text-orange-500" />,
+    color: "text-orange-500",
+  },
+  {
+    label: "Vision",
+    value: "20/20",
+    status: "Normal",
+    category: "Eye",
+    icon: <FaEye className="text-purple-500" />,
+    color: "text-purple-500",
+  },
+  {
+    label: "Eye Pressure",
+    value: "15",
+    status: "Normal",
+    category: "Eye",
+    icon: <FaEye className="text-purple-500" />,
+    color: "text-purple-500",
+  },
+]
 
 export const diagnoses = [
   {
     title: "Heart Problem",
-    description:
-      "Coronary artery disease is a common heart condition that affects the major blood vessels that supply the heart muscle.",
-    doctor: "Dr Ronald Richards",
+    description: "Condition involving irregular heartbeat or poor blood flow; requires regular checkups and medication.",
+    doctor: "Dr. Ronald Richards",
     image: "/assets/images/dashboard/0725LifeExpectancy_SC.jpg",
   },
   {
     title: "Kidney Problem",
-    description:
-    "Coronary artery disease is a common heart condition that affects the major blood vessels that supply the heart muscle.",
-    doctor: "Dr Leslie Alexander",
+    description: "Reduced kidney function causing imbalance of fluids and waste in the body; requires medical management.",
+    doctor: "Dr. Leslie Alexander",
     image: "/assets/images/dashboard/istockphoto-1334724346-640x640-1.jpg",
   },
   {
     title: "Knee Problem",
-    description:
-      "Coronary artery disease is a common heart condition that affects the major blood vessels that supply the heart muscle.",
-    doctor: "Dr Robert Fox",
-    image: "/assets/images/dashboard/knee pain hero.jpg",
+    description: "Pain or inflammation in the knee joint caused by injury or arthritis; may need physiotherapy or treatment.",
+    doctor: "Dr. Robert muscle",
+    image: "/assets/images/dashboard/knee_pain.jpg",
   },
 ]
 
+
 export const prescriptions = [
   {
-    name: "Paracetamol - 500mg",
-    dosage: "1 tablet every day for 4 weeks",
-    remaining: "4 Remaining",
-    color: "bg-purple-100",
+    name: "Lisinopril",
+    dosage: "10mg - Once daily",
+    remaining: "28 days remaining",
+    color: "bg-blue-50",
   },
   {
-    name: "Liquifying - 450ml",
-    dosage: "1 teaspoon every day for 2 weeks",
-    remaining: "8 Remaining",
-    color: "bg-blue-100",
+    name: "Metformin",
+    dosage: "500mg - Twice daily",
+    remaining: "45 days remaining",
+    color: "bg-green-50",
+  },
+  {
+    name: "Atorvastatin",
+    dosage: "20mg - Once daily",
+    remaining: "35 days remaining",
+    color: "bg-purple-50",
+  },
+  {
+    name: "Aspirin",
+    dosage: "81mg - Once daily",
+    remaining: "60 days remaining",
+    color: "bg-orange-50",
   },
 ]
 
 export const appointments = [
   {
-    date: "10",
-    day: "Tue",
-    title: "MRI-Right thing",
+    title: "MRI - Right Thigh",
     doctor: "Dr. Damian Lewis",
-    specialty: "Cardiologist",
-    time: "10:00 AM",
-    imgUrl: "/assets/images/dashboard/mri.png"
+    specialty: "Radiologist",
+    imgUrl: "/assets/images/dashboard/mri.png",
   },
   {
-    title: "Surgery preparation",
+    title: "Surgery Preparation",
     doctor: "Dr. Dianne Russell",
     specialty: "Cardiologist",
-    time: "2:00 PM",
-    imgUrl: "/assets/images/dashboard/operation-preparation.jpg"
+    imgUrl: "/assets/images/dashboard/operation-preparation.jpg",
+  },
+  {
+    title: "Post-Surgery Follow-up",
+    doctor: "Dr. Michael Chen",
+    specialty: "General Practitioner",
+    imgUrl: "/assets/images/dashboard/PostOperative.jpg",
   },
 ]
-
 
 export const initialAppointments = [
   {
@@ -354,3 +466,107 @@ export const initialNotifications = [
     priority: "medium",
   },
 ]
+
+
+export const HEALTH_METRICS = {
+  Heart: [
+    { label: "Heart Rate", value: "72", status: "Normal", icon: <FaHeart />, color: "text-red-500" },
+    { label: "Blood Pressure", value: "120/80", status: "Normal", icon: <FaHeart />, color: "text-red-500" },
+    { label: "Cholesterol", value: "180", status: "Normal", icon: <FaHeart />, color: "text-red-500" },
+    { label: "Pulse", value: "68", status: "Normal", icon: <FaHeart />, color: "text-red-500" },
+  ],
+  Lungs: [
+    { label: "Oxygen Level", value: "98%", status: "Normal", icon: <FaLungs />, color: "text-blue-500" },
+    { label: "Respiratory Rate", value: "16", status: "Normal", icon: <FaLungs />, color: "text-blue-500" },
+    { label: "Lung Capacity", value: "95%", status: "Normal", icon: <FaLungs />, color: "text-blue-500" },
+    { label: "Air Flow", value: "Good", status: "Normal", icon: <FaLungs />, color: "text-blue-500" },
+  ],
+  Stomach: [
+    { label: "Digestion", value: "Good", status: "Normal", icon: <FaAppleAlt />, color: "text-yellow-500" },
+    { label: "Hydration", value: "85%", status: "Normal", icon: <FaAppleAlt />, color: "text-yellow-500" },
+    { label: "pH Level", value: "7.2", status: "Normal", icon: <FaAppleAlt />, color: "text-yellow-500" },
+    { label: "Metabolism", value: "Normal", status: "Normal", icon: <FaAppleAlt />, color: "text-yellow-500" },
+  ],
+  Body: [
+    { label: "Temperature", value: "98.6°F", status: "Normal", icon: <FaBottleDroplet />, color: "text-orange-500" },
+    { label: "Weight", value: "72kg", status: "Normal", icon: <FaBottleDroplet />, color: "text-orange-500" },
+    { label: "BMI", value: "24.5", status: "Normal", icon: <FaBottleDroplet />, color: "text-orange-500" },
+    { label: "Glucose", value: "95", status: "Normal", icon: <FaBottleDroplet />, color: "text-orange-500" },
+  ],
+  Eye: [
+    { label: "Vision", value: "20/20", status: "Normal", icon: <FaEye />, color: "text-purple-500" },
+    { label: "Eye Pressure", value: "15", status: "Normal", icon: <FaEye />, color: "text-purple-500" },
+    { label: "Contrast", value: "Good", status: "Normal", icon: <FaEye />, color: "text-purple-500" },
+    { label: "Color Vision", value: "Normal", status: "Normal", icon: <FaEye />, color: "text-purple-500" },
+  ],
+}
+
+  // Mock X-ray data
+  export const mockXrays = [
+    {
+      id: 1,
+      patientName: "John Doe",
+      bodyPart: "Chest",
+      date: "2024-10-20",
+      time: "10:30 AM",
+      status: "Completed",
+      thumbnail: "/chest-xray.jpg",
+      doctor: "Dr. Smith",
+      notes: "Normal findings",
+    },
+    {
+      id: 2,
+      patientName: "Jane Smith",
+      bodyPart: "Leg",
+      date: "2024-10-19",
+      time: "2:15 PM",
+      status: "Completed",
+      thumbnail: "/leg-xray.jpg",
+      doctor: "Dr. Johnson",
+      notes: "Fracture detected",
+    },
+    {
+      id: 3,
+      patientName: "Mike Johnson",
+      bodyPart: "Spine",
+      date: "2024-10-18",
+      time: "11:00 AM",
+      status: "Pending Review",
+      thumbnail: "/spine-xray.jpg",
+      doctor: "Dr. Williams",
+      notes: "Awaiting radiologist review",
+    },
+    {
+      id: 4,
+      patientName: "Sarah Williams",
+      bodyPart: "Hand",
+      date: "2024-10-17",
+      time: "3:45 PM",
+      status: "Completed",
+      thumbnail: "/hand-xray.jpg",
+      doctor: "Dr. Brown",
+      notes: "No abnormalities",
+    },
+    {
+      id: 5,
+      patientName: "Robert Davis",
+      bodyPart: "Pelvis",
+      date: "2024-10-16",
+      time: "9:20 AM",
+      status: "Completed",
+      thumbnail: "/pelvis-xray.jpg",
+      doctor: "Dr. Miller",
+      notes: "Normal study",
+    },
+    {
+      id: 6,
+      patientName: "Emily Brown",
+      bodyPart: "Chest",
+      date: "2024-10-15",
+      time: "1:30 PM",
+      status: "Pending Review",
+      thumbnail: "/chest-xray-2.jpg",
+      doctor: "Dr. Wilson",
+      notes: "Awaiting review",
+    },
+  ]

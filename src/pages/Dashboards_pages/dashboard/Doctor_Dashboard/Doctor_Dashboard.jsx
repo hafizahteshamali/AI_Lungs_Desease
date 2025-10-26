@@ -112,13 +112,14 @@ const Doctor_Dashboard = () => {
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className="space-y-2">
+                  {/* Yahan grid ko flex mein change kiya hai */}
+                  <div className="flex flex-wrap gap-3">
+                    <div className="space-y-2 flex-1 min-w-[200px]">
                       <p><strong className="text-[#000000]">Patient:</strong> {detail.data.patientName}</p>
                       <p><strong className="text-[#000000]">Age:</strong> {detail.data.patientAge}</p>
                       <p><strong className="text-[#000000]">Type:</strong> {detail.data.type}</p>
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 flex-1 min-w-[200px]">
                       <p><strong className="text-[#000000]">Status:</strong> 
                         <span className={`ml-2 ${
                           detail.data.status === "confirmed" ? "text-green-600" : "text-yellow-600"
@@ -151,13 +152,14 @@ const Doctor_Dashboard = () => {
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className="space-y-2">
+                  {/* Yahan grid ko flex mein change kiya hai */}
+                  <div className="flex flex-wrap gap-3">
+                    <div className="space-y-2 flex-1 min-w-[200px]">
                       <p><strong className="text-[#000000]">Patient:</strong> {detail.data.patientName}</p>
                       <p><strong className="text-[#000000]">Scan Type:</strong> {detail.data.scanType}</p>
                       <p><strong className="text-[#000000]">Body Part:</strong> {detail.data.bodyPart}</p>
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2 flex-1 min-w-[200px]">
                       <p><strong className="text-[#000000]">Status:</strong> 
                         <span className={`ml-2 ${
                           detail.data.status === "normal" ? "text-green-600" : "text-red-600"

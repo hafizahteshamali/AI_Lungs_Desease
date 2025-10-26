@@ -28,7 +28,7 @@ const DashboardHeader = ({ unreadCount = 0, doctorName = "Dr. Smith" }) => {
           </div>
           <div
             aria-label="Doctor Avatar"
-            className="w-10 h-10 rounded-full bg-[#2b7fff] text-white grid place-items-center font-medium"
+            className="w-10 h-10 rounded-full bg-[#2b7fff] text-white flex items-center justify-center font-medium"
           >
             {"DS"}
           </div>
@@ -38,4 +38,4 @@ const DashboardHeader = ({ unreadCount = 0, doctorName = "Dr. Smith" }) => {
   )
 }
 
-export default DashboardHeader;
+export default DashboardHeader

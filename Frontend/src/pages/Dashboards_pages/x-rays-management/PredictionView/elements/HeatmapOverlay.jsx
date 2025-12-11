@@ -11,7 +11,6 @@ export default function HeatmapOverlay({ imageUrl }) {
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4">
         <h2 className="text-lg font-semibold text-white">Heatmap Overlay</h2>
-        <p className="text-purple-100 text-sm mt-1">Areas of concern highlighted in red</p>
       </div>
 
       {/* Heatmap Container */}

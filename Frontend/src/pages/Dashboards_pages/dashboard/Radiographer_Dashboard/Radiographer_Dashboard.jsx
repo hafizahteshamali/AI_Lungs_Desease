@@ -7,7 +7,9 @@ import QuickUploadCard from "./elements/QuickUploadCard"
 import RecentUploadsTable from "./elements/RecentUploadsTable"
 import PendingReviewsSection from "./elements/PendingReviewsSection"
 
+// Yeh component radiographer dashboard handle karta hai
 const RadiographerDashboard = () => {
+  // Yeh state recent uploads data ko store karta hai
   const [recentUploads, setRecentUploads] = useState([
     {
       id: 1,
@@ -47,6 +49,7 @@ const RadiographerDashboard = () => {
     },
   ])
 
+  // Yeh state pending reviews data ko store karta hai
   const [pendingReviews, setPendingReviews] = useState([
     {
       id: 1,
@@ -104,72 +107,80 @@ const RadiographerDashboard = () => {
     },
   ])
 
+  // Yeh function quick scan upload handle karta hai
   const handleQuickUpload = () => {
+    // File input element dynamically create karta hai
     const fileInput = document.createElement("input")
-    fileInput.type = "file"
-    fileInput.accept = ".dcm,.dicom,.png,.jpg,.jpeg"
-    fileInput.multiple = true
+    fileInput.type = "file" // File input type
+    fileInput.accept = ".dcm,.dicom,.png,.jpg,.jpeg" // Allowed file types
+    fileInput.multiple = true // Multiple files allow karta hai
     fileInput.onchange = (e) => {
-      const files = Array.from(e.target.files)
+      const files = Array.from(e.target.files) // FileList ko array mein convert karta hai
       if (files.length > 0) {
-        const fileNames = files.map((f) => f.name).join(", ")
-        alert(`Successfully uploaded ${files.length} file(s): ${fileNames}`)
+        const fileNames = files.map((f) => f.name).join(", ") // File names join karta hai
+        alert(`Successfully uploaded ${files.length} file(s): ${fileNames}`) // Success message show karta hai
 
-        // Simulate adding new upload to the list
+        // Simulate adding new upload to the list - demo purpose ke liye
         const newUpload = {
-          id: recentUploads.length + 1,
-          patientName: "New Patient",
-          scanType: "New Scan",
-          date: new Date().toISOString().split("T")[0],
-          time: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
-          status: "completed",
-          doctor: "Dr. Assigned",
+          id: recentUploads.length + 1, // New ID generate karta hai
+          patientName: "New Patient", // Demo patient name
+          scanType: "New Scan", // Demo scan type
+          date: new Date().toISOString().split("T")[0], // Current date
+          time: new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }), // Current time
+          status: "completed", // Default status
+          doctor: "Dr. Assigned", // Default doctor
         }
-        setRecentUploads([newUpload, ...recentUploads])
+        setRecentUploads([newUpload, ...recentUploads]) // New upload ko list ke start mein add karta hai
       }
     }
-    fileInput.click()
+    fileInput.click() // File picker dialog open karta hai
   }
 
+  // Today's uploads count calculate karta hai
   const todayUploads = recentUploads.filter((upload) => upload.date === "2024-01-15").length
+  // Total scans this month (simulated - real app mein different logic hoga)
   const totalScansThisMonth = recentUploads.length * 39 // Simulated monthly total
 
   return (
+    // Main container jo puri screen cover karta hai
     <div className="min-h-screen w-[100%] bg-[#f9f9f9]">
       <div className="flex flex-col px-4 md:px-6 py-4">
-        {/* Header Section */}
+        {/* Header Section jo title aur welcome message dikhata hai */}
         <div className="mb-6">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#000000] mb-2">Radiographer Dashboard</h1>
           <p className="text-[#979999] text-sm sm:text-base">Welcome back! Here's your overview for today.</p>
         </div>
 
-        {/* Stats Cards Section */}
+        {/* Stats Cards Section jo important statistics dikhata hai */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          {/* Today's Uploads card */}
           <div className="flex-1 lg:w-[31%] w-full">
             <StatsCard
-              icon={<FiUploadCloud />}
+              icon={<FiUploadCloud />} // Upload cloud icon
               title="Today's Uploads"
-              value={todayUploads}
+              value={todayUploads} // Dynamic today's uploads count
               bgColor="bg-white"
-              iconColor="text-[#5056e6]"
+              iconColor="text-[#5056e6]" // Blue icon color
               borderColor="border-gray-300"
             />
           </div>
+          {/* Total Scans This Month card */}
           <div className="flex-1 lg:w-[31%] w-full">
             <StatsCard
-              icon={<FiFile />}
+              icon={<FiFile />} // File icon
               title="Total Scans This Month"
-              value={totalScansThisMonth}
+              value={totalScansThisMonth} // Simulated monthly total
               bgColor="bg-white"
               iconColor="text-[#5056e6]"
               borderColor="border-gray-300"
             />
           </div>
+          {/* Pending Reviews card */}
           <div className="flex-1 lg:w-[31%] w-full">
             <StatsCard
-              icon={<FiClock />}
+              icon={<FiClock />} // Clock icon
               title="Pending Reviews"
-              value={pendingReviews.length}
+              value={pendingReviews.length} // Pending reviews count
               bgColor="bg-white"
               iconColor="text-[#5056e6]"
               borderColor="border-gray-300"
@@ -177,22 +188,22 @@ const RadiographerDashboard = () => {
           </div>
         </div>
 
-        {/* Main Content Section */}
+        {/* Main Content Section jo quick upload aur recent uploads dikhata hai */}
         <div className="flex flex-col lg:flex-row gap-3 mb-6">
-          {/* Quick Upload Section */}
+          {/* Quick Upload Section (left side) */}
           <div className="flex-1 min-w-0">
-            <QuickUploadCard onUpload={handleQuickUpload} />
+            <QuickUploadCard onUpload={handleQuickUpload} /> {/* Quick upload component */}
           </div>
 
-          {/* Recent Uploads Section */}
+          {/* Recent Uploads Section (right side - larger width) */}
           <div className="flex-1 min-w-0 lg:flex-[2]">
-            <RecentUploadsTable uploads={recentUploads} />
+            <RecentUploadsTable uploads={recentUploads} /> {/* Recent uploads table */}
           </div>
         </div>
 
-        {/* Pending Reviews Section */}
+        {/* Pending Reviews Section jo bottom mein full width leta hai */}
         <div className="flex-1">
-          <PendingReviewsSection reviews={pendingReviews} />
+          <PendingReviewsSection reviews={pendingReviews} /> {/* Pending reviews component */}
         </div>
       </div>
     </div>

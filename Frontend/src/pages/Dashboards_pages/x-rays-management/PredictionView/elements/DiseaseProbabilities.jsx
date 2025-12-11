@@ -17,7 +17,7 @@ export default function DiseaseProbabilities({ diseases }) {
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+    <div className="bg-white w-full lg:w-[49%] pb-4 dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-200 dark:border-slate-700">
       {/* Header */}
       <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
         <div className="flex items-center gap-2">

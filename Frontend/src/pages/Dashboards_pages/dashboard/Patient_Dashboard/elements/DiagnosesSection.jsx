@@ -19,7 +19,7 @@ export default function DiagnosesSection({ diagnoses }) {
           <img
             src="/assets/images/dashboard/history.jpeg"
             alt="Human anatomy diagram"
-            className="w-40 md:w-56 lg:w-64 h-auto object-contain"
+            className="w-40 md:w-56 lg:w-64 h-80 object-contain"
           />
         </div>
 

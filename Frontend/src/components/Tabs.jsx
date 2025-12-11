@@ -3,7 +3,6 @@
 const Tabs = ({ activeTab, setActiveTab }) => {
   const tabs = [
     { key: "overview", label: "Overview" },
-    { key: "appointments", label: "Appointments" },
     { key: "scans", label: "Medical Scans" },
     { key: "notifications", label: "Notifications" },
   ]

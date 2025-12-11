@@ -280,13 +280,7 @@ export const diagnoses = [
     description: "Reduced kidney function causing imbalance of fluids and waste in the body; requires medical management.",
     doctor: "Dr. Leslie Alexander",
     image: "/assets/images/dashboard/istockphoto-1334724346-640x640-1.jpg",
-  },
-  {
-    title: "Knee Problem",
-    description: "Pain or inflammation in the knee joint caused by injury or arthritis; may need physiotherapy or treatment.",
-    doctor: "Dr. Robert muscle",
-    image: "/assets/images/dashboard/knee_pain.jpg",
-  },
+  }
 ]
 
 

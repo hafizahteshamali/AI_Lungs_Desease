@@ -17,9 +17,9 @@ export default function DiagnosesSection({ diagnoses }) {
         {/* Human Body Diagram */}
         <div className="flex-shrink-0 flex justify-center">
           <img
-            src="/assets/images/dashboard/human-muscles620-removebg-preview.png"
+            src="/assets/images/dashboard/history.jpeg"
             alt="Human anatomy diagram"
-            className="w-40 md:w-56 lg:w-64 h-auto object-contain"
+            className="w-40 md:w-56 lg:w-100 h-auto object-contain"
           />
         </div>
 

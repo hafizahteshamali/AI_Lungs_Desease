@@ -12,6 +12,9 @@ import Patient_Dashboard from '../pages/Dashboards_pages/dashboard/Patient_Dashb
 import UploadXrays from '../pages/Dashboards_pages/x-rays-management/uploadXrays/UploadXrays';
 import XrayHistory from '../pages/Dashboards_pages/x-rays-management/XrayHistory/XrayHistory';
 import PredictionView from '../pages/Dashboards_pages/x-rays-management/PredictionView/PredictionView';
+import AppointmentBooks from '../pages/Dashboards_pages/Appointments/Appointments_Book/AppointmentBooks';
+import ManageAppointments from '../pages/Dashboards_pages/Appointments/ManageAppointments/ManageAppointments';
+import AppointmentsHistory from '../pages/Dashboards_pages/Appointments/AppointmentsHistory/AppointmentsHistory';
 
 const AppRoutes = () => {
   return (
@@ -37,6 +40,9 @@ const AppRoutes = () => {
         <Route path="xray/upload" element={<UploadXrays />} />
         <Route path="xray/history" element={<XrayHistory />} />
         <Route path="xray/prediction" element={<PredictionView />} />
+        <Route path="appointments/book" element={<AppointmentBooks />} />
+        <Route path="appointments/manage" element={<ManageAppointments />} />
+        <Route path="appointments/history" element={<AppointmentsHistory />} />
       </Route>
     </Routes>
   );

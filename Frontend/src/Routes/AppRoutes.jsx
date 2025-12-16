@@ -15,6 +15,21 @@ import PredictionView from '../pages/Dashboards_pages/x-rays-management/Predicti
 import AppointmentBooks from '../pages/Dashboards_pages/Appointments/Appointments_Book/AppointmentBooks';
 import ManageAppointments from '../pages/Dashboards_pages/Appointments/ManageAppointments/ManageAppointments';
 import AppointmentsHistory from '../pages/Dashboards_pages/Appointments/AppointmentsHistory/AppointmentsHistory';
+import AI_Recommend_Medicine from '../pages/Dashboards_pages/Medicine_Prescription/AI_Recommend_Medicine/AI_Recommend_Medicine';
+import Prescription_Expert from '../pages/Dashboards_pages/Medicine_Prescription/Prescription_Expert/Prescription_Expert';
+import User_Managements from '../pages/Dashboards_pages/Admin_Management/User_Managements/User_Managements';
+import Disease_Categories from '../pages/Dashboards_pages/Admin_Management/Disease_Categories/Disease_Categories';
+import Medicine_Library from '../pages/Dashboards_pages/Admin_Management/Medicine_Library/Medicine_Library';
+import System_Logs from '../pages/Dashboards_pages/Admin_Management/System_Logs/System_Logs';
+import Analytical_Reports from '../pages/Dashboards_pages/Admin_Management/Analytical_Reports/Analytical_Reports';
+import Notifications from '../pages/Dashboards_pages/Notifications/Notifications';
+import Profile_Settings from '../pages/Dashboards_pages/Settings/Profile_Settings/Profile_Settings';
+import Theme from '../pages/Dashboards_pages/Settings/Theme/Theme';
+import Language_Selection from '../pages/Dashboards_pages/Settings/Language_Selection/Language_Selection';
+import Two_FA_Setup from '../pages/Dashboards_pages/Settings/2FA_Setup/Two_FA_Setup';
+import FAQs from '../pages/Dashboards_pages/Help_Support/FAQ/FAQs';
+import Contact_Support from '../pages/Dashboards_pages/Help_Support/Contact_Support/Contact_Support';
+import Documentation from '../pages/Dashboards_pages/Help_Support/Documentation/Documentation';
 
 const AppRoutes = () => {
   return (
@@ -43,6 +58,21 @@ const AppRoutes = () => {
         <Route path="appointments/book" element={<AppointmentBooks />} />
         <Route path="appointments/manage" element={<ManageAppointments />} />
         <Route path="appointments/history" element={<AppointmentsHistory />} />
+        <Route path="medicines/ai" element={<AI_Recommend_Medicine />} />
+        <Route path="medicines/export" element={<Prescription_Expert />} />
+        <Route path="admin/users" element={<User_Managements />} />
+        <Route path="admin/diseases" element={<Disease_Categories />} />
+        <Route path="admin/medicines" element={<Medicine_Library />} />
+        <Route path="admin/logs" element={<System_Logs />} />
+        <Route path="admin/reports" element={<Analytical_Reports />} />
+        <Route path="notifications" element={<Notifications />} />
+        <Route path="settings/profile" element={<Profile_Settings />} />
+        <Route path="settings/theme" element={<Theme />} />
+        <Route path="settings/language" element={<Language_Selection />} />
+        <Route path="settings/2fa" element={<Two_FA_Setup />} />
+        <Route path="help/faq" element={<FAQs />} />
+        <Route path="help/contact" element={<Contact_Support />} />
+        <Route path="help/docs" element={<Documentation />} />
       </Route>
     </Routes>
   );

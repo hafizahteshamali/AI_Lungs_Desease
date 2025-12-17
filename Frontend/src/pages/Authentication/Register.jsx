@@ -1,6 +1,7 @@
 // src/pages/Auth/Register.jsx
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import {
   FiEye,
   FiEyeOff,
@@ -9,64 +10,43 @@ import {
   FiUser,
   FiUserPlus,
 } from "react-icons/fi";
+import { postReq } from "../../api/axios";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const navigate = useNavigate();
-
-  const [form, setForm] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "Patient",
-  });
-
-  const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // handle input change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
 
-  // validate form
-  const validate = () => {
-    let newErrors = {};
-    if (!form.fullName) newErrors.fullName = "Full name is required";
-    if (!form.email) newErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(form.email))
-      newErrors.email = "Invalid email format";
-    if (!form.password) newErrors.password = "Password is required";
-    if (form.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters";
-    if (form.confirmPassword !== form.password)
-      newErrors.confirmPassword = "Passwords do not match";
-    return newErrors;
-  };
+  // Watch password for confirm password validation
+  const password = watch("password");
 
   // handle submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      setErrors({});
-      // dummy registration
-      console.log("Registration Success ✅", form);
-      alert(
-        form.role === "Doctor"
-          ? "Doctor account created! Pending admin approval."
-          : "Patient registered successfully!"
-      );
-      navigate("/auth/login");
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      const response = await postReq("/api/Account/RegisterUser", data);
+      console.log("Registration successful:", response);
+      // toast.success("user created successfully");
+      // navigate("/auth/login");
+    } catch (error) {
+      console.error("Registration failed:", error);
+      alert(error || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-teal-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-teal-50 p-4">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-xl overflow-hidden flex flex-col md:flex-row">
         {/* Left Section */}
         <div className="hidden md:flex md:w-1/2 bg-gradient-to-br from-blue-700 to-teal-600 text-white p-8 flex-col justify-between">
@@ -79,58 +59,97 @@ const Register = () => {
               Register to access medical diagnostics and reports powered by AI.
             </p>
           </div>
-          <div className="mt-10 flex justify-center">
+          <div className="mt-8 flex justify-center">
             <img
               src="https://cdn-icons-png.flaticon.com/512/2966/2966481.png"
               alt="Hospital Registration"
-              className="w-72 drop-shadow-lg"
+              className="w-64 drop-shadow-lg"
             />
           </div>
-          <p className="text-xs text-center mt-6">AI Healthcare • 2025</p>
+          <p className="text-xs text-center mt-4">AI Healthcare • 2025</p>
         </div>
 
         {/* Right Section - Form */}
-        <div className="w-full md:w-1/2 p-8">
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-            Create an Account 🏥
+        <div className="w-full md:w-1/2 p-6 md:p-8">
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
+            Create an Account
           </h2>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            {/* Full Name */}
+          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            {/* User Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name
+                User Name
               </label>
               <div className="relative">
                 <FiUser className="absolute left-3 top-3 text-gray-400" />
                 <input
                   type="text"
-                  name="fullName"
-                  placeholder="Enter your full name"
-                  value={form.fullName}
-                  onChange={handleChange}
+                  placeholder="Enter username"
+                  {...register("userName", { required: "Username is required" })}
                   className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
-              {errors.fullName && (
-                <p className="text-sm text-red-500 mt-1">{errors.fullName}</p>
+              {errors.userName && (
+                <p className="text-sm text-red-500 mt-1">{errors.userName.message}</p>
               )}
             </div>
 
-            {/* Role */}
+            {/* First Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Role
+                First Name
+              </label>
+              <div className="relative">
+                <FiUser className="absolute left-3 top-3 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Enter first name"
+                  {...register("firstName", { required: "First name is required" })}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              {errors.firstName && (
+                <p className="text-sm text-red-500 mt-1">{errors.firstName.message}</p>
+              )}
+            </div>
+
+            {/* Last Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Last Name
+              </label>
+              <div className="relative">
+                <FiUser className="absolute left-3 top-3 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Enter last name"
+                  {...register("lastName", { required: "Last name is required" })}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                />
+              </div>
+              {errors.lastName && (
+                <p className="text-sm text-red-500 mt-1">{errors.lastName.message}</p>
+              )}
+            </div>
+
+            {/* Gender */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Gender
               </label>
               <select
-                name="role"
-                value={form.role}
-                onChange={handleChange}
+                {...register("gender", { required: "Gender is required" })}
                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
-                <option>Patient</option>
-                <option>Doctor</option>
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
               </select>
+              {errors.gender && (
+                <p className="text-sm text-red-500 mt-1">{errors.gender.message}</p>
+              )}
             </div>
 
             {/* Email */}
@@ -142,15 +161,19 @@ const Register = () => {
                 <FiMail className="absolute left-3 top-3 text-gray-400" />
                 <input
                   type="email"
-                  name="email"
                   placeholder="Enter your email"
-                  value={form.email}
-                  onChange={handleChange}
+                  {...register("email", { 
+                    required: "Email is required",
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: "Invalid email format"
+                    }
+                  })}
                   className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               {errors.email && (
-                <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+                <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
               )}
             </div>
 
@@ -163,22 +186,26 @@ const Register = () => {
                 <FiLock className="absolute left-3 top-3 text-gray-400" />
                 <input
                   type={showPassword ? "text" : "password"}
-                  name="password"
                   placeholder="Enter your password"
-                  value={form.password}
-                  onChange={handleChange}
+                  {...register("password", { 
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters"
+                    }
+                  })}
                   className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-gray-400"
+                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                 >
                   {showPassword ? <FiEyeOff /> : <FiEye />}
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+                <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
               )}
             </div>
 
@@ -191,46 +218,52 @@ const Register = () => {
                 <FiLock className="absolute left-3 top-3 text-gray-400" />
                 <input
                   type={showConfirm ? "text" : "password"}
-                  name="confirmPassword"
                   placeholder="Confirm your password"
-                  value={form.confirmPassword}
-                  onChange={handleChange}
+                  {...register("confirmPassword", { 
+                    required: "Please confirm your password",
+                    validate: value => value === password || "Passwords do not match"
+                  })}
                   className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-3 top-3 text-gray-400"
+                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
                 >
                   {showConfirm ? <FiEyeOff /> : <FiEye />}
                 </button>
               </div>
               {errors.confirmPassword && (
                 <p className="text-sm text-red-500 mt-1">
-                  {errors.confirmPassword}
+                  {errors.confirmPassword.message}
                 </p>
               )}
             </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              className="w-full bg-blue-700 text-white py-2 rounded font-medium hover:bg-blue-800 transition shadow-md"
-            >
-              Register
-            </button>
+            {/* Submit Button */}
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-700 text-white py-2.5 rounded font-medium hover:bg-blue-800 transition shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {loading ? "Registering..." : "Register"}
+              </button>
+            </div>
           </form>
 
           {/* Login Link */}
-          <p className="text-sm text-gray-600 text-center mt-6">
-            Already have an account?{" "}
-            <Link
-              to="/auth/login"
-              className="text-blue-700 font-medium hover:underline"
-            >
-              Login
-            </Link>
-          </p>
+          <div className="mt-6 pt-2 border-t border-gray-200">
+            <p className="text-sm text-gray-600 text-center">
+              Already have an account?{" "}
+              <Link
+                to="/auth/login"
+                className="text-blue-700 font-medium hover:underline"
+              >
+                Login
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

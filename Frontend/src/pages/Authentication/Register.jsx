@@ -33,6 +33,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
+      console.log("all data:", data);
       const response = await postReq("/api/Account/RegisterUser", data);
       console.log("Registration successful:", response);
       // toast.success("user created successfully");

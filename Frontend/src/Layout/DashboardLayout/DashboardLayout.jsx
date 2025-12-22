@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../Navigation/Sidebar";
 import { Outlet } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
+import { getReq } from "../../api/axios";
 
 const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -9,6 +10,19 @@ const DashboardLayout = () => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const getData = async ()=>{
+    try {
+      const response = await getReq("/api/Doctors")
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    getData();
+  }, []);
 
   return (
     <div className="flex min-h-screen w-full">

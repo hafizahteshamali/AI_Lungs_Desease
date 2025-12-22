@@ -10,6 +10,7 @@ import {
   FiUser,
   FiActivity,
 } from "react-icons/fi";
+import { postReq } from "../../api/axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -34,19 +35,20 @@ const Login = () => {
     setLoading(true);
     try {
       console.log("Login Data:", data);
-      // API call yahan karenge
-      // const response = await postReq("/api/auth/login", data);
-      
-      // Dummy success
-      alert("Login successful!");
+  
+      const response = await postReq("/api/Account/Authentication", data);
+  
+      // 🔐 TOKEN STORE (MOST IMPORTANT)
+      sessionStorage.setItem("token", response.data.data.jwToken);  
       navigate("/dashboard");
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login failed:", error.response?.data || error.message);
       alert("Login failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 p-4">

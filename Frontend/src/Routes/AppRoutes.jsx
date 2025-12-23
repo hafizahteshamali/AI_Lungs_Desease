@@ -31,11 +31,24 @@ import FAQs from '../pages/Dashboards_pages/Help_Support/FAQ/FAQs';
 import Contact_Support from '../pages/Dashboards_pages/Help_Support/Contact_Support/Contact_Support';
 import Documentation from '../pages/Dashboards_pages/Help_Support/Documentation/Documentation';
 
+// Import new components (you'll need to create these)
+
+import Home from '../pages/Home/Home';
+import Contact from '../pages/Contact/Contact';
+import About from '../pages/About/About';
+import Layout from '../Layout/Layout/Layout';
+
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Redirect root → login */}
-      <Route path="/" element={<Navigate to="/auth/login" replace />} />
+      {/* Home Page as root */}
+      <Route path="/" element={<Layout />}>
+      {/* Public Pages */}
+      <Route index element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      </Route>
+      
 
       {/* Authentication */}
       <Route path="/auth">

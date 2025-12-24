@@ -1,17 +1,19 @@
-import BenefitsSection from "./elements/BenefitsSection"
-import CTASection from "./elements/CTASection"
-import FeaturesSection from "./elements/FeaturesSection"
 import HeroSection from "./elements/HeroSection"
+import FeaturesSection from "./elements/FeaturesSection"
+import StatsSection from "./elements/StatsSection"
+import HowItWorksSection from "./elements/HowItWorksSection"
+import TestimonialsSection from "./elements/TestimonialsSection"
+import CTASection from "./elements/CTASection"
 
-const Home = () => {
+export default function Home() {
   return (
-    <div>
+    <div className="min-h-screen bg-[#f9f9f9]">
       <HeroSection />
       <FeaturesSection />
-      <BenefitsSection />
+      <StatsSection />
+      <HowItWorksSection />
+      <TestimonialsSection />
       <CTASection />
     </div>
   )
 }
-
-export default Home

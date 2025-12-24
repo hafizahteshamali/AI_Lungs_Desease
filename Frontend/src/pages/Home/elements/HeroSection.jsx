@@ -1,42 +1,127 @@
-import { FaArrowRight } from "react-icons/fa"
+import { useState, useEffect } from "react"
+import { FaArrowRight, FaPlay } from "react-icons/fa"
+import { IoSparkles } from "react-icons/io5"
 
-const HeroSection = () => {
+export default function HeroSection() {
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
+
   return (
-    <section className="bg-gradient-to-br from-[#4932e4] via-[#007a9b] to-[#008059] text-white py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section className="relative min-h-[90vh] bg-[#f9f9f9] overflow-hidden flex items-center mt-[50px]">
+      {/* Animated Background Elements */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        {/* Grid ki jagah flex use kiya */}
+        <div className="flex flex-col lg:flex-row gap-12 items-center">
           {/* Text Content */}
-          <div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Early Detection. <span className="text-[#f0b100]">Saves Lives.</span>
-            </h1>
-            <p className="text-xl text-gray-100 mb-8 leading-relaxed">
-              Revolutionary AI-powered diagnostic system for early detection of lung disease and breast cancer from
-              medical images with 98% accuracy.
-            </p>
+          <div className={`space-y-8 flex-1 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-full shadow-sm ring-1">
+              <IoSparkles className="text-[#5056e6] animate-spin-slow" />
+              <span className="text-sm font-medium text-gray-700">AI-Powered Medical Diagnostics</span>
+            </div>
+
+            {/* Main Heading */}
+            <div className="space-y-4">
+              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-black leading-tight">
+                <span className="block">Early Detection</span>
+                <span className="block text-[#5056e6] relative">
+                  Saves Lives
+                  <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-[#5056e6] to-transparent opacity-30"></span>
+                </span>
+              </h1>
+              <p className="text-lg lg:text-xl text-[#979999] leading-relaxed max-w-xl">
+                Revolutionary AI-powered diagnostic system for early detection of lung disease and breast cancer from medical images with 98% accuracy.
+              </p>
+            </div>
+
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="flex items-center justify-center gap-2 px-8 py-3 bg-[#f0b100] text-[#4932e4] font-semibold rounded-lg hover:bg-yellow-400 transition">
-                Start Free Trial <FaArrowRight size={16} />
+              <button className="group relative px-8 py-4 bg-[#5056e6] text-white font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#5056e6]/30 hover:scale-105 flex-1 sm:flex-none">
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  Start Free Trial
+                  <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#5056e6] to-[#3d43d4] opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </button>
-              <button className="px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-[#4932e4] transition">
+              <button className="group px-8 py-4 bg-white border-2 border-gray-300 text-black font-semibold rounded-lg hover:border-[#5056e6] hover:text-[#5056e6] transition-all duration-300 hover:shadow-md flex items-center justify-center gap-2 flex-1 sm:flex-none">
+                <FaPlay className="text-sm" />
                 Watch Demo
               </button>
+            </div>
+
+            {/* Stats - Grid ki jagah flex use kiya */}
+            <div className="flex flex-wrap gap-8 pt-4">
+              <div className="flex items-center gap-3 flex-1 min-w-[150px]">
+                <div className="h-12 rounded-lg bg-[#5056e6]/10 flex items-center justify-center px-2 flex-shrink-0">
+                  <span className="text-2xl font-bold text-[#5056e6]">98%</span>
+                </div>
+                <div>
+                  <p className="text-sm text-[#979999]">Accuracy</p>
+                  <p className="text-xs text-[#979999]">Rate</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 flex-1 min-w-[150px]">
+                <div className="h-12 rounded-lg bg-[#5056e6]/10 flex items-center justify-center px-2 flex-shrink-0">
+                  <span className="text-2xl font-bold text-[#5056e6]">&lt;2min</span>
+                </div>
+                <div>
+                  <p className="text-sm text-[#979999]">Analysis</p>
+                  <p className="text-xs text-[#979999]">Time</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 flex-1 min-w-[150px]">
+                <div className="h-12 rounded-lg bg-[#5056e6]/10 flex items-center justify-center px-2 flex-shrink-0">
+                  <span className="text-2xl font-bold text-[#5056e6]">100K+</span>
+                </div>
+                <div>
+                  <p className="text-sm text-[#979999]">Images</p>
+                  <p className="text-xs text-[#979999]">Trained</p>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Hero Image */}
-          <div className="relative">
-            <img
-              src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&h=500&fit=crop"
-              alt="Medical AI Scanning"
-              className="rounded-2xl shadow-2xl"
-            />
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-[#4932e4] to-transparent opacity-20"></div>
+          <div className={`relative flex-1 ${isVisible ? 'animate-fade-in-right' : 'opacity-0'}`}>
+            <div className="relative h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl group">
+              <img
+                src="/assets/images/home/1728480895369.jpg"
+                alt="Medical AI Scanning"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              
+              {/* Floating Cards - Already using flex */}
+              <div className="absolute top-8 right-8 bg-white p-4 rounded-xl shadow-lg border border-gray-300 ring-1 animate-float">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-[#5056e6]/10 flex items-center justify-center flex-shrink-0">
+                    <IoSparkles className="text-[#5056e6]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-black">AI Analysis</p>
+                    <p className="text-xs text-[#979999]">In Progress</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-8 left-8 bg-white p-4 rounded-xl shadow-lg border border-gray-300 ring-1 animate-float-delayed">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-green-500 text-xl">✓</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-black">98% Accuracy</p>
+                    <p className="text-xs text-[#979999]">Verified</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   )
 }
-
-export default HeroSection

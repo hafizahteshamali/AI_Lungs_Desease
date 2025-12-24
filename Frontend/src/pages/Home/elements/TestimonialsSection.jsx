@@ -1,160 +1,210 @@
-import { useState, useEffect } from "react"
-import { FaQuoteLeft, FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa"
+// TestimonialSlider.jsx
+import React from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-export default function TestimonialsSection() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
-
+const TestimonialSlider = () => {
+  // Sample testimonials data
   const testimonials = [
     {
-      name: "Dr. Sarah Johnson",
-      role: "Chief Radiologist",
-      hospital: "City Medical Center",
-      image: "👩‍⚕️",
-      rating: 5,
-      text: "MediScan AI has revolutionized our diagnostic workflow. The accuracy and speed are remarkable, helping us detect early-stage lung diseases that might have been missed otherwise.",
-      color: "#5056e6",
-    },
-    {
-      name: "Dr. Michael Chen",
-      role: "Oncologist",
-      hospital: "Regional Cancer Institute",
-      image: "👨‍⚕️",
-      rating: 5,
-      text: "The AI-powered breast cancer detection has been a game-changer. It's like having an extra pair of expert eyes reviewing every scan. Highly recommended for any medical facility.",
-      color: "#008059",
-    },
-    {
+      id: 1,
+      text: "Early detection saves lives. This platform makes diagnosis reliable and easy to understand for both doctors and patients.",
       name: "Dr. Emily Rodriguez",
-      role: "Pulmonologist",
+      position: "Pulmonologist",
+      image: "/assets/images/home/Dr-Emily-Rodriguez.jpg",
       hospital: "University Hospital",
-      image: "👩‍⚕️",
-      rating: 5,
-      text: "As a pulmonologist, I've seen firsthand how early detection saves lives. This platform makes it accessible and reliable. The detailed reports are comprehensive and easy to understand.",
-      color: "#007a9b",
+      number: "16"
     },
-  ]
+    {
+      id: 2,
+      text: "The integration was seamless and our team adapted quickly. Diagnostic accuracy improved significantly.",
+      name: "Dr. Robert Kim",
+      position: "Medical Director",
+      image: "/assets/images/home/Dr-Robert-Kim.jpg",
+      hospital: "General Hospital",
+      number: "16"
+    },
+    {
+      id: 3,
+      text: "Real-time analysis is incredible. We now get results in minutes instead of hours.",
+      name: "Dr. Lisa Wang",
+      position: "Diagnostic Specialist",
+      image: "/assets/images/home/Dr-Lisa-Wang.jpg",
+      hospital: "Memorial Medical",
+      number: "16"
+    }
+  ];
 
-  useEffect(() => {
-    if (!isAutoPlaying) return
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [isAutoPlaying, testimonials.length])
-
-  const goToSlide = (index) => {
-    setCurrentIndex(index)
-    setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 10000)
-  }
-
-  const nextSlide = () => {
-    goToSlide((currentIndex + 1) % testimonials.length)
-  }
-
-  const prevSlide = () => {
-    goToSlide((currentIndex - 1 + testimonials.length) % testimonials.length)
-  }
+  // Slider settings
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2500,
+    pauseOnHover: true,
+    arrows: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          arrows: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          arrows: false,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          arrows: false,
+          dots: true
+        }
+      }
+    ]
+  };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#f9f9f9]">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 bg-[#5056e6]/10 rounded-full mb-4">
-            <span className="text-sm font-semibold text-[#5056e6]">TESTIMONIALS</span>
-          </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-black mb-4">
-            Trusted by Healthcare Professionals
-          </h2>
-          <p className="text-lg text-[#979999] max-w-2xl mx-auto">
-            See what doctors and medical professionals are saying about MediScan AI
-          </p>
-        </div>
-
-        {/* Testimonial Carousel - Already using flex */}
-        <div className="relative overflow-hidden">
-          {/* Testimonial Cards Container */}
-          <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-          >
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="min-w-full px-4 flex-shrink-0"
-              >
-                <div className="bg-white border border-gray-300 rounded-2xl p-8 lg:p-12 shadow-lg ring-1 flex flex-col items-center">
-                  {/* Quote Icon */}
-                  <div className="flex justify-center mb-6">
-                    <div
-                      className="w-16 h-16 rounded-full flex items-center justify-center text-2xl text-white flex-shrink-0"
-                      style={{ backgroundColor: testimonial.color }}
-                    >
-                      <FaQuoteLeft />
+    <section className="py-16 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-blue-50 to-gray-50">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+          What Doctors Say
+        </h2>
+        
+        <div className="relative bg-white rounded-2xl shadow-xl p-6 md:p-8 lg:p-12 max-w-6xl mx-auto">
+          <Slider {...settings} className="testimonial-slider">
+            {testimonials.map((testimonial) => (
+              <div key={testimonial.id} className="outline-none">
+                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
+                  {/* Left side - Number and testimonial text */}
+                  <div className="flex-1">
+                    <div className="flex items-start gap-6">
+                      <div className="flex flex-col items-center">
+                        <div className="text-6xl md:text-7xl font-bold text-blue-600 opacity-20 mb-2">
+                          {testimonial.number}
+                        </div>
+                        <div className="text-lg font-medium text-gray-600 mt-2">
+                          Testimonial
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1">
+                        <div className="text-lg md:text-xl text-gray-700 italic leading-relaxed mb-6">
+                          {testimonial.text}
+                        </div>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Rating */}
-                  <div className="flex justify-center gap-1 mb-6">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <FaStar key={i} className="text-yellow-400 text-xl flex-shrink-0" />
-                    ))}
-                  </div>
-
-                  {/* Testimonial Text */}
-                  <p className="text-lg text-[#979999] text-center mb-8 leading-relaxed max-w-3xl mx-auto flex-1">
-                    "{testimonial.text}"
-                  </p>
-
-                  {/* Author */}
-                  <div className="flex flex-col items-center mt-auto">
-                    <div className="text-5xl mb-4">{testimonial.image}</div>
-                    <h4 className="text-xl font-bold text-black mb-1">{testimonial.name}</h4>
-                    <p className="text-[#979999] text-sm">{testimonial.role}</p>
-                    <p className="text-[#979999] text-sm">{testimonial.hospital}</p>
+                  
+                  {/* Right side - Doctor info */}
+                  <div className="w-full lg:w-1/3">
+                    <div className="bg-blue-50 rounded-xl p-6 md:p-8 border-l-4 border-blue-500">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center">
+                        <img src={testimonial.image} alt="" className="h-[70px] w-[70px] rounded-full object-fill" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-800">{testimonial.name}</h3>
+                          <p className="text-blue-600 font-medium">{testimonial.position}</p>
+                          <p className="text-gray-600">{testimonial.hospital}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 text-yellow-500 mb-2">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      
+                      <p className="text-gray-600">Verified Doctor</p>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
+          </Slider>
+          
+          {/* Custom arrows */}
+          <style jsx>{`
+            .testimonial-slider .slick-prev,
+            .testimonial-slider .slick-next {
+              width: 40px;
+              height: 40px;
+              background: #3b82f6;
+              border-radius: 50%;
+              display: flex !important;
+              align-items: center;
+              justify-content: center;
+              z-index: 10;
+            }
+            
+            .testimonial-slider .slick-prev:hover,
+            .testimonial-slider .slick-next:hover {
+              background: #2563eb;
+            }
+            
+            .testimonial-slider .slick-prev {
+              left: -20px;
+            }
+            
+            .testimonial-slider .slick-next {
+              right: -20px;
+            }
+            
+            .testimonial-slider .slick-prev:before,
+            .testimonial-slider .slick-next:before {
+              font-size: 20px;
+              color: white;
+            }
+            
+            .testimonial-slider .slick-dots {
+              bottom: -40px;
+            }
+            
+            .testimonial-slider .slick-dots li button:before {
+              font-size: 12px;
+            }
+            
+            @media (max-width: 768px) {
+              .testimonial-slider .slick-prev {
+                left: 10px;
+              }
+              
+              .testimonial-slider .slick-next {
+                right: 10px;
+              }
+            }
+          `}</style>
+        </div>
+        
+        {/* Stats section */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+          <div className="text-center">
+            <div className="text-4xl font-bold text-blue-600">99%</div>
+            <div className="text-gray-600 mt-2">Accuracy Rate</div>
           </div>
-
-          {/* Navigation Arrows - Already using flex */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 lg:-translate-x-12 w-12 h-12 rounded-full bg-white border border-gray-300 shadow-lg flex items-center justify-center hover:bg-[#5056e6] hover:text-white hover:border-[#5056e6] transition-all duration-300 z-10 flex-shrink-0"
-            aria-label="Previous testimonial"
-          >
-            <FaChevronLeft />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 lg:translate-x-12 w-12 h-12 rounded-full bg-white border border-gray-300 shadow-lg flex items-center justify-center hover:bg-[#5056e6] hover:text-white hover:border-[#5056e6] transition-all duration-300 z-10 flex-shrink-0"
-            aria-label="Next testimonial"
-          >
-            <FaChevronRight />
-          </button>
-
-          {/* Dots Indicator - Already using flex */}
-          <div className="flex justify-center gap-2 mt-8">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 flex-shrink-0 ${
-                  index === currentIndex
-                    ? 'bg-[#5056e6] w-8'
-                    : 'bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
+          <div className="text-center">
+            <div className="text-4xl font-bold text-blue-600">50+</div>
+            <div className="text-gray-600 mt-2">Hospitals Using</div>
+          </div>
+          <div className="text-center">
+            <div className="text-4xl font-bold text-blue-600">24/7</div>
+            <div className="text-gray-600 mt-2">Support Available</div>
           </div>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
+
+export default TestimonialSlider;

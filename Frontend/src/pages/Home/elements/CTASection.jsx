@@ -11,6 +11,17 @@ export default function CTASection() {
     "24/7 Support",
   ]
 
+    // Add this function for scrolling to XrayDemoSection
+    const handleDemoClick = () => {
+      const demoSection = document.getElementById('xray-demo')
+      if (demoSection) {
+        demoSection.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        })
+      }
+    }
+
   return (
     <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#5056e6] via-[#3d43d4] to-[#007a9b] overflow-hidden">
       {/* Animated Background Elements */}
@@ -58,6 +69,7 @@ export default function CTASection() {
         {/* CTA Buttons - Already using flex flex-col sm:flex-row */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
+          onClick={handleDemoClick}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="group relative px-10 py-4 bg-white text-[#5056e6] font-bold rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-white/30 hover:scale-105"
@@ -68,7 +80,7 @@ export default function CTASection() {
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-white to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           </button>
-          <button className="px-10 py-4 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#5056e6] transition-all duration-300 hover:scale-105 text-lg">
+          <button onClick={handleDemoClick} className="px-10 py-4 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#5056e6] transition-all duration-300 hover:scale-105 text-lg">
             Schedule Demo
           </button>
         </div>

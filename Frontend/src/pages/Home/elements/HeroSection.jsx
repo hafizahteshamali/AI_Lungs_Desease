@@ -9,6 +9,17 @@ export default function HeroSection() {
     setIsVisible(true)
   }, [])
 
+  // Add this function for scrolling to XrayDemoSection
+  const handleDemoClick = () => {
+    const demoSection = document.getElementById('xray-demo')
+    if (demoSection) {
+      demoSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  }
+
   return (
     <section className="relative min-h-[90vh] bg-[#f9f9f9] overflow-hidden flex items-center mt-[50px]">
       {/* Animated Background Elements */}
@@ -38,15 +49,12 @@ export default function HeroSection() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button className="group relative px-8 py-4 bg-[#5056e6] text-white font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#5056e6]/30 hover:scale-105 flex-1 sm:flex-none">
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  Start Free Trial
-                  <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-[#5056e6] to-[#3d43d4] opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </button>
-              <button className="group px-8 py-4 bg-white border-2 border-gray-300 text-black font-semibold rounded-lg hover:border-[#5056e6] hover:text-[#5056e6] transition-all duration-300 hover:shadow-md flex items-center justify-center gap-2 flex-1 sm:flex-none">
+            <div className="flex flex-col sm:flex-row gap-4">              
+              {/* Updated Demo Button */}
+              <button 
+                onClick={handleDemoClick} // Now this will work
+                className="group px-8 py-4 bg-white border-2 border-gray-300 text-black font-semibold rounded-lg hover:border-[#5056e6] hover:text-[#5056e6] transition-all duration-300 hover:shadow-md flex items-center justify-center gap-2 flex-1 sm:flex-none"
+              >
                 <FaPlay className="text-sm" />
                 Watch Demo
               </button>
@@ -55,7 +63,7 @@ export default function HeroSection() {
             {/* Stats - Grid ki jagah flex use kiya */}
             <div className="flex flex-wrap gap-8 pt-4">
               <div className="flex items-center gap-3 flex-1 min-w-[150px]">
-                <div className="h-12 rounded-lg bg-[#5056e6]/10 flex items-center justify-center px-2 flex-shrink-0">
+                <div className="h-12 rounded-lg bg-[#5056e6]/10 flex items-center justify-center px-2 flex-shrink-0 w-[50%]">
                   <span className="text-2xl font-bold text-[#5056e6]">98%</span>
                 </div>
                 <div>
@@ -64,7 +72,7 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="flex items-center gap-3 flex-1 min-w-[150px]">
-                <div className="h-12 rounded-lg bg-[#5056e6]/10 flex items-center justify-center px-2 flex-shrink-0">
+                <div className="h-12 rounded-lg bg-[#5056e6]/10 flex items-center justify-center px-2 flex-shrink-0 w-[50%]">
                   <span className="text-2xl font-bold text-[#5056e6]">&lt;2min</span>
                 </div>
                 <div>
@@ -73,7 +81,7 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="flex items-center gap-3 flex-1 min-w-[150px]">
-                <div className="h-12 rounded-lg bg-[#5056e6]/10 flex items-center justify-center px-2 flex-shrink-0">
+                <div className="h-12 rounded-lg bg-[#5056e6]/10 flex items-center justify-center px-2 flex-shrink-0 w-[50%]">
                   <span className="text-2xl font-bold text-[#5056e6]">100K+</span>
                 </div>
                 <div>

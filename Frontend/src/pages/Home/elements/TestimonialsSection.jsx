@@ -109,7 +109,7 @@ const TestimonialSlider = () => {
                     <div className="bg-blue-50 rounded-xl p-6 md:p-8 border-l-4 border-blue-500">
                       <div className="flex items-center gap-4 mb-4">
                         <div className="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center">
-                        <img src={testimonial.image} alt="" className="h-[70px] w-[70px] rounded-full object-fill" />
+                        <img src={testimonial.image} alt="" className="h-[70px] w-[70px] rounded-full object-cover" />
                         </div>
                         <div>
                           <h3 className="text-xl font-bold text-gray-800">{testimonial.name}</h3>

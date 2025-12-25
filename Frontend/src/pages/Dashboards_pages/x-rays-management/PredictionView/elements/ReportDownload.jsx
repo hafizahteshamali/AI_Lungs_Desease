@@ -48,7 +48,7 @@ This analysis is AI-generated and should be reviewed by a qualified medical prof
         text: `Medical analysis completed with ${data.confidence}% confidence`,
       })
     } else {
-      alert("Share functionality not available on this device")
+      console.log("Share functionality not available on this device")
     }
   }
 

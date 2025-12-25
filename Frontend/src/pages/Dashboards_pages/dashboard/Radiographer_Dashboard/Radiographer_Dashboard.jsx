@@ -118,7 +118,6 @@ const RadiographerDashboard = () => {
       const files = Array.from(e.target.files) // FileList ko array mein convert karta hai
       if (files.length > 0) {
         const fileNames = files.map((f) => f.name).join(", ") // File names join karta hai
-        alert(`Successfully uploaded ${files.length} file(s): ${fileNames}`) // Success message show karta hai
 
         // Simulate adding new upload to the list - demo purpose ke liye
         const newUpload = {

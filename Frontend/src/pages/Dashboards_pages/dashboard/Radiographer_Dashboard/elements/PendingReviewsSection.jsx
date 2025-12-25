@@ -17,12 +17,12 @@ const PendingReviewsSection = ({ reviews }) => {
 
   // Yeh function view details button par click handle karta hai
   const handleViewDetails = (review) => {
-    alert(`Viewing details for ${review.patientName}'s ${review.scanType}`) // Demo alert message
+    console.log(`Viewing details for ${review.patientName}'s ${review.scanType}`)
   }
 
   // Yeh function remind doctor button par click handle karta hai
   const handleRemindDoctor = (review) => {
-    alert(`Reminder sent to ${review.doctor} for ${review.patientName}'s scan`) // Demo alert message
+    console.log(`Reminder sent to ${review.doctor} for ${review.patientName}'s scan`) 
   }
 
   return (

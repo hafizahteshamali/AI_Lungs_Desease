@@ -1,9 +1,8 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 
 const apiClient = axios.create({
   baseURL: "https://precisionscan.runasp.net",
-  timeout: 180000, // 3 minutes
+  timeout: 180000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,32 +10,31 @@ const apiClient = axios.create({
 
 /* ===========================
    REQUEST INTERCEPTOR
-   (Bearer Token Attach)
 =========================== */
 apiClient.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem("token"); // login ke baad save hota hai
+    const token = sessionStorage.getItem("token") || 
+                  localStorage.getItem("token");
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 /* ===========================
    RESPONSE INTERCEPTOR
+   (NO TOASTS HERE - Let components handle errors)
 =========================== */
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message =
-      error.response?.data?.message ||
-      error.response?.data?.title ||
-      "Something went wrong";
-
-    toast.error(message);
-
+    // Sirf log karo, toast nahi dikhao
+    console.error("API Error:", error);
     return Promise.reject(error);
   }
 );

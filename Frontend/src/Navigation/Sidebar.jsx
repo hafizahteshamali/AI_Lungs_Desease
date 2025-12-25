@@ -1,13 +1,16 @@
 "use client"
 
-import { useState } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md"
 import { DashboardUrl } from "../assets/Constant"
+import { getUserRole, logout } from "../utils/auth"
 
-const Sidebar = ({ role }) => {
+const Sidebar = () => {
   const location = useLocation()
+  const navigate = useNavigate()
   const [openDropdown, setOpenDropdown] = useState(null) // sirf ek menu track hoga
+  const [userRole, setUserRole] = useState(null)
 
   const isActive = (url) => {
     return location.pathname.includes(url)
@@ -17,13 +20,97 @@ const Sidebar = ({ role }) => {
     setOpenDropdown((prev) => (prev === itemText ? null : itemText))
   }
 
+  useEffect(() => {
+    // Get user role from token
+    const role = getUserRole()
+    console.log("Sidebar - User Role:", role)
+    setUserRole(role)
+  }, [])
+
+  // Check if user has specific role
+  const hasUserRole = (requiredRole) => {
+    if (!userRole) return false
+    return userRole.toLowerCase() === requiredRole.toLowerCase()
+  }
+
+  // SUPER ADMIN check
+  const isSuperAdmin = hasUserRole('superadmin') || hasUserRole('super_admin')
+
   // role ke hisaab se filter karenge
-  const filteredSections = DashboardUrl.filter(
-    (section) => !section.role || section.role === role
-  )
+  const filteredSections = DashboardUrl.map(section => {
+    // SUPER ADMIN ko sab kuch dikhayein
+    if (isSuperAdmin) {
+      return section
+    }
+    
+    const filteredItems = section.items.map(item => {
+      if (item.children) {
+        const filteredChildren = item.children.filter(child => {
+          // Agar child mein roles property hai toh check karein
+          if (child.roles && child.roles.length > 0) {
+            // Check karein ki user role allowed roles mein hai
+            const allowedRoles = child.roles.map(r => r.toLowerCase())
+            return allowedRoles.includes(userRole?.toLowerCase())
+          }
+          // Agar roles property nahi hai toh sabko allow karein
+          return true
+        })
+        
+        // Agar filtered children hai toh return karein
+        if (filteredChildren.length > 0) {
+          return {
+            ...item,
+            children: filteredChildren
+          }
+        }
+        // Agar koi child visible nahi hai toh null return karein
+        return null
+      }
+      
+      // Agar item mein children nahi hai
+      if (item.roles && item.roles.length > 0) {
+        const allowedRoles = item.roles.map(r => r.toLowerCase())
+        return allowedRoles.includes(userRole?.toLowerCase()) ? item : null
+      }
+      
+      return item
+    }).filter(Boolean) // Null values remove karein
+    
+    // Agar section mein koi visible item hai toh return karein
+    if (filteredItems.length > 0) {
+      return {
+        ...section,
+        items: filteredItems
+      }
+    }
+    
+    return null
+  }).filter(Boolean) // Null sections remove karein
+
+  if (!userRole) {
+    return (
+      <div className="w-[100%] h-screen shadow-md p-4 overflow-y-auto flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    )
+  }
 
   return (
     <div className="w-[100%] h-screen shadow-md p-4 overflow-y-auto">
+      {/* Role Info */}
+      <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <p className="text-sm text-blue-700 text-center">
+          Logged in as: <span className="font-bold">
+            {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
+          </span>
+          {isSuperAdmin && (
+            <span className="ml-2 text-xs bg-red-100 text-red-700 px-2 py-1 rounded">
+              Super Admin
+            </span>
+          )}
+        </p>
+      </div>
+      
       {filteredSections.map((section, idx) => (
         <div key={idx} className="mb-4">
           {section.items.map((item, itemIdx) => (

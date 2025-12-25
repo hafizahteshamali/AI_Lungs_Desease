@@ -5,6 +5,7 @@ import FileUpload from "./elements/FileUpload"
 import MetadataForm from "./elements/MetadataForm"
 import ProcessingIndicator from "./elements/ProcessingIndicator"
 import SuccessMessage from "./elements/SuccessMessage"
+import { toast } from "react-toastify"
 
 export default function UploadXrays() {
   const [uploadedFile, setUploadedFile] = useState(null)
@@ -28,7 +29,7 @@ export default function UploadXrays() {
 
   const handleSubmit = async () => {
     if (!uploadedFile) {
-      alert("Please upload a file first")
+      toast.error("Please upload a file first")
       return
     }
 

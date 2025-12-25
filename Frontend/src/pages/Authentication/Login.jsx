@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
@@ -6,66 +6,86 @@ import {
   FiEyeOff,
   FiMail,
   FiLock,
-  FiUser,
   FiActivity,
   FiHeart,
 } from "react-icons/fi";
-import { FaStethoscope, FaUserMd, FaUserInjured } from "react-icons/fa";
 import { postReq } from "../../api/axios";
+import { toast } from "react-toastify";
+import { isAuthenticated, getUserRole } from "../../utils/auth";
 
 const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("Patient");
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm({
     defaultValues: {
       email: "",
       password: "",
-      role: "Patient",
       remember: false,
     },
   });
 
-  const handleRoleChange = (role) => {
-    setSelectedRole(role);
-    setValue("role", role);
-  };
-
   const onSubmit = async (data) => {
     setLoading(true);
+
     try {
-      console.log("Login Data:", data);
       const response = await postReq("/api/Account/Authentication", data);
-      sessionStorage.setItem("token", response.data.data.jwToken);
-      navigate("/dashboard");
+      console.log(response);
+      console.log("User Role:", getUserRole());
+      
+      if (response.status === 200 || response.status === 201) {
+        const token = response.data?.data?.jwToken;
+        if (!token) {
+          toast.error("Token not received from server");
+          return;
+        }
+        
+        // Save token to session storage
+        sessionStorage.setItem("token", token);
+        
+        // Get user role from token
+        const userRole = getUserRole();
+        
+        toast.success(response.data?.message || `Welcome ${userRole || 'User'}!`);
+        
+        // Redirect based on role
+        navigate("/dashboard");
+      }
     } catch (error) {
-      console.error("Login failed:", error.response?.data || error.message);
-      alert("Login failed. Please check your credentials.");
+      const errorMessage =
+        error.response?.data?.message ||
+        error.response?.data?.Message ||
+        "Login failed";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
   };
 
-  const roleIcons = {
-    Admin: <FiUser className="text-xl" />,
-    Doctor: <FaUserMd className="text-xl" />,
-    Radiographer: <FaStethoscope className="text-xl" />,
-    Patient: <FaUserInjured className="text-xl" />,
-  };
+  useEffect(() => {
+    // Check if user is already logged in
+    if (isAuthenticated()) {
+      const userRole = getUserRole();
+      // Redirect to dashboard based on role
+      navigate("/dashboard");
+    } else {
+      setIsAllowed(true);
+    }
+  }, [navigate]);
 
-  const roleColors = {
-    Admin: "bg-[#5056e6] text-white",
-    Doctor: "bg-[#008059] text-white",
-    Radiographer: "bg-[#007a9b] text-white",
-    Patient: "bg-[#5056e6] text-white",
-  };
+  if (!isAllowed) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 p-4">
@@ -128,36 +148,11 @@ const Login = () => {
         <div className="w-full lg:w-1/2 p-6 md:p-8 lg:p-12">
           <div className="mb-8 text-center lg:text-left">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-              Welcome Back 👋
+              Welcome Back 
             </h2>
             <p className="text-gray-600 mt-2">
               Sign in to access AI-powered diagnostic tools
             </p>
-          </div>
-
-          {/* Role Selection - Enhanced */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Select Your Role
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {["Admin", "Doctor", "Radiographer", "Patient"].map((role) => (
-                <button
-                  key={role}
-                  type="button"
-                  onClick={() => handleRoleChange(role)}
-                  className={`flex flex-col items-center justify-center p-4 rounded-xl border transition-all duration-300 ${
-                    selectedRole === role
-                      ? `${roleColors[role]} border-transparent shadow-lg scale-105`
-                      : "bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100 hover:border-gray-300"
-                  }`}
-                >
-                  <div className="mb-2">{roleIcons[role]}</div>
-                  <span className="text-sm font-medium">{role}</span>
-                </button>
-              ))}
-            </div>
-            <input type="hidden" {...register("role")} />
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>

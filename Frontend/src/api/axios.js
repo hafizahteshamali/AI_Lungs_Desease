@@ -1,40 +1,41 @@
 import apiClient from "./Request";
 
-const getReq = async (path)=>{
+
+const postReq = async (url, data, config = {}) => {
     try {
-        const response = await apiClient.get(path)
-        return response;
+      const response = await apiClient.post(url, data, config);
+      return response;
     } catch (error) {
-        return error.message;
+      throw error;
     }
-}
-
-
-const postReq = async (path, data)=>{
+  };
+  
+const getReq = async (url, config = {}) => {
     try {
-        const response = await apiClient.post(path, data)
-        return response;
+      const response = await apiClient.get(url, config);
+      return response;
     } catch (error) {
-        return error.message;
+      throw error;
     }
-}
-
-const deleteReq = async (path)=>{
+  };
+  
+const putReq = async (url, data, config = {}) => {
     try {
-        const response = await apiClient.delete(path)
-        return response;
+      const response = await apiClient.put(url, data, config);
+      return response;
     } catch (error) {
-        return error.message;
+      throw error;
     }
-}
-
-const putReq = async (path, data)=>{
+  };
+  
+const deleteReq = async (url, config = {}) => {
     try {
-        const response = await apiClient.put(path, data)
-        return response;
+      const response = await apiClient.delete(url, config);
+      return response;
     } catch (error) {
-        return error.message;
+      throw error;
     }
-}
+  };
+  
 
-export {getReq, postReq, deleteReq, putReq}
+  export{postReq, getReq, deleteReq, putReq}

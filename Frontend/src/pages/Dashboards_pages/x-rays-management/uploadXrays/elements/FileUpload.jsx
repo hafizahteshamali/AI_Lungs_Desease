@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { FiUploadCloud, FiX, FiCheck } from "react-icons/fi"
+import { toast } from "react-toastify"
 
 export default function FileUpload({ onFileUpload, uploadedFile }) {
   const [isDragging, setIsDragging] = useState(false)
@@ -35,13 +36,13 @@ export default function FileUpload({ onFileUpload, uploadedFile }) {
     // Validate file type
     const validTypes = ["image/jpeg", "image/png", "image/dicom", "application/dicom"]
     if (!validTypes.some((type) => file.type.includes(type)) && !file.name.endsWith(".dcm")) {
-      alert("Please upload a valid X-ray image (JPEG, PNG, or DICOM)")
+      toast.error("Please upload a valid X-ray image (JPEG, PNG, or DICOM)")
       return
     }
 
     // Validate file size (max 50MB)
     if (file.size > 50 * 1024 * 1024) {
-      alert("File size must be less than 50MB")
+      toast.error("File size must be less than 50MB")
       return
     }
 

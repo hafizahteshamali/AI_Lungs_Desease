@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 import {
   FiEye,
   FiEyeOff,
@@ -8,7 +9,6 @@ import {
   FiLock,
   FiUser,
   FiUserPlus,
-  FiCalendar,
   FiCheckCircle,
 } from "react-icons/fi";
 import { FaVenusMars, FaShieldAlt } from "react-icons/fa";
@@ -20,6 +20,9 @@ const Register = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [registrationStep, setRegistrationStep] = useState(1);
+  const [selectedGender, setSelectedGender] = useState(""); // Add state for gender
+  const [isAllowed, setIsAllowed] = useState(false);
+
 
   const {
     register,
@@ -27,13 +30,15 @@ const Register = () => {
     formState: { errors },
     watch,
     trigger,
+    setValue,
+    reset // ✅ must
   } = useForm();
+  
 
   const password = watch("password");
 
   // Move to next step
   const nextStep = async () => {
-    // Validate current step fields
     let isValid = false;
     if (registrationStep === 1) {
       isValid = await trigger(["userName", "firstName", "lastName", "gender"]);
@@ -50,21 +55,47 @@ const Register = () => {
     setRegistrationStep(prev => prev - 1);
   };
 
+  // Handle gender selection
+  const handleGenderSelect = (gender) => {
+    setSelectedGender(gender);
+    setValue("gender", gender); // Set value in react-hook-form
+  };
+
   const onSubmit = async (data) => {
     setLoading(true);
+  
     try {
-      console.log("Registration Data:", data);
       const response = await postReq("/api/Account/RegisterUser", data);
-      console.log("Registration successful:", response);
-      alert("Registration successful! Please check your email for verification.");
-      navigate("/auth/login");
+      console.log("API response: ", response);
+      // ✅ ONLY success (200 / 201)
+      if (response.status === 200 || response.status === 201) {
+        toast.success(response.data?.message || "Registration successful");
+  
+        reset(); // ✅ form clear
+        navigate("/auth/login"); // ✅ navigate
+      }
     } catch (error) {
-      console.error("Registration failed:", error);
-      alert(error?.response?.data?.message || "Registration failed. Please try again.");
+      // ❌ backend error message
+      const errorMessage =
+        error.response?.data.Message;
+  
+      toast.error(errorMessage); // ❌ show backend error
+      // ❌ no reset
+      // ❌ no navigate
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(()=>{
+    const token = sessionStorage.getItem("token");
+    if(!token){
+      setIsAllowed(true)
+    }else{
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+  
 
   // Progress steps
   const steps = [
@@ -73,11 +104,15 @@ const Register = () => {
     { number: 3, label: "Complete" },
   ];
 
+  if (!isAllowed) {
+    return null; 
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-teal-50 p-4">
-      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col lg:flex-row">
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden flex">
         {/* Left Section - Illustration */}
-        <div className="hidden lg:flex lg:w-2/5 bg-gradient-to-br from-[#008059] via-[#006d4a] to-[#007a9b] text-white p-8 md:p-12 flex-col justify-between relative overflow-hidden">
+        <div className="hidden lg:flex w-2/5 bg-gradient-to-br from-[#008059] via-[#006d4a] to-[#007a9b] text-white p-8 md:p-12 flex-col justify-between relative overflow-hidden">
           {/* Animated Background */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute top-10 left-10 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl animate-pulse"></div>
@@ -207,8 +242,8 @@ const Register = () => {
                 </div>
 
                 {/* First & Last Name */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
+                <div className="flex gap-4">
+                  <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       First Name
                     </label>
@@ -225,7 +260,7 @@ const Register = () => {
                     )}
                   </div>
 
-                  <div>
+                  <div className="flex-1">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Last Name
                     </label>
@@ -243,31 +278,47 @@ const Register = () => {
                   </div>
                 </div>
 
-                {/* Gender */}
+                {/* Gender - FIXED */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Gender
                   </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {["Male", "Female", "Other"].map((gender) => (
-                      <label
-                        key={gender}
-                        className="flex items-center justify-center p-4 border border-gray-300 rounded-xl hover:border-[#5056e6] hover:bg-blue-50 cursor-pointer transition-all duration-300 has-checked:border-[#5056e6] has-checked:bg-blue-50"
-                      >
-                        <input
-                          type="radio"
-                          value={gender.toLowerCase()}
-                          {...register("gender", { required: "Please select gender" })}
-                          className="hidden peer"
-                        />
-                        <div className="flex items-center gap-2">
-                          <FaVenusMars className="text-gray-400 peer-checked:text-[#5056e6]" />
-                          <span className="peer-checked:text-[#5056e6] peer-checked:font-medium">
-                            {gender}
-                          </span>
-                        </div>
-                      </label>
-                    ))}
+                  <div className="flex gap-3">
+                    {["Male", "Female", "Other"].map((gender) => {
+                      const genderValue = gender.toLowerCase();
+                      const isSelected = selectedGender === genderValue;
+                      
+                      return (
+                        <label
+                          key={gender}
+                          className={`flex-1 flex items-center justify-center p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                            isSelected
+                              ? "border-[#5056e6] bg-blue-50"
+                              : "border-gray-300 hover:border-[#5056e6] hover:bg-blue-50"
+                          }`}
+                          onClick={() => handleGenderSelect(genderValue)}
+                        >
+                          <input
+                            type="radio"
+                            value={genderValue}
+                            {...register("gender", { required: "Please select gender" })}
+                            className="hidden"
+                            checked={isSelected}
+                            onChange={() => {}} // Controlled by onClick
+                          />
+                          <div className="flex items-center gap-2">
+                            <FaVenusMars className={
+                              isSelected ? "text-[#5056e6]" : "text-gray-400"
+                            } />
+                            <span className={
+                              isSelected ? "text-[#5056e6] font-medium" : ""
+                            }>
+                              {gender}
+                            </span>
+                          </div>
+                        </label>
+                      );
+                    })}
                   </div>
                   {errors.gender && (
                     <p className="text-sm text-red-500 mt-2">{errors.gender.message}</p>
@@ -448,22 +499,22 @@ const Register = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
+                  <div className="flex flex-wrap gap-4">
+                    <div className="flex-1 min-w-[200px]">
                       <p className="text-sm text-gray-500">Name</p>
                       <p className="font-medium">
                         {watch("firstName")} {watch("lastName")}
                       </p>
                     </div>
-                    <div>
+                    <div className="flex-1 min-w-[200px]">
                       <p className="text-sm text-gray-500">Username</p>
                       <p className="font-medium">{watch("userName")}</p>
                     </div>
-                    <div>
+                    <div className="flex-1 min-w-[200px]">
                       <p className="text-sm text-gray-500">Gender</p>
                       <p className="font-medium">{watch("gender")}</p>
                     </div>
-                    <div>
+                    <div className="flex-1 min-w-[200px]">
                       <p className="text-sm text-gray-500">Email</p>
                       <p className="font-medium">{watch("email")}</p>
                     </div>

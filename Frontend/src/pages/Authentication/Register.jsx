@@ -279,11 +279,11 @@ const Register = () => {
                 </div>
 
                 {/* Gender - FIXED */}
-                <div>
+                <div className="">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Gender
                   </label>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 flex-wrap">
                     {["Male", "Female", "Other"].map((gender) => {
                       const genderValue = gender.toLowerCase();
                       const isSelected = selectedGender === genderValue;

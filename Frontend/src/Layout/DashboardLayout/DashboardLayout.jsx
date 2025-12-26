@@ -54,7 +54,7 @@ const DashboardLayout = () => {
       {/* Mobile menu button */}
       <button
         onClick={toggleSidebar}
-        className="lg:hidden fixed top-4 left-4 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors"
+        className="lg:hidden fixed bottom-10 right-4 z-50 p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors"
         aria-label="Toggle menu"
       >
         {isSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}

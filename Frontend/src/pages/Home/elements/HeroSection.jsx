@@ -21,7 +21,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-[90vh] bg-[#f9f9f9] overflow-hidden flex items-center mt-[50px]">
+    <section className="relative min-h-[90vh] overflow-hidden flex items-center mt-[50px]">
       {/* Animated Background Elements */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         {/* Grid ki jagah flex use kiya */}
@@ -53,7 +53,7 @@ export default function HeroSection() {
               {/* Updated Demo Button */}
               <button 
                 onClick={handleDemoClick} // Now this will work
-                className="group px-8 py-4 bg-white border-2 border-gray-300 text-black font-semibold rounded-lg hover:border-[#5056e6] hover:text-[#5056e6] transition-all duration-300 hover:shadow-md flex items-center justify-center gap-2 flex-1 sm:flex-none"
+                className="group px-8 py-4 border-2 border-gray-300 text-black font-semibold rounded-lg hover:border-[#5056e6] hover:text-[#5056e6] transition-all duration-300 hover:shadow-md flex items-center justify-center gap-2 flex-1 sm:flex-none"
               >
                 <FaPlay className="text-sm" />
                 Watch Demo
@@ -94,13 +94,13 @@ export default function HeroSection() {
 
           {/* Hero Image */}
           <div className={`relative flex-1 ${isVisible ? 'animate-fade-in-right' : 'opacity-0'}`}>
-            <div className="relative h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl group">
+            <div className="relative h-[500px] lg:h-[600px] rounded-2xl overflow-hidden group">
               <img
-                src="/assets/images/home/1728480895369.jpg"
+                src="/assets/images/home/home-banner-removebg-preview.png"
                 alt="Medical AI Scanning"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              {/* <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div> */}
               
               {/* Floating Cards - Already using flex */}
               <div className="absolute top-8 right-8 bg-white p-4 rounded-xl shadow-lg border border-gray-300 ring-1 animate-float">

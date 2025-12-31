@@ -88,7 +88,7 @@ const DashboardLayout = () => {
                   {userRole} Dashboard
                 </h1>
                 <p className="text-sm text-gray-600">
-                  Welcome to Precious Scan {userRole} Panel
+                  Welcome to Precision Scan {userRole} Panel
                 </p>
               </div>
               

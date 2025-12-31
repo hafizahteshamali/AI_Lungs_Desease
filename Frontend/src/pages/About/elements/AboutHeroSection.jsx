@@ -23,7 +23,7 @@ export default function AboutHeroSection() {
           {/* Badge - Already using inline-flex */}
           <div className={`inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full mb-4 md:mb-6 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
             <IoSparkles className="text-white text-sm md:text-base" />
-            <span className="text-xs md:text-sm font-medium text-white">About Precious Scan</span>
+            <span className="text-xs md:text-sm font-medium text-white">About Precision Scan</span>
           </div>
 
           {/* Main Heading */}

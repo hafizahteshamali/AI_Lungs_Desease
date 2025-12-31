@@ -125,7 +125,7 @@ const Register = () => {
                 <FiUserPlus className="text-2xl" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold">Precious Scan</h2>
+                <h2 className="text-3xl font-bold">Precision Scan</h2>
                 <p className="text-green-100 text-sm">AI Medical Diagnostics</p>
               </div>
             </div>
@@ -169,7 +169,7 @@ const Register = () => {
           </div>
 
           <p className="relative z-10 text-sm text-center text-white/70 mt-4">
-            © 2025 Precious Scan • Secure Healthcare Registration
+            © 2025 Precision Scan • Secure Healthcare Registration
           </p>
         </div>
 

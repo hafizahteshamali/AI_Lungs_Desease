@@ -100,14 +100,15 @@ const Sidebar = () => {
       {/* Role Info */}
       <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
         <p className="text-sm text-blue-700 text-center">
-          Logged in as: <span className="font-bold">
-            {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
+          Logged in as:
+          <span className="font-bold">
+          &nbsp;&nbsp;{userRole.charAt(0).toUpperCase() + userRole.slice(1)}
           </span>
-          {isSuperAdmin && (
+          {/* {isSuperAdmin && (
             <span className="ml-2 text-xs bg-red-100 text-red-700 px-2 py-1 rounded">
               Super Admin
             </span>
-          )}
+          )} */}
         </p>
       </div>
       

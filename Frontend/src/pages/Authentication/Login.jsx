@@ -104,7 +104,7 @@ const Login = () => {
                 <FiHeart className="text-2xl" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold">Precious Scan</h2>
+                <h2 className="text-3xl font-bold">Precision Scan</h2>
                 <p className="text-blue-100 text-sm">AI Medical Diagnostics</p>
               </div>
             </div>
@@ -140,7 +140,7 @@ const Login = () => {
           </div>
 
           <p className="relative z-10 text-sm text-center text-white/70 mt-4">
-            © 2025 Precious Scan • AI-Powered Healthcare Diagnostics
+            © 2025 Precision Scan • AI-Powered Healthcare Diagnostics
           </p>
         </div>
 
@@ -283,7 +283,7 @@ const Login = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-700">
-                  <span className="font-bold">Secure Login:</span> Your data is encrypted and protected. Precious Scan follows HIPAA compliance standards.
+                  <span className="font-bold">Secure Login:</span> Your data is encrypted and protected. Precision Scan follows HIPAA compliance standards.
                 </p>
               </div>
             </div>

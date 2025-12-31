@@ -168,7 +168,7 @@ export default function ContactFormSection() {
                   </div>
                   <div className="flex-1">
                     <h4 className="font-bold text-black">General Inquiries</h4>
-                    <p className="text-[#979999] text-sm">contact@preciousscan.com</p>
+                    <p className="text-[#979999] text-sm">contact@precisionscan.com</p>
                     <p className="text-[#979999] text-sm mt-1">Response time: 24 hours</p>
                   </div>
                 </div>
@@ -179,7 +179,7 @@ export default function ContactFormSection() {
                   </div>
                   <div className="flex-1">
                     <h4 className="font-bold text-black">Technical Support</h4>
-                    <p className="text-[#979999] text-sm">support@preciousscan.com</p>
+                    <p className="text-[#979999] text-sm">support@precisionscan.com</p>
                     <p className="text-[#979999] text-sm mt-1">24/7 Emergency Support</p>
                   </div>
                 </div>

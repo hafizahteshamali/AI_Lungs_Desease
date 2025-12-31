@@ -54,7 +54,7 @@ export default function ContactHeroSection() {
                 {
                   icon: <FaEnvelope className="text-white text-xl md:text-2xl" />,
                   title: "Email Us",
-                  info: "contact@preciousscan.com",
+                  info: "contact@precisionscan.com",
                   color: "from-[#008059] to-[#006d4a]",
                   hoverColor: "hover:from-[#006d4a] hover:to-[#005a3b]"
                 },

@@ -96,7 +96,7 @@ export default function HeroSection() {
           <div className={`relative flex-1 ${isVisible ? 'animate-fade-in-right' : 'opacity-0'}`}>
             <div className="relative h-[500px] lg:h-[600px] rounded-2xl overflow-hidden group">
               <img
-                src="/assets/images/home/home-banner-removebg-preview.png"
+                src="/assets/images/logo.jpeg"
                 alt="Medical AI Scanning"
                 className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
               />

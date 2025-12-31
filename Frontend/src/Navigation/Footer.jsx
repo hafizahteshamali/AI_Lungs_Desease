@@ -13,12 +13,12 @@ export default function Footer() {
               <NavLink to="/">
                 <img 
                   src="/assets/images/home/logo-removebg-preview.png" 
-                  alt="Precious Scan Logo" 
+                  alt="Precision Scan Logo" 
                   className="h-16 object-contain" 
                 />
               </NavLink>
               <div>
-                <h2 className="text-2xl font-bold text-white">Precious Scan</h2>
+                <h2 className="text-2xl font-bold text-white">Precision Scan</h2>
                 <p className="text-sm text-[#979999]">AI Medical Diagnostics</p>
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-slate-500 mb-4 md:mb-0">
-            © 2025 Precious Scan. All rights reserved.
+            © 2025 Precision Scan. All rights reserved.
           </p>
           <div className="flex gap-6">
             <a href="#" className="text-sm hover:text-[#4932e4] transition-colors">Privacy</a>

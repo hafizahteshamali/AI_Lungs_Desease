@@ -5,7 +5,7 @@ export default function TeamContactSection() {
     {
       name: "Dr. Sarah Johnson",
       role: "Medical Partnerships Director",
-      email: "sarah@preciousscan.com",
+      email: "sarah@precisionscan.com",
       phone: "+1 (555) 123-4567",
       expertise: "Hospital Integration & Medical Partnerships",
       color: "#5056e6",
@@ -14,7 +14,7 @@ export default function TeamContactSection() {
     {
       name: "Michael Chen",
       role: "Technical Support Lead",
-      email: "michael@preciousscan.com",
+      email: "michael@precisionscan.com",
       phone: "+1 (555) 123-4568",
       expertise: "AI System Implementation & Technical Support",
       color: "#008059",
@@ -23,7 +23,7 @@ export default function TeamContactSection() {
     {
       name: "Dr. Emily Rodriguez",
       role: "Clinical Integration Specialist",
-      email: "emily@preciousscan.com",
+      email: "emily@precisionscan.com",
       phone: "+1 (555) 123-4569",
       expertise: "Clinical Workflow Integration & Training",
       color: "#007a9b",

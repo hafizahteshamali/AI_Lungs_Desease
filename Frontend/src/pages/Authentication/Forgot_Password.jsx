@@ -68,7 +68,7 @@ const ForgotPassword = () => {
                 <FaKey className="text-2xl" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold">Precious Scan</h2>
+                <h2 className="text-3xl font-bold">Precision Scan</h2>
                 <p className="text-cyan-100 text-sm">AI Medical Diagnostics</p>
               </div>
             </div>
@@ -120,7 +120,7 @@ const ForgotPassword = () => {
           </div>
 
           <p className="relative z-10 text-sm text-center text-white/70 mt-4">
-            © 2025 Precious Scan • Secure Healthcare Access
+            © 2025 Precision Scan • Secure Healthcare Access
           </p>
         </div>
 
@@ -288,8 +288,8 @@ const ForgotPassword = () => {
             <div className="text-center mt-6">
               <p className="text-xs text-gray-500">
                 Need help? Contact our support team at{" "}
-                <a href="mailto:support@preciousscan.com" className="text-[#5056e6] hover:underline">
-                  support@preciousscan.com
+                <a href="mailto:support@precisionscan.com" className="text-[#5056e6] hover:underline">
+                  support@precisionscan.com
                 </a>
               </p>
             </div>

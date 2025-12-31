@@ -66,11 +66,11 @@ export default function Navigation() {
               className="flex items-center gap-3 group transition-transform duration-300 hover:scale-105"
             >
               <div className="relative">
-                <img src="/assets/images/logo.jpeg" alt="Precious Scan Logo" className="h-16" />
+                <img src="/assets/images/logo.jpeg" alt="Precision Scan Logo" className="h-16" />
               </div>
               <div>
                 <span className="text-xl lg:text-2xl font-bold text-black group-hover:text-[#5056e6] transition-colors duration-300">
-                  Precious Scan
+                  Precision Scan
                 </span>
                 <p className="text-xs text-[#979999] hidden sm:block">AI Medical Diagnostics</p>
               </div>
@@ -205,7 +205,7 @@ export default function Navigation() {
                 <div className="flex items-center gap-3">
                   <img src="/assets/images/logo.jpeg" alt="Logo" className="h-10" />
                   <div>
-                    <h2 className="text-lg font-bold text-white">Precious Scan</h2>
+                    <h2 className="text-lg font-bold text-white">Precision Scan</h2>
                     <p className="text-xs text-white/80">AI Medical Diagnostics</p>
                   </div>
                 </div>

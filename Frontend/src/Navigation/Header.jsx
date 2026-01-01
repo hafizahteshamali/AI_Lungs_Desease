@@ -66,7 +66,7 @@ export default function Navigation() {
               className="flex items-center gap-3 group transition-transform duration-300 hover:scale-105"
             >
               <div className="relative">
-                <img src="/assets/images/logo.jpeg" alt="Precision Scan Logo" className="h-16" />
+                <img src="/assets/images/home/logo-removebg-preview.png" alt="Precision Scan Logo" className="h-16" />
               </div>
               <div>
                 <span className="text-xl lg:text-2xl font-bold text-black group-hover:text-[#5056e6] transition-colors duration-300">

@@ -35,9 +35,11 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await postReq("/api/Account/Authentication", data);
-      console.log(response);
-      console.log("User Role:", getUserRole());
+      const response = await postReq("/api/Account/Authentication", data,{
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       
       if (response.status === 200 || response.status === 201) {
         const token = response.data?.data?.jwToken;

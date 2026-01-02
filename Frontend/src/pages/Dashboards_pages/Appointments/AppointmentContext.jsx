@@ -21,20 +21,17 @@ export function AppointmentProvider({ children }) {
     }
 
     setAppointments((prev) => [...prev, newAppointment])
-    console.log("[v0] New appointment added:", newAppointment)
     return newAppointment
   }
 
   // Appointment ki status update karne ka function
   const updateAppointmentStatus = (id, newStatus) => {
     setAppointments((prev) => prev.map((apt) => (apt.id === id ? { ...apt, status: newStatus } : apt)))
-    console.log("[v0] Appointment status updated:", id, newStatus)
   }
 
   // Appointment delete karne ka function
   const deleteAppointment = (id) => {
     setAppointments((prev) => prev.filter((apt) => apt.id !== id))
-    console.log("[v0] Appointment deleted:", id)
   }
 
   return (

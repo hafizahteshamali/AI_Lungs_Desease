@@ -37,7 +37,6 @@ const ForgotPassword = () => {
     
     // Simulate API call
     setTimeout(() => {
-      console.log("Password reset link sent to:", email);
       setIsLoading(false);
       setIsSubmitted(true);
       setSuccess(true);

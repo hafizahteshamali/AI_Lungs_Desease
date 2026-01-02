@@ -43,7 +43,6 @@ const ResetPassword = () => {
     } else {
       setErrors({});
       setSuccess("Password reset successfully ✅ Redirecting to login...");
-      console.log("New Password:", form.newPassword);
       setTimeout(() => navigate("/auth/login"), 2000);
     }
   };

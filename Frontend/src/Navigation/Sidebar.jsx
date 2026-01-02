@@ -23,7 +23,6 @@ const Sidebar = () => {
   useEffect(() => {
     // Get user role from token
     const role = getUserRole()
-    console.log("Sidebar - User Role:", role)
     setUserRole(role)
   }, [])
 

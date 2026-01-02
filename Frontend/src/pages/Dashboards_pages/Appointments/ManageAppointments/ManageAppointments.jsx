@@ -63,7 +63,7 @@ const ManageAppointments = () => {
   })
 
   const handleSaveAvailability = () => {
-    console.log("[v0] Saved availability:", availability)
+    // console.log("[v0] Saved availability:", availability)
   }
 
   return (

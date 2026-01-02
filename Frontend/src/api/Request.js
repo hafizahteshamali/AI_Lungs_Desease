@@ -3,9 +3,6 @@ import axios from "axios";
 const apiClient = axios.create({
   baseURL: "https://precisionscan.runasp.net",
   timeout: 180000,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 /* ===========================

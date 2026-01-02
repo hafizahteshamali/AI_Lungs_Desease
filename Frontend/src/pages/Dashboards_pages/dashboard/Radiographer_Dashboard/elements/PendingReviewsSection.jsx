@@ -17,7 +17,7 @@ const PendingReviewsSection = ({ reviews }) => {
 
   // Yeh function view details button par click handle karta hai
   const handleViewDetails = (review) => {
-    console.log(`Viewing details for ${review.patientName}'s ${review.scanType}`)
+    // console.log(`Viewing details for ${review.patientName}'s ${review.scanType}`)
   }
 
   // Yeh function remind doctor button par click handle karta hai

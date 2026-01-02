@@ -19,7 +19,7 @@ const RecentlyReviewedScans = ({ onOpenDetail }) => {
   // Yeh function scan download handle karta hai (demo purpose)
   const handleDownload = (scan) => {
     // Demo download: in a real app, call your API
-    console.log("[v0] Download scan:", scan.id) // Console log for demo, real app mein API call hoga
+    // console.log("[v0] Download scan:", scan.id) // Console log for demo, real app mein API call hoga
   }
 
   return (

@@ -8,12 +8,12 @@ export const decodeToken = () => {
     
     const decoded = jwtDecode(token);
     
-    console.log("=== TOKEN DEBUG ===");
-    console.log("Full decoded token:", decoded);
-    console.log("Roles property:", decoded.roles);
-    console.log("Role property:", decoded.role);
-    console.log("Role (capital R):", decoded.Role);
-    console.log("=== END DEBUG ===");
+    // console.log("=== TOKEN DEBUG ===");
+    // console.log("Full decoded token:", decoded);
+    // console.log("Roles property:", decoded.roles);
+    // console.log("Role property:", decoded.role);
+    // console.log("Role (capital R):", decoded.Role);
+    // console.log("=== END DEBUG ===");
     
     // Extract roles - handle different formats
     let rolesArray = [];
@@ -39,7 +39,7 @@ export const decodeToken = () => {
       rolesArray = ['patient'];
     }
     
-    console.log("Extracted roles array:", rolesArray);
+    // console.log("Extracted roles array:", rolesArray);
     
     return {
       token,
@@ -48,7 +48,7 @@ export const decodeToken = () => {
       primaryRole: rolesArray.length > 0 ? rolesArray[0] : 'patient'
     };
   } catch (error) {
-    console.error('Token decode error:', error);
+    // console.error('Token decode error:', error);
     sessionStorage.removeItem('token');
     return null;
   }

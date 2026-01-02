@@ -65,8 +65,11 @@ const Register = () => {
     setLoading(true);
   
     try {
-      const response = await postReq("/api/Account/RegisterUser", data);
-      console.log("API response: ", response);
+      const response = await postReq("/api/Account/RegisterUser", data,{
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       // ✅ ONLY success (200 / 201)
       if (response.status === 200 || response.status === 201) {
         toast.success(response.data?.message || "Registration successful");

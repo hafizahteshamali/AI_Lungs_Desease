@@ -6,9 +6,6 @@ const DashboardRedirect = () => {
   const userRole = getUserRole();
   const userRoles = getUserRoles();
   
-  console.log("DashboardRedirect - Primary Role:", userRole);
-  console.log("DashboardRedirect - All Roles:", userRoles);
-  
   // SUPER ADMIN ko Admin dashboard par redirect karein
   if (userRoles.some(role => 
     role.toLowerCase() === 'superadmin' || 

@@ -21,9 +21,8 @@ import Radiographer_Dashboard from '../pages/Dashboards_pages/dashboard/Radiogra
 import Patient_Dashboard from '../pages/Dashboards_pages/dashboard/Patient_Dashboard/Patient_Dashboard';
 
 // X-Ray Management
-import UploadXrays from '../pages/Dashboards_pages/x-rays-management/uploadXrays/UploadXrays';
+import UploadXraysWithPrediction from '../pages/Dashboards_pages/x-rays-management/uploadXrays/UploadXrays';
 import XrayHistory from '../pages/Dashboards_pages/x-rays-management/XrayHistory/XrayHistory';
-import PredictionView from '../pages/Dashboards_pages/x-rays-management/PredictionView/PredictionView';
 
 // Medicine Prescription
 import AI_Recommend_Medicine from '../pages/Dashboards_pages/Medicine_Prescription/AI_Recommend_Medicine/AI_Recommend_Medicine';
@@ -120,21 +119,15 @@ const AppRoutes = () => {
           } />
 
           {/* X-Ray Management - Role-based access */}
-          <Route path="xray/upload" element={
+          <Route path="xray/prediction" element={
             <ProtectedRoute allowedRoles={getAllowedRoles(['Doctor', 'Radiographer', 'Radiologist', 'Patient'])}>
-              <UploadXrays />
+              <UploadXraysWithPrediction />
             </ProtectedRoute>
           } />
 
           <Route path="xray/history" element={
             <ProtectedRoute allowedRoles={getAllowedRoles(['Doctor', 'Radiographer', 'Radiologist', 'Admin', 'Patient'])}>
               <XrayHistory />
-            </ProtectedRoute>
-          } />
-
-          <Route path="xray/prediction/:id?" element={
-            <ProtectedRoute allowedRoles={getAllowedRoles(['Doctor', 'Radiographer', 'Radiologist', 'Admin', 'Patient'])}>
-              <PredictionView />
             </ProtectedRoute>
           } />
 

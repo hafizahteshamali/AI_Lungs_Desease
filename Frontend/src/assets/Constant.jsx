@@ -61,8 +61,8 @@ const DashboardUrl = [
         children: [
           { 
             icon: <MdCloudUpload />, 
-            text: "Upload X-ray", 
-            url: "xray/upload", 
+            text: "Upload X-ray & Prediction", 
+            url: "xray/prediction", 
             roles: ["doctor", "radiographer", "patient", "radiologist", "superadmin", "super_admin"] 
           },
           {
@@ -70,13 +70,7 @@ const DashboardUrl = [
             text: "All X-rays / History",
             url: "xray/history",
             roles: ["doctor", "radiographer", "radiologist", "admin", "superadmin", "super_admin"]
-          },
-          {
-            icon: <MdAssessment />,
-            text: "Prediction View",
-            url: "xray/prediction",
-            roles: ["doctor", "radiographer", "radiologist", "patient", "admin", "superadmin", "super_admin"]
-          },
+          }
         ],
       },
     ],

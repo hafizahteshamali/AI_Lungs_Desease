@@ -22,6 +22,7 @@ export default function UploadXraysWithPrediction() {
   // Prediction state
   const [predictionData, setPredictionData] = useState(null)
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null)
+  const [gradcamImageUrl, setGradcamImageUrl] = useState(null) // ✅ Separate state for GradCAM
   const [heatmapOpacity, setHeatmapOpacity] = useState(70)
 
   // File input reference
@@ -33,6 +34,7 @@ export default function UploadXraysWithPrediction() {
     if (file) {
       setUploadedFile(file)
       setPredictionData(null)
+      setGradcamImageUrl(null) // ✅ Reset GradCAM
       setUploadedImageUrl(URL.createObjectURL(file))
     }
   }
@@ -95,23 +97,26 @@ export default function UploadXraysWithPrediction() {
         const totalScore = diseases.reduce((sum, d) => sum + d.probability, 0)
         const avgConfidence = diseases.length > 0 ? Math.round(totalScore / diseases.length) : 0
 
-        // Prepare gradcam image URL if available
-        let gradcamImageUrl = null
+        // ✅ Prepare gradcam image URL ONLY from backend
+        let backendGradcamUrl = null
         if (response.data.gradcam && response.data.gradcam.trim() !== "") {
           // If gradcam is base64, create data URL
           if (response.data.gradcam.startsWith("data:image")) {
-            gradcamImageUrl = response.data.gradcam
+            backendGradcamUrl = response.data.gradcam
           } else {
             // Assume it's base64 string without prefix
-            gradcamImageUrl = `data:image/png;base64,${response.data.gradcam}`
+            backendGradcamUrl = `data:image/png;base64,${response.data.gradcam}`
           }
+          setGradcamImageUrl(backendGradcamUrl) // ✅ Set GradCAM from backend
+        } else {
+          setGradcamImageUrl(null) // ✅ No GradCAM from backend
         }
 
         setPredictionData({
           diseases,
           confidence: avgConfidence,
           timestamp: new Date().toLocaleString(),
-          gradcam: gradcamImageUrl,
+          gradcam: backendGradcamUrl, // ✅ Store for reference
           visualized_finding: response.data.visualized_finding || "None",
           status: response.data.status || "unknown",
           rawResponse: response.data,
@@ -315,41 +320,44 @@ This analysis is AI-generated and should be reviewed by a qualified medical prof
                 </div>
               </div>
 
-              {/* Heatmap Image (from backend) */}
+              {/* ✅ GradCAM Image (ONLY from backend) */}
               <div className="bg-gray-50 rounded-xl p-4">
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center gap-2">
                     <FiEye className="text-purple-600" />
                     <h3 className="text-lg font-semibold text-gray-900">
-                      {predictionData.gradcam ? "AI Heatmap Analysis" : "Heatmap Overlay"}
+                      {/* ✅ Condition based on backend GradCAM */}
+                      {gradcamImageUrl ? "AI Heatmap Analysis (Backend Generated)" : "No GradCAM Available"}
                     </h3>
                   </div>
-                  <button
-                    onClick={() => setShowHeatmap(!showHeatmap)}
-                    className="flex items-center gap-2 px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm"
-                  >
-                    {showHeatmap ? <FiEyeOff /> : <FiEye />}
-                    {showHeatmap ? "Hide" : "Show"}
-                  </button>
+                  {gradcamImageUrl && (
+                    <button
+                      onClick={() => setShowHeatmap(!showHeatmap)}
+                      className="flex items-center gap-2 px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm"
+                    >
+                      {showHeatmap ? <FiEyeOff /> : <FiEye />}
+                      {showHeatmap ? "Hide" : "Show"}
+                    </button>
+                  )}
                 </div>
 
-                {predictionData.gradcam && showHeatmap ? (
+                {/* ✅ ONLY show backend GradCAM if available */}
+                {gradcamImageUrl && showHeatmap ? (
                   <>
                     <div className="bg-white rounded-lg overflow-hidden shadow">
                       <img
-                        src={predictionData.gradcam || "/placeholder.svg"}
-                        alt="AI Heatmap Analysis"
+                        src={gradcamImageUrl || "/placeholder.svg"}
+                        alt="AI Heatmap Analysis (Backend Generated)"
                         className="w-full h-64 object-contain"
                       />
                     </div>
                     <div className="mt-4 p-3 bg-purple-50 rounded-lg">
                       <p className="text-sm text-purple-700">
-                        <span className="font-medium">AI Generated Heatmap</span> - Shows areas of interest detected by
-                        AI model
+                        <span className="font-medium">Backend Generated GradCAM</span> - Shows areas of interest detected by AI model
                       </p>
                     </div>
                   </>
-                ) : (
+                ) : gradcamImageUrl && !showHeatmap ? (
                   <>
                     <div className="bg-white rounded-lg overflow-hidden shadow relative h-64">
                       {uploadedImageUrl && (
@@ -359,6 +367,7 @@ This analysis is AI-generated and should be reviewed by a qualified medical prof
                             alt="X-ray base"
                             className="absolute inset-0 w-full h-full object-contain"
                           />
+                          {/* ✅ This is only a fallback overlay when GradCAM is hidden */}
                           <div
                             className="absolute inset-0 bg-gradient-to-br from-red-500 via-yellow-400 to-green-500 mix-blend-multiply"
                             style={{ opacity: heatmapOpacity / 100 }}
@@ -368,7 +377,7 @@ This analysis is AI-generated and should be reviewed by a qualified medical prof
                     </div>
                     <div className="mt-4 space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">Heatmap Opacity: {heatmapOpacity}%</span>
+                        <span className="text-sm text-gray-600">Overlay Opacity: {heatmapOpacity}%</span>
                         <input
                           type="range"
                           min="0"
@@ -392,8 +401,18 @@ This analysis is AI-generated and should be reviewed by a qualified medical prof
                           <span className="text-xs text-gray-600">Low Risk</span>
                         </div>
                       </div>
+                      <p className="text-xs text-gray-500 text-center">
+                        GradCAM is hidden. Click "Show" to view backend generated heatmap.
+                      </p>
                     </div>
                   </>
+                ) : (
+                  /* ✅ When no GradCAM from backend */
+                  <div className="bg-gray-100 rounded-lg h-64 flex flex-col items-center justify-center">
+                    <FiEyeOff className="text-gray-400 text-4xl mb-2" />
+                    <p className="text-gray-600">No GradCAM image received from backend</p>
+                    <p className="text-xs text-gray-500 mt-1">The AI model did not generate a heatmap</p>
+                  </div>
                 )}
               </div>
             </div>
@@ -520,7 +539,7 @@ This analysis is AI-generated and should be reviewed by a qualified medical prof
                 </button>
               </div>
 
-              {/* API Response Info */}
+              {/* ✅ GradCAM Info in API Response */}
               <div className="mt-4">
                 <details className="bg-white rounded-lg p-3 border">
                   <summary className="cursor-pointer text-sm font-medium text-gray-700">
@@ -531,6 +550,16 @@ This analysis is AI-generated and should be reviewed by a qualified medical prof
                   </div>
                 </details>
               </div>
+
+              {/* ✅ GradCAM Availability Notice */}
+              {!gradcamImageUrl && (
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mt-4">
+                  <p className="text-sm text-gray-700">
+                    <span className="font-semibold">ℹ️ Note:</span> No GradCAM heatmap was generated by the backend AI model.
+                    This is normal for some analysis results.
+                  </p>
+                </div>
+              )}
 
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
                 <p className="text-sm text-yellow-800">

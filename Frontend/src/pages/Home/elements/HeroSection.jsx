@@ -94,7 +94,7 @@ export default function HeroSection() {
 
           {/* Hero Image */}
           <div className={`relative flex-1 ${isVisible ? 'animate-fade-in-right' : 'opacity-0'}`}>
-            <div className="relative h-[500px] lg:h-[600px] rounded-2xl overflow-hidden group">
+            <div className="relative h-[500px] lg:h-[600px] rounded-2xl  group">
               <img
                 src="/assets/images/crop-logo-removebg-preview.png"
                 alt="Medical AI Scanning"

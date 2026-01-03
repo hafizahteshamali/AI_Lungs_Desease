@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import { FaUpload, FaImage, FaFileMedical, FaCheckCircle, FaArrowRight, FaEye, FaEyeSlash } from "react-icons/fa"
+import { FaUpload, FaImage, FaCheckCircle, FaArrowRight, FaEye, FaEyeSlash } from "react-icons/fa"
 import { IoMdClose } from "react-icons/io"
 import { toast } from "react-toastify"
 import { postReq } from "../../../api/axios"
@@ -59,6 +59,7 @@ export default function XrayDemoSection() {
     if (!selectedFile) return
 
     setIsUploading(true)
+    setIsAnalyzing(true)
     setProgress(10)
     const progressInterval = simulateProgress()
 
@@ -75,11 +76,9 @@ export default function XrayDemoSection() {
       setApiResponse(response.data)
 
       // ✅ Process GradCAM image (dynamic key handling)
-      // Check for gradcam in response (could be named differently)
       let gradcamKey = null
       let gradcamValue = null
       
-      // Try to find gradcam key dynamically
       const possibleGradcamKeys = ['gradcam', 'heatmap', 'visualization', 'grad_cam', 'gradCam']
       for (const key of possibleGradcamKeys) {
         if (response.data?.[key] && response.data[key].trim() !== "") {
@@ -100,7 +99,6 @@ export default function XrayDemoSection() {
       // ✅ Process predictions dynamically
       let predictionsData = null
       
-      // Try to find predictions key dynamically
       const possiblePredictionKeys = ['predictions', 'results', 'diseases', 'findings', 'prediction']
       for (const key of possiblePredictionKeys) {
         if (response.data?.[key] && typeof response.data[key] === 'object') {
@@ -126,23 +124,19 @@ export default function XrayDemoSection() {
         
         // ✅ Loop through predictions object (dynamic keys)
         for (const [diseaseName, data] of Object.entries(predictionsData)) {
-          // Handle different data structures
           let score = 0
           let detected = false
           
           if (typeof data === 'object' && data !== null) {
-            // Try different possible score keys
             score = data.score || data.Score || data.probability || data.Probability || data.value || 0
             detected = data.detected || data.Detected || data.isDetected || (score > 0.5)
           } else if (typeof data === 'number') {
-            // If data is directly a number
             score = data
             detected = score > 0.5
           }
           
           const probability = Math.round(score * 100)
           
-          // ✅ Determine risk level based on probability
           let riskLevel = "low"
           let barColor = "from-green-500 to-emerald-500"
           
@@ -164,12 +158,10 @@ export default function XrayDemoSection() {
           })
         }
         
-        // Sort by highest probability
         diseases.sort((a, b) => b.probability - a.probability)
         
         const topDisease = diseases[0]
         
-        // Generate findings based on results
         const findings = []
         const recommendations = []
         
@@ -181,13 +173,11 @@ export default function XrayDemoSection() {
           }
         })
         
-        // Add overall confidence if we have diseases
         if (diseases.length > 0) {
           const avgConfidence = Math.round(diseases.reduce((sum, d) => sum + d.probability, 0) / diseases.length)
           findings.push(`Overall confidence: ${avgConfidence}%`)
         }
         
-        // Risk-based recommendations
         const highRiskDiseases = diseases.filter(d => d.riskLevel === "high")
         if (highRiskDiseases.length > 0) {
           recommendations.push("🚨 Immediate medical consultation required")
@@ -215,7 +205,6 @@ export default function XrayDemoSection() {
           status
         })
       } else {
-        // If no predictions found in expected format
         setAnalysisResult({
           disease: "Analysis Complete",
           confidence: "95%",
@@ -299,16 +288,10 @@ export default function XrayDemoSection() {
           </p>
         </div>
 
-        {/* MAIN CONTAINER */}
-        <div
-          className={`flex flex-col gap-8 ${
-            analysisResult ? "lg:flex-row lg:gap-6" : "items-center"
-          }`}
-        >
-          {/* LEFT UPLOAD SECTION */}
-          <div className={`${analysisResult ? "lg:w-5/12" : "w-full max-w-2xl"}`}>
-            <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 sm:p-8 shadow-lg">
-
+        {/* UPLOAD SECTION - FIRST ROW */}
+        {!analysisResult && (
+          <div className="w-full">
+            <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 sm:p-8 shadow-lg max-w-2xl mx-auto">
               <div
                 className={`border-2 rounded-xl p-6 sm:p-8 text-center transition-all
                   ${selectedFile ? "border-green-500" : "border-dashed border-gray-300 hover:border-[#5056e6] cursor-pointer"}`}
@@ -398,10 +381,32 @@ export default function XrayDemoSection() {
               )}
             </div>
           </div>
+        )}
 
-          {/* MIDDLE SECTION - GRADCAM HEATMAP (Only if backend sends) */}
-          {analysisResult && gradcamImage && (
-            <div className="lg:w-3/12">
+        {/* IMAGES ROW - SECOND ROW (AFTER ANALYSIS) */}
+        {analysisResult && gradcamImage && (
+          <div className="w-full mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+              {/* Original Image */}
+              <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 shadow-lg h-full">
+                <h3 className="text-lg font-bold text-gray-800 mb-4">Original X-ray Image</h3>
+                <div className="bg-black rounded-lg overflow-hidden shadow h-64">
+                  {preview && (
+                    <img
+                      src={preview}
+                      alt="Original X-ray"
+                      className="w-full h-full object-contain"
+                    />
+                  )}
+                </div>
+                <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                  <p className="text-xs text-blue-700">
+                    <span className="font-medium">Original Upload</span> - This is the X-ray image you uploaded for analysis
+                  </p>
+                </div>
+              </div>
+
+              {/* GradCAM Image */}
               <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 shadow-lg h-full">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-bold text-gray-800">AI Heatmap Analysis</h3>
@@ -410,7 +415,7 @@ export default function XrayDemoSection() {
                     className="flex items-center gap-1 px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm"
                   >
                     {showHeatmap ? <FaEyeSlash className="text-xs" /> : <FaEye className="text-xs" />}
-                    {showHeatmap ? "Hide" : "Show"}
+                    {showHeatmap ? "Hide Heatmap" : "Show Heatmap"}
                   </button>
                 </div>
 
@@ -477,124 +482,144 @@ export default function XrayDemoSection() {
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {/* RIGHT RESULT SECTION */}
-          {analysisResult && (
-            <div className="lg:w-4/12">
-              <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 shadow-lg space-y-6 h-full">
+        {/* RESULTS SECTION - THIRD ROW (AFTER ANALYSIS) */}
+        {analysisResult && (
+          <div className="w-full">
+            <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 md:p-8 shadow-lg">
+              <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
+                {/* Left Column - Diagnosis Summary */}
+                <div className="lg:w-2/5">
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-xl font-bold text-gray-800">Diagnosis Summary</h3>
+                    <span className={`text-xs px-2 py-1 rounded-full ${
+                      analysisResult.status === "success" ? "bg-green-100 text-green-800" :
+                      analysisResult.status === "error" ? "bg-red-100 text-red-800" :
+                      "bg-yellow-100 text-yellow-800"
+                    }`}>
+                      {analysisResult.status.toUpperCase()}
+                    </span>
+                  </div>
 
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-bold text-gray-800">Analysis Results</h3>
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    analysisResult.status === "success" ? "bg-green-100 text-green-800" :
-                    analysisResult.status === "error" ? "bg-red-100 text-red-800" :
-                    "bg-yellow-100 text-yellow-800"
-                  }`}>
-                    {analysisResult.status.toUpperCase()}
-                  </span>
-                </div>
-
-                <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-green-200 rounded-xl p-4">
-                  <p className="text-xl font-bold text-gray-800">{analysisResult.disease}</p>
-                  <p className="text-green-600 mt-1 text-sm font-medium">
-                    Confidence: {analysisResult.confidence}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1">
-                    Finding: <span className="font-medium">{analysisResult.visualized_finding}</span>
-                  </p>
-                </div>
-
-                {/* Disease Probabilities with Risk-based Progress Bars */}
-                {analysisResult.allDiseases && analysisResult.allDiseases.length > 0 && (
-                  <div>
-                    <h4 className="font-bold mb-3 text-gray-800 text-sm">Disease Probabilities</h4>
-                    <div className="space-y-3">
-                      {analysisResult.allDiseases.map((disease, index) => (
-                        <div key={index} className="space-y-1">
-                          <div className="flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-sm">{disease.name}</span>
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                disease.riskLevel === "high" 
-                                  ? "bg-red-100 text-red-800"
-                                  : disease.riskLevel === "medium"
-                                    ? "bg-yellow-100 text-yellow-800"
-                                    : "bg-green-100 text-green-800"
-                              }`}>
-                                {disease.riskLevel.toUpperCase()}
-                              </span>
-                            </div>
-                            <span className={`font-bold text-sm ${
-                              disease.detected ? "text-red-600" : "text-green-600"
-                            }`}>
-                              {disease.probability}%
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className={`h-2 rounded-full bg-gradient-to-r ${disease.barColor}`}
-                              style={{ width: `${disease.probability}%` }}
-                            ></div>
-                          </div>
-                          <div className="flex justify-between text-xs text-gray-500">
-                            <span>0%</span>
-                            <span>{disease.probability}%</span>
-                            <span>100%</span>
-                          </div>
-                        </div>
-                      ))}
+                  <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-green-200 rounded-xl p-5 mb-6">
+                    <p className="text-2xl font-bold text-gray-800 mb-2">{analysisResult.disease}</p>
+                    <p className="text-green-600 text-lg font-medium mb-2">
+                      Confidence: {analysisResult.confidence}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-600">Finding:</span>
+                      <span className="text-sm font-medium text-gray-800">{analysisResult.visualized_finding}</span>
                     </div>
                   </div>
-                )}
 
-                <div>
-                  <h4 className="font-bold mb-2 text-gray-800 text-sm">Key Findings</h4>
-                  <div className="space-y-1">
-                    {analysisResult.findings.map((f, i) => (
-                      <div key={i} className="flex gap-2 text-xs">
-                        <FaCheckCircle className="text-green-500 mt-0.5 flex-shrink-0 text-xs" />
-                        <span>{f}</span>
+                  {/* Disease Probabilities */}
+                  {analysisResult.allDiseases && analysisResult.allDiseases.length > 0 && (
+                    <div className="mb-6">
+                      <h4 className="font-bold mb-4 text-gray-800">Disease Probabilities</h4>
+                      <div className="space-y-4">
+                        {analysisResult.allDiseases.map((disease, index) => (
+                          <div key={index} className="space-y-2">
+                            <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">{disease.name}</span>
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                  disease.riskLevel === "high" 
+                                    ? "bg-red-100 text-red-800"
+                                    : disease.riskLevel === "medium"
+                                      ? "bg-yellow-100 text-yellow-800"
+                                      : "bg-green-100 text-green-800"
+                                }`}>
+                                  {disease.riskLevel.toUpperCase()}
+                                </span>
+                              </div>
+                              <span className={`font-bold ${
+                                disease.detected ? "text-red-600" : "text-green-600"
+                              }`}>
+                                {disease.probability}%
+                              </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2.5">
+                              <div 
+                                className={`h-2.5 rounded-full bg-gradient-to-r ${disease.barColor}`}
+                                style={{ width: `${disease.probability}%` }}
+                              ></div>
+                            </div>
+                            <div className="flex justify-between text-sm text-gray-500">
+                              <span>0%</span>
+                              <span>{disease.probability}%</span>
+                              <span>100%</span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
+
+                  {/* Try Another Button */}
+                  <button
+                    onClick={handleRemoveFile}
+                    className="w-full py-3 border-2 border-[#5056e6] text-[#5056e6] font-bold rounded-lg hover:bg-[#5056e6] hover:text-white transition-all"
+                  >
+                    Try Another X-ray
+                  </button>
                 </div>
 
-                <div>
-                  <h4 className="font-bold mb-2 text-gray-800 text-sm">Recommendations</h4>
-                  <div className="space-y-1">
-                    {analysisResult.recommendations.map((r, i) => (
-                      <p key={i} className="text-xs">
-                        <span className="text-[#5056e6] font-bold">{i + 1}.</span> {r}
-                      </p>
-                    ))}
+                {/* Right Column - Findings & Recommendations */}
+                <div className="lg:w-3/5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Key Findings */}
+                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-5">
+                      <h4 className="font-bold mb-4 text-gray-800 text-lg">Key Findings</h4>
+                      <div className="space-y-3">
+                        {analysisResult.findings.map((f, i) => (
+                          <div key={i} className="flex gap-3">
+                            <FaCheckCircle className="text-green-500 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">{f}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Recommendations */}
+                    <div className="bg-green-50 border border-green-100 rounded-xl p-5">
+                      <h4 className="font-bold mb-4 text-gray-800 text-lg">Recommendations</h4>
+                      <div className="space-y-3">
+                        {analysisResult.recommendations.map((r, i) => (
+                          <p key={i} className="text-sm">
+                            <span className="text-[#5056e6] font-bold">{i + 1}.</span> {r}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* API Response Info */}
+                    {apiResponse && (
+                      <div className="md:col-span-2">
+                        <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+                          <details className="cursor-pointer">
+                            <summary className="text-sm font-medium text-gray-700 list-none">
+                              <span className="flex items-center justify-between">
+                                View API Response Details
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                              </span>
+                            </summary>
+                            <div className="mt-3 p-3 bg-gray-900 text-gray-100 rounded text-xs font-mono overflow-auto max-h-40">
+                              <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
+                            </div>
+                          </details>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-
-                {/* API Response Info */}
-                {apiResponse && (
-                  <div className="pt-4 border-t">
-                    <details className="bg-gray-50 rounded-lg p-3 border">
-                      <summary className="cursor-pointer text-sm font-medium text-gray-700">
-                        View API Response Details
-                      </summary>
-                      <div className="mt-2 p-2 bg-gray-900 text-gray-100 rounded text-xs font-mono overflow-auto max-h-32">
-                        <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
-                      </div>
-                    </details>
-                  </div>
-                )}
-
-                <button
-                  onClick={handleRemoveFile}
-                  className="w-full py-2.5 border-2 border-[#5056e6] text-[#5056e6] font-bold rounded-lg hover:bg-[#5056e6] hover:text-white transition-all text-sm"
-                >
-                  Try Another X-ray
-                </button>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </section>
   )

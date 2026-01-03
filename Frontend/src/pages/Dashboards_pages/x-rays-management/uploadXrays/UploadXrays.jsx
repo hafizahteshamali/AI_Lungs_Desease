@@ -327,7 +327,7 @@ This analysis is AI-generated and should be reviewed by a qualified medical prof
                     <FiEye className="text-purple-600" />
                     <h3 className="text-lg font-semibold text-gray-900">
                       {/* ✅ Condition based on backend GradCAM */}
-                      {gradcamImageUrl ? "AI Heatmap Analysis (Backend Generated)" : "No GradCAM Available"}
+                      {gradcamImageUrl ? "AI Heatmap Analysis" : "No GradCAM Available"}
                     </h3>
                   </div>
                   {gradcamImageUrl && (

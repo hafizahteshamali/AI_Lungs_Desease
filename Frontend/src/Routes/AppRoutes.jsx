@@ -133,7 +133,7 @@ const AppRoutes = () => {
 
           {/* Medicine Prescription */}
           <Route path="medicines/ai" element={
-            <ProtectedRoute allowedRoles={getAllowedRoles(['Doctor', 'Admin'])}>
+            <ProtectedRoute allowedRoles={getAllowedRoles(['Admin'])}>
               <AI_Recommend_Medicine />
             </ProtectedRoute>
           } />

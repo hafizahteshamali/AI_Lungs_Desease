@@ -79,19 +79,19 @@ const DashboardUrl = [
     items: [
       {
         icon: <MdLocalPharmacy />,
-        text: "Medicines & Prescribe",
+        text: "Medicines Management",
         children: [
           { 
             icon: <MdLocalPharmacy />, 
             text: "AI-Recommended Medicines", 
             url: "medicines/ai", 
-            roles: ["doctor", "superadmin", "super_admin"] 
+            roles: ["admin", "superadmin", "super_admin"] 
           },
           { 
             icon: <MdMenuBook />, 
             text: "Prescription Export", 
             url: "medicines/export", 
-            roles: ["doctor", "patient", "superadmin", "super_admin"] 
+            roles: ["admin", "superadmin", "super_admin"] 
           },
         ],
       },

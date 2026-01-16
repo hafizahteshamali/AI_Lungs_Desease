@@ -79,7 +79,7 @@ const DashboardUrl = [
     items: [
       {
         icon: <MdLocalPharmacy />,
-        text: "Medicines & Prescriptions",
+        text: "Medicines & Prescribe",
         children: [
           { 
             icon: <MdLocalPharmacy />, 

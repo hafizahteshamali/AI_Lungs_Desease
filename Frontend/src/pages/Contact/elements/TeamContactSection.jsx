@@ -1,114 +1,156 @@
 import { FaLinkedin, FaEnvelope, FaPhone } from "react-icons/fa"
 
 export default function TeamContactSection() {
+  // Team contacts array banaya hai with details
   const teamContacts = [
     {
-      name: "Dr. Sarah Johnson",
-      role: "Medical Partnerships Director",
-      email: "sarah@precisionscan.com",
-      phone: "+1 (555) 123-4567",
-      expertise: "Hospital Integration & Medical Partnerships",
-      color: "#5056e6",
-      image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop"
+      name: "Sajjad Ali", // Team member name
+      role: "Team Lead & Backend Developer", // Team member role
+      email: "sajjadali1714@gmail.com", // Team member email
+      phone: "+92 311 2903664", // Team member phone number
+      expertise: "Project Documentation, Backend Development & System Architecture", // Team member expertise
+      color: "#5056e6", // Color for styling
+      image: "/assets/images/about/sajjad-ali.jpeg", // Team member image path
+      rollNumber: "1077-2022" // University roll number
     },
     {
-      name: "Michael Chen",
-      role: "Technical Support Lead",
-      email: "michael@precisionscan.com",
-      phone: "+1 (555) 123-4568",
-      expertise: "AI System Implementation & Technical Support",
-      color: "#008059",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop"
+      name: "Muhammad Huzaifa Latif", // Team member name
+      role: "Mobile App Developer", // Team member role
+      email: "muhammadhuzaifax50@gmail.com", // Team member email
+      phone: "+92 331 4661215", // Team member phone number
+      expertise: "Mobile Application Development & AI Integration", // Team member expertise
+      color: "#008059", // Color for styling
+      image: "/assets/images/about/huzaifa-latif.png", // Team member image path
+      rollNumber: "844-2022" // University roll number
     },
     {
-      name: "Dr. Emily Rodriguez",
-      role: "Clinical Integration Specialist",
-      email: "emily@precisionscan.com",
-      phone: "+1 (555) 123-4569",
-      expertise: "Clinical Workflow Integration & Training",
-      color: "#007a9b",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop"
+      name: "Hafiz Ahtesham Ali Rehmani", // Team member name
+      role: "Web Application Developer", // Team member role
+      email: "hafizahteshamali363617@gmail.com", // Team member email
+      phone: "+92 3308419436", // Team member phone number
+      expertise: "Web Platform Development & Frontend Deployment", // Team member expertise
+      color: "#007a9b", // Color for styling
+      image: "/assets/images/about/ahtesham-ali.png", // Team member image path
+      rollNumber: "617-2022" // University roll number
     }
   ]
 
   return (
+    // Main section with white background
     <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 bg-white">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto"> {/* Centered container */}
+        {/* Header section with centered text */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-[#5056e6]/10 rounded-full mb-3 sm:mb-4">
-            <span className="text-xs sm:text-sm font-semibold text-[#5056e6]">MEET OUR TEAM</span>
+          <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-[#5056e6]/10 rounded-full mb-3 sm:mb-4"> {/* Badge */}
+            <span className="text-xs sm:text-sm font-semibold text-[#5056e6]">FYP TEAM CONTACTS</span> {/* Badge text */}
           </div>
-          <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-3 sm:mb-4">
-            Direct Contact With Our
-            <span className="text-[#5056e6]"> Experts</span>
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-3 sm:mb-4"> {/* Main heading */}
+            Connect With
+            <span className="text-[#5056e6]"> CareVision Developers</span> {/* Colored text */}
           </h2>
-          <p className="text-sm xs:text-base sm:text-lg text-[#979999] max-w-2xl mx-auto">
-            Connect directly with specialists who can help with your specific needs
+          <p className="text-sm xs:text-base sm:text-lg text-[#979999] max-w-2xl mx-auto"> {/* Description */}
+            Direct contact with FEST BSSE final year project team members
           </p>
         </div>
 
-        {/* Grid ki jagah flex use kiya */}
-        <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 sm:gap-8">
-          {teamContacts.map((member, index) => (
+        {/* Team contacts cards - Using flex instead of grid */}
+        <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 sm:gap-8"> {/* Flex container */}
+          {teamContacts.map((member, index) => ( // Map through team contacts
             <div 
-              key={index}
-              className="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-500 flex-1 min-w-[300px] max-w-[400px] md:max-w-none"
+              key={index} // Unique key for React list
+              className="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-500 flex-1 min-w-[300px] max-w-[400px] md:max-w-none" // Card styling
             >
-              {/* Top Color Bar */}
+              {/* Top color bar for each card */}
               <div 
-                className="h-2 w-full"
-                style={{ backgroundColor: member.color }}
+                className="h-2 w-full" // Color bar styling
+                style={{ backgroundColor: member.color }} // Dynamic color from member data
               ></div>
 
-              <div className="p-6">
-                <div className="flex items-center gap-4 mb-4">
+              <div className="p-6"> {/* Card content container */}
+                {/* Profile section with image and details */}
+                <div className="flex items-center gap-4 mb-4"> {/* Profile container */}
                   <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-16 h-16 rounded-full object-cover border-4 border-white shadow-md flex-shrink-0"
-                    onError={(e) => {
-                      e.target.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
+                    src={member.image} // Team member image
+                    alt={member.name} // Alt text for accessibility
+                    className="w-16 h-16 rounded-full object-cover border-4 border-white shadow-md flex-shrink-0" // Image styling
+                    onError={(e) => { // Error handling for image
+                      e.target.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" // Fallback image
                     }}
                   />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="text-lg font-bold text-black truncate">{member.name}</h3>
-                    <p className="text-[#5056e6] font-semibold text-sm truncate">{member.role}</p>
+                  <div className="min-w-0 flex-1"> {/* Text container */}
+                    <h3 className="text-lg font-bold text-black truncate">{member.name}</h3> {/* Name */}
+                    <p className="text-[#5056e6] font-semibold text-sm truncate">{member.role}</p> {/* Role */}
+                    <p className="text-xs text-gray-500 mt-1">Roll: {member.rollNumber}</p> {/* Roll number */}
                   </div>
                 </div>
 
-                <p className="text-sm text-[#979999] mb-4 line-clamp-2">{member.expertise}</p>
+                {/* Expertise section */}
+                <p className="text-sm text-[#979999] mb-4 line-clamp-2">{member.expertise}</p> {/* Expertise text */}
 
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <FaEnvelope className="text-gray-600 text-sm" />
+                {/* Contact details section */}
+                <div className="space-y-3"> {/* Contact items container */}
+                  {/* Email contact */}
+                  <div className="flex items-center gap-3"> {/* Email row */}
+                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0"> {/* Email icon container */}
+                      <FaEnvelope className="text-gray-600 text-sm" /> {/* Email icon */}
                     </div>
-                    <span className="text-sm text-gray-700 truncate">{member.email}</span>
+                    <span className="text-sm text-gray-700 truncate">{member.email}</span> {/* Email address */}
                   </div>
                   
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <FaPhone className="text-gray-600 text-sm" />
+                  {/* Phone contact */}
+                  <div className="flex items-center gap-3"> {/* Phone row */}
+                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0"> {/* Phone icon container */}
+                      <FaPhone className="text-gray-600 text-sm" /> {/* Phone icon */}
                     </div>
-                    <span className="text-sm text-gray-700">{member.phone}</span>
+                    <span className="text-sm text-gray-700">{member.phone}</span> {/* Phone number */}
                   </div>
                 </div>
 
-                <div className="mt-6 pt-6 border-t border-gray-100">
-                  <div className="flex justify-center gap-4">
-                    <button className="flex items-center gap-2 px-4 py-2 bg-[#5056e6] text-white text-sm rounded-lg hover:bg-[#3a25b8] transition-colors whitespace-nowrap">
-                      <FaEnvelope className="text-xs" />
-                      Send Email
-                    </button>
-                    <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg hover:border-[#5056e6] hover:text-[#5056e6] transition-colors whitespace-nowrap">
-                      <FaPhone className="text-xs" />
-                      Call Now
-                    </button>
+                {/* Action buttons section */}
+                <div className="mt-6 pt-6 border-t border-gray-100"> {/* Separated buttons section */}
+                  <div className="flex justify-center gap-4"> {/* Buttons container */}
+                    {/* Email button */}
+                    <a 
+                      href={`mailto:${member.email}`} // mailto link for email
+                      className="flex items-center gap-2 px-4 py-2 bg-[#5056e6] text-white text-sm rounded-lg hover:bg-[#3a25b8] transition-colors whitespace-nowrap" // Button styling
+                    >
+                      <FaEnvelope className="text-xs" /> {/* Email icon */}
+                      Send Email {/* Button text */}
+                    </a>
+                    {/* Phone button */}
+                    <a 
+                      href={`tel:${member.phone.replace(/[^+\d]/g, '')}`} // tel link for phone (removing non-numeric chars)
+                      className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg hover:border-[#5056e6] hover:text-[#5056e6] transition-colors whitespace-nowrap" // Button styling
+                    >
+                      <FaPhone className="text-xs" /> {/* Phone icon */}
+                      Call Now {/* Button text */}
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Project Supervisor Information section */}
+        <div className="mt-12 p-6 bg-gradient-to-r from-blue-50 to-gray-50 rounded-xl border border-blue-200 max-w-3xl mx-auto"> {/* Supervisor container */}
+          <div className="flex flex-col md:flex-row items-center gap-6"> {/* Responsive layout */}
+            {/* Icon container */}
+            <div className="flex-shrink-0"> {/* Icon wrapper */}
+              <div className="w-16 h-16 rounded-full bg-[#5056e6] flex items-center justify-center"> {/* Icon circle */}
+                <FaEnvelope className="text-white text-2xl" /> {/* Envelope icon */}
+              </div>
+            </div>
+            {/* Text content */}
+            <div className="flex-1 text-center md:text-left"> {/* Text container */}
+              <h3 className="text-xl font-bold text-black mb-2">Project Supervision</h3> {/* Title */}
+              <p className="text-gray-700"> {/* Supervisor details */}
+                <span className="font-semibold">Supervisor:</span> Muhammad Khawaja Hassan Nizami (Assistant Professor, Dept. of Computing)<br/> {/* Main supervisor */}
+                <span className="font-semibold">Co-Supervisors:</span> Mr. Vishal & Ms. Azadi Memon<br/> {/* Co-supervisors */}
+                <span className="text-sm text-gray-600">FEST BSSE Final Year Project 2025</span> {/* Project details */}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -2,10 +2,10 @@ import { useState, useEffect } from "react"
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa"
 
 export default function ContactHeroSection() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)  // State to control animation visibility
 
   useEffect(() => {
-    setIsVisible(true)
+    setIsVisible(true)  // Trigger animation when component mounts
   }, [])
 
   return (
@@ -18,61 +18,61 @@ export default function ContactHeroSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-12 md:py-20">
         <div className="flex flex-col lg:flex-row items-center gap-12">
-          {/* Left: Main Content */}
+          {/* Left: Main Content - Updated */}
           <div className="flex-1 text-center lg:text-left">
             <div className={`inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full mb-4 md:mb-6 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-              <span className="text-xs md:text-sm font-medium text-white">GET IN TOUCH</span>
+              <span className="text-xs md:text-sm font-medium text-white">CONTACT CAREVISION TEAM</span>
             </div>
 
             <div className={`space-y-4 md:space-y-6 mb-6 md:mb-8 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`} style={{ animationDelay: '0.2s' }}>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                Let's Connect
+                Connect With
                 <br />
                 <span className="relative inline-block mt-2">
-                  To Transform Healthcare
+                  FYP Project Team
                   <span className="absolute -bottom-1 md:-bottom-2 left-0 w-full h-0.5 md:h-1 bg-white/30"></span>
                 </span>
               </h1>
               <p className="text-base sm:text-lg md:text-xl text-blue-100 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                Reach out to our team for partnership inquiries, technical support, 
-                or to learn how our AI diagnostics can benefit your healthcare institution.
+                Reach out for collaboration opportunities, technical discussions, or to learn about implementing our AI diagnostic system in your healthcare institution.
               </p>
             </div>
           </div>
 
-          {/* Right: Quick Contact Cards */}
+          {/* Right: Quick Contact Cards - Updated with team info */}
           <div className={`flex-1 w-full max-w-lg ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`} style={{ animationDelay: '0.4s' }}>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Converted from grid to flex for contact cards */}
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4">
               {[
                 {
                   icon: <FaPhone className="text-white text-xl md:text-2xl" />,
-                  title: "Call Us",
-                  info: "+1 (555) 123-4567",
+                  title: "Call Team Lead",
+                  info: "Sajjad Ali",
                   color: "from-[#5056e6] to-[#3d43d4]",
                   hoverColor: "hover:from-[#3d43d4] hover:to-[#2e32b3]"
                 },
                 {
                   icon: <FaEnvelope className="text-white text-xl md:text-2xl" />,
-                  title: "Email Us",
-                  info: "contact@precisionscan.com",
+                  title: "Email Project",
+                  info: "sajjadali1714@gmail.com",
                   color: "from-[#008059] to-[#006d4a]",
                   hoverColor: "hover:from-[#006d4a] hover:to-[#005a3b]"
                 },
                 {
                   icon: <FaMapMarkerAlt className="text-white text-xl md:text-2xl" />,
-                  title: "Visit Us",
-                  info: "San Francisco, CA",
+                  title: "Visit Campus",
+                  info: "Indus University Pakistan",
                   color: "from-[#007a9b] to-[#006680]",
                   hoverColor: "hover:from-[#006680] hover:to-[#005266]"
                 }
               ].map((item, index) => (
                 <div 
                   key={index}
-                  className={`group bg-gradient-to-br ${item.color} rounded-xl p-4 md:p-5 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer ${item.hoverColor} flex flex-col items-center justify-between min-h-[160px] md:min-h-[180px]`}
+                  className={`group bg-gradient-to-br ${item.color} rounded-xl p-4 md:p-5 text-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer ${item.hoverColor} flex flex-col items-center justify-between flex-1 min-w-[150px] max-w-[250px] min-h-[160px] md:min-h-[180px]`}
                 >
                   <div className="mb-3 flex justify-center">
                     <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/20 flex items-center justify-center">
-                      {item.icon}
+                      {item.icon}  {/* Display icon */}
                     </div>
                   </div>
                   <div className="w-full">
@@ -81,6 +81,24 @@ export default function ContactHeroSection() {
                   </div>
                 </div>
               ))}
+            </div>
+            
+            {/* Project Info Box - Added */}
+            <div className="mt-6 p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+              <h4 className="text-white font-bold mb-2 text-center">FYP Project Details</h4>
+              {/* Converted from grid to flex for project details */}
+              <div className="flex flex-row justify-between flex-wrap gap-3 text-center">
+                {/* Department info */}
+                <div className="flex-1 min-w-[120px] max-w-[150px]">
+                  <p className="text-xs text-blue-100 mb-1">Department</p>
+                  <p className="text-sm font-semibold text-white">Computing</p>
+                </div>
+                {/* Program info */}
+                <div className="flex-1 min-w-[120px] max-w-[150px]">
+                  <p className="text-xs text-blue-100 mb-1">Program</p>
+                  <p className="text-sm font-semibold text-white">BSSE</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

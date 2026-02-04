@@ -13,17 +13,17 @@ export default function Footer() {
               <NavLink to="/">
                 <img 
                   src="/assets/images/home/logo-removebg-preview.png" 
-                  alt="Precision Scan Logo" 
+                  alt="CareVision Logo" 
                   className="h-16 object-contain" 
                 />
               </NavLink>
               <div>
-                <h2 className="text-2xl font-bold text-white">Precision Scan</h2>
-                <p className="text-sm text-[#979999]">AI Medical Diagnostics</p>
+                <h2 className="text-2xl font-bold text-white">CareVision</h2>
+                <p className="text-sm text-[#979999]">FYP Project - FEST BSSE</p>
               </div>
             </div>
             <p className="text-sm leading-relaxed mb-6">
-              AI-powered early detection of lung disease and breast cancer. Empowering healthcare with cutting-edge technology.
+              AI-powered diagnostic system for early detection of lung diseases and breast cancer from medical images. Designed for low-resource healthcare settings.
             </p>
             <div className="flex gap-3">
               {[
@@ -46,9 +46,9 @@ export default function Footer() {
           {/* Right: Links Container */}
           <div className="flex flex-wrap gap-8 lg:gap-12 lg:w-2/3">
             <div className="flex-1 min-w-[150px]">
-              <h4 className="font-bold text-white text-lg mb-6">Product</h4>
+              <h4 className="font-bold text-white text-lg mb-6">System Features</h4>
               <ul className="space-y-3">
-                {["Features", "Pricing", "Security", "Documentation"].map((item) => (
+                {["Dual Disease Detection", "Explainable AI (Grad-CAM)", "Clinical Decision Support", "Cloud Deployment"].map((item) => (
                   <li key={item}>
                     <a href="#" className="hover:text-[#4932e4] transition-colors duration-200 text-sm">
                       {item}
@@ -59,9 +59,9 @@ export default function Footer() {
             </div>
 
             <div className="flex-1 min-w-[150px]">
-              <h4 className="font-bold text-white text-lg mb-6">Company</h4>
+              <h4 className="font-bold text-white text-lg mb-6">Project Info</h4>
               <ul className="space-y-3">
-                {["About", "Blog", "Careers", "Contact"].map((item) => (
+                {["Methodology", "Datasets", "Team Members", "Contact"].map((item) => (
                   <li key={item}>
                     <a href="#" className="hover:text-[#008059] transition-colors duration-200 text-sm">
                       {item}
@@ -72,9 +72,9 @@ export default function Footer() {
             </div>
 
             <div className="flex-1 min-w-[150px]">
-              <h4 className="font-bold text-white text-lg mb-6">Legal</h4>
+              <h4 className="font-bold text-white text-lg mb-6">Research</h4>
               <ul className="space-y-3">
-                {["Privacy Policy", "Terms of Service", "Compliance", "Cookie Policy"].map((item) => (
+                {["Literature Review", "Validation Metrics", "Future Work", "Publications"].map((item) => (
                   <li key={item}>
                     <a href="#" className="hover:text-[#007a9b] transition-colors duration-200 text-sm">
                       {item}
@@ -91,13 +91,9 @@ export default function Footer() {
 
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-slate-500 mb-4 md:mb-0">
-            © 2025 Precision Scan. All rights reserved.
-          </p>
-          <div className="flex gap-6">
-            <a href="#" className="text-sm hover:text-[#4932e4] transition-colors">Privacy</a>
-            <a href="#" className="text-sm hover:text-[#008059] transition-colors">Terms</a>
-            <a href="#" className="text-sm hover:text-[#007a9b] transition-colors">Cookies</a>
+          <div className="text-sm text-slate-500 mb-4 md:mb-0">
+            <p>© 2026 CareVision - Final Year Project</p>
+            <p className="mt-1">Department of Computing, FEST BSSE | Group: Sajjad Ali, Muhammad Huzaifa Latif, Hafiz Ahtesham Ali Rehmani</p>
           </div>
         </div>
       </div>

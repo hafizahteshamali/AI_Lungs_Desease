@@ -2,35 +2,36 @@ import { useState, useEffect, useRef } from "react"
 import { FaRocket, FaLightbulb, FaHandshake, FaAward } from "react-icons/fa"
 
 export default function StorySection() {
-  const [visibleItems, setVisibleItems] = useState([])
-  const sectionRef = useRef(null)
+  const [visibleItems, setVisibleItems] = useState([])  // State to track visible timeline items
+  const sectionRef = useRef(null)  // Reference for the timeline section
 
+  // REAL PROJECT TIMELINE from your FYP context
   const timeline = [
     {
-      year: "2020",
-      title: "The Beginning",
-      description: "Founded to make medical diagnostics accessible through AI innovation.",
+      year: "2023",
+      title: "Problem Identification",
+      description: "Identified critical need for early detection of lung diseases and breast cancer in low-resource areas like Pakistan with limited radiologists.",
       icon: <FaRocket />,
       color: "#5056e6",
     },
     {
-      year: "2021",
-      title: "First Breakthrough",
-      description: "Achieved 95% accuracy in lung disease detection with clinical trials.",
+      year: "2024",
+      title: "Research & Literature Review",
+      description: "Analyzed existing AI models for medical imaging, identified gaps, and planned dual-disease detection system with explainable AI (Grad-CAM).",
       icon: <FaLightbulb />,
       color: "#008059",
     },
     {
-      year: "2022",
-      title: "Global Expansion",
-      description: "Partnered with 50+ hospitals across 10 countries worldwide.",
+      year: "2025",
+      title: "System Development",
+      description: "Developing Custom CNN model, collecting datasets (NIH, CBIS-DDSM, MIAS), and building web/mobile platform for clinical decision support.",
       icon: <FaHandshake />,
       color: "#007a9b",
     },
     {
-      year: "2023",
-      title: "Industry Recognition",
-      description: "Award-winning 98% accuracy AI diagnostics, trusted globally.",
+      year: "Future",
+      title: "Deployment & Impact",
+      description: "Planned clinical validation in Pakistani hospitals, expansion to more diseases, and contributing to SDG 3 for improved healthcare outcomes.",
       icon: <FaAward />,
       color: "#5056e6",
     },
@@ -41,37 +42,37 @@ export default function StorySection() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const index = parseInt(entry.target.dataset.index)
+            const index = parseInt(entry.target.dataset.index)  // Get item index
             setTimeout(() => {
-              setVisibleItems((prev) => [...prev, index])
-            }, index * 200)
+              setVisibleItems((prev) => [...prev, index])  // Add to visible items with delay
+            }, index * 200)  // Staggered delay based on index
           }
         })
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 }  // Trigger when 10% of item is visible
     )
 
     if (sectionRef.current) {
-      const items = sectionRef.current.querySelectorAll('[data-index]')
-      items.forEach((item) => observer.observe(item))
+      const items = sectionRef.current.querySelectorAll('[data-index]')  // Get all timeline items
+      items.forEach((item) => observer.observe(item))  // Observe each item
     }
 
-    return () => observer.disconnect()
+    return () => observer.disconnect()  // Clean up observer on unmount
   }, [])
 
   return (
     <section className="py-12 sm:py-16 md:py-20 px-4 xs:px-5 sm:px-6 lg:px-8 bg-[#f9f9f9]">
       <div className="max-w-7xl mx-auto">
-        {/* Section Header - Responsive */}
+        {/* Section Header - Updated */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
           <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-[#5056e6]/10 rounded-full mb-3 sm:mb-4">
-            <span className="text-xs sm:text-sm font-semibold text-[#5056e6]">OUR JOURNEY</span>
+            <span className="text-xs sm:text-sm font-semibold text-[#5056e6]">PROJECT JOURNEY</span>
           </div>
           <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-3 sm:mb-4 leading-tight">
-            Our Story
+            CareVision Development Timeline
           </h2>
           <p className="text-sm xs:text-base sm:text-lg text-[#979999] max-w-xl sm:max-w-2xl mx-auto leading-relaxed">
-            From a bold idea to transforming healthcare worldwide
+            From problem identification to planned deployment of our FYP project
           </p>
         </div>
 
@@ -86,7 +87,7 @@ export default function StorySection() {
           {/* Main Timeline Items - Already using flex */}
           <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-4 xl:gap-6">
             {timeline.map((item, index) => {
-              const isVisible = visibleItems.includes(index)
+              const isVisible = visibleItems.includes(index)  // Check if item is visible
               return (
                 <div
                   key={index}
@@ -160,10 +161,33 @@ export default function StorySection() {
           </div>
         </div>
 
-        {/* Optional Bottom Text */}
+        {/* Project Methodology Summary - Added */}
+        <div className="mt-12 sm:mt-16 md:mt-20 p-4 xs:p-5 sm:p-6 bg-white border border-gray-300 rounded-lg sm:rounded-xl">
+          <h3 className="text-base xs:text-lg sm:text-xl font-bold text-black mb-4 text-center">FYP Development Methodology</h3>
+          {/* Converted from grid to flex */}
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
+            {/* First methodology step */}
+            <div className="flex-1 min-w-[200px] max-w-[300px] text-center p-4">
+              <div className="text-2xl font-bold text-[#5056e6] mb-2">1</div>
+              <p className="text-sm text-gray-600">Data Collection (NIH, CBIS-DDSM, MIAS, Local datasets)</p>
+            </div>
+            {/* Second methodology step */}
+            <div className="flex-1 min-w-[200px] max-w-[300px] text-center p-4">
+              <div className="text-2xl font-bold text-[#008059] mb-2">2</div>
+              <p className="text-sm text-gray-600">Model Training (Custom CNN with Grad-CAM for explainability)</p>
+            </div>
+            {/* Third methodology step */}
+            <div className="flex-1 min-w-[200px] max-w-[300px] text-center p-4">
+              <div className="text-2xl font-bold text-[#007a9b] mb-2">3</div>
+              <p className="text-sm text-gray-600">Deployment (Cloud-based system for web/mobile access)</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Optional Bottom Text - Updated */}
         <div className="mt-8 sm:mt-12 md:mt-16 text-center">
           <p className="text-xs sm:text-sm text-[#979999] italic">
-            Continuing our journey to revolutionize healthcare diagnostics
+            FEST BSSE Final Year Project focused on Sustainable Development Goal 3: Good Health and Well-being
           </p>
         </div>
       </div>

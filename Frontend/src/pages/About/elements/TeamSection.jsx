@@ -5,33 +5,34 @@ export default function TeamSection() {
   const [visibleMembers, setVisibleMembers] = useState([])
   const sectionRef = useRef(null)
 
+  // REAL TEAM MEMBERS from your PDF with updated roles
   const team = [
     {
-      name: "Dr. Raj Patel",
-      role: "Chief Medical Officer",
-      image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop",
-      bio: "Leading medical expert with 20+ years in diagnostic radiology",
+      name: "Sajjad Ali",
+      role: "Dotnet Developer",
+      image: "/assets/images/about/sajjad-ali.jpeg",
+      bio: "BS Software Engineering, FEST BSSE (1077-2022). Focus: Documentation, Backend Development & System Architecture",
       color: "#5056e6",
     },
     {
-      name: "Sarah Chen",
-      role: "AI/ML Lead",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop",
-      bio: "PhD in Computer Science, specializing in medical AI applications",
+      name: "Muhammad Huzaifa Latif",
+      role: "Wordpress Developer",
+      image: "/assets/images/about/huzaifa-latif.png",
+      bio: "BS Software Engineering, FEST BSSE (844-2022). Focus: Mobile Application Development & AI Integration",
       color: "#008059",
     },
     {
-      name: "Dr. Ahmed Hassan",
-      role: "Lead Radiologist",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-      bio: "Board-certified radiologist with expertise in early detection",
+      name: "Hafiz Ahtesham Ali Rehmani",
+      role: "MERN Stack Developer",
+      image: "/assets/images/about/ahtesham-ali.png",
+      bio: "BS Software Engineering, FEST BSSE (617-2022). Focus: Web Platform Development & Frontend Deployment",
       color: "#007a9b",
     },
     {
-      name: "Emily Rodriguez",
-      role: "Product Manager",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
-      bio: "Healthcare technology expert focused on user experience",
+      name: "Muhammad Khawaja Hassan Nizami",
+      role: "Project Supervisor",
+      image: "/assets/images/about/hassan-nizami.png",
+      bio: "Assistant Professor, Department of Computing, FEST BSSE. Provides research guidance and technical supervision.",
       color: "#5056e6",
     },
   ]
@@ -62,20 +63,20 @@ export default function TeamSection() {
   return (
     <section className="py-12 sm:py-16 md:py-20 px-4 xs:px-5 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
-        {/* Section Header - Responsive */}
+        {/* Section Header - Updated */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
           <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 bg-[#5056e6]/10 rounded-full mb-3 sm:mb-4">
-            <span className="text-xs sm:text-sm font-semibold text-[#5056e6]">OUR TEAM</span>
+            <span className="text-xs sm:text-sm font-semibold text-[#5056e6]">FYP TEAM</span>
           </div>
           <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-3 sm:mb-4">
-            Meet Our Expert Team
+            Meet the CareVision Team
           </h2>
           <p className="text-sm xs:text-base sm:text-lg text-[#979999] max-w-xl sm:max-w-2xl mx-auto leading-relaxed">
-            Dedicated professionals working together to revolutionize healthcare through AI
+            Department of Computing, FEST BSSE - Final Year Project Group
           </p>
         </div>
 
-        {/* Team Container - Grid ki jagah flex use kiya */}
+        {/* Team Container - Main flex container for team cards */}
         <div ref={sectionRef} className="flex flex-col sm:flex-row flex-wrap gap-6 sm:gap-8 justify-center">
           {team.map((member, index) => {
             const isVisible = visibleMembers.includes(index)
@@ -95,7 +96,7 @@ export default function TeamSection() {
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
                     onError={(e) => {
                       e.target.src = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
                     }}
@@ -155,16 +156,56 @@ export default function TeamSection() {
           })}
         </div>
 
-        {/* Optional: View All Button or Additional Text */}
+        {/* Project Development Overview - Converted from grid to flex */}
+        <div className="mt-12 sm:mt-16 p-4 xs:p-5 sm:p-6 bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg sm:rounded-xl">
+          <h3 className="text-lg xs:text-xl sm:text-2xl font-bold text-black mb-3 sm:mb-4 text-center">
+            Project Development Responsibilities
+          </h3>
+          {/* Converted: grid grid-cols-1 sm:grid-cols-3 to flex container */}
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 justify-center">
+            {/* First team member responsibilities - now flex item */}
+            <div className="flex-1 min-w-[250px] max-w-[350px] bg-white p-4 rounded-lg border border-blue-100">
+              <h4 className="font-bold text-blue-600 mb-2">Sajjad Ali</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Project Documentation</li>
+                <li>• Backend Development</li>
+                <li>• System Architecture</li>
+                <li>• API Integration</li>
+              </ul>
+            </div>
+            {/* Second team member responsibilities - now flex item */}
+            <div className="flex-1 min-w-[250px] max-w-[350px] bg-white p-4 rounded-lg border border-green-100">
+              <h4 className="font-bold text-green-600 mb-2">Muhammad Huzaifa</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Mobile Application</li>
+                <li>• AI Model Integration</li>
+                <li>• Cross-platform Development</li>
+                <li>• User Interface Design</li>
+              </ul>
+            </div>
+            {/* Third team member responsibilities - now flex item */}
+            <div className="flex-1 min-w-[250px] max-w-[350px] bg-white p-4 rounded-lg border border-cyan-100">
+              <h4 className="font-bold text-cyan-600 mb-2">Hafiz Ahtesham</h4>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Web Application</li>
+                <li>• Frontend Development</li>
+                <li>• UI/UX Design</li>
+                <li>• Deployment & Hosting</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Optional: View All Button or Additional Text - Updated */}
         <div className="mt-12 sm:mt-16 text-center">
           <p className="text-xs sm:text-sm text-[#979999] italic mb-4">
-            Our team combines medical expertise with cutting-edge technology
+            Project also supervised by: Mr. Vishal (Co-Supervisor) & Ms. Azadi Memon (Co-Supervisor)
           </p>
           <a 
             href="#" 
             className="inline-block px-6 py-2 sm:px-8 sm:py-3 bg-[#5056e6] text-white text-sm sm:text-base font-medium rounded-lg hover:bg-[#3a25b8] transition-colors duration-200"
           >
-            View Full Team
+            View Project Documentation
           </a>
         </div>
       </div>

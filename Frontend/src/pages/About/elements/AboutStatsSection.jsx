@@ -2,42 +2,43 @@ import { useState, useEffect, useRef } from "react"
 import { FaUsers, FaHospital, FaAward, FaGlobe } from "react-icons/fa"
 
 export default function AboutStatsSection() {
-  const [counters, setCounters] = useState({})
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef(null)
+  const [counters, setCounters] = useState({})  // State for counter animation values
+  const [isVisible, setIsVisible] = useState(false)  // State to track section visibility
+  const sectionRef = useRef(null)  // Reference for the section element
 
+  // REAL PROJECT STATS from your PDF
   const stats = [
     {
-      number: 50,
-      suffix: "K+",
-      label: "Patients Helped",
+      number: 4,
+      suffix: "M+",
+      label: "Annual Deaths",
       icon: <FaUsers />,
       color: "#5056e6",
-      description: "Lives impacted",
+      description: "From lung diseases globally [1]",
     },
     {
-      number: 200,
+      number: 20,
       suffix: "+",
-      label: "Healthcare Partners",
+      label: "Target Clinics",
       icon: <FaHospital />,
       color: "#008059",
-      description: "Trusted institutions",
+      description: "Subscription model (Business Plan)",
     },
     {
-      number: 98,
+      number: 95,
       suffix: "%",
-      label: "Accuracy Rate",
+      label: "Model Accuracy",
       icon: <FaAward />,
       color: "#007a9b",
-      description: "Clinically validated",
+      description: "CNN validation accuracy",
     },
     {
-      number: 25,
-      suffix: "+",
-      label: "Countries Served",
+      number: 100,
+      suffix: "K+",
+      label: "Training Images",
       icon: <FaGlobe />,
       color: "#5056e6",
-      description: "Global reach",
+      description: "NIH + CBIS-DDSM + MIAS datasets",
     },
   ]
 
@@ -46,39 +47,39 @@ export default function AboutStatsSection() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !isVisible) {
-            setIsVisible(true)
-            animateCounters()
+            setIsVisible(true)  // Set section as visible when in viewport
+            animateCounters()   // Start counter animation
           }
         })
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 }  // Trigger when 20% of section is visible
     )
 
     if (sectionRef.current) {
-      observer.observe(sectionRef.current)
+      observer.observe(sectionRef.current)  // Observe the section element
     }
 
-    return () => observer.disconnect()
+    return () => observer.disconnect()  // Clean up observer on unmount
   }, [isVisible])
 
   const animateCounters = () => {
     stats.forEach((stat, index) => {
-      const duration = 2000
-      const steps = 60
-      const increment = stat.number / steps
-      let current = 0
+      const duration = 2000  // Animation duration in milliseconds
+      const steps = 60       // Number of animation steps
+      const increment = stat.number / steps  // Calculate increment per step
+      let current = 0        // Current counter value
 
       const timer = setInterval(() => {
-        current += increment
+        current += increment  // Increment counter
         if (current >= stat.number) {
-          current = stat.number
-          clearInterval(timer)
+          current = stat.number  // Stop at target number
+          clearInterval(timer)   // Clear interval when done
         }
         setCounters((prev) => ({
           ...prev,
-          [index]: Math.floor(current),
+          [index]: Math.floor(current),  // Update counter state
         }))
-      }, duration / steps)
+      }, duration / steps)  // Set interval timing
     })
   }
 
@@ -91,20 +92,20 @@ export default function AboutStatsSection() {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Section Header - Responsive */}
+        {/* Section Header - Updated */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
           <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4 leading-tight">
-            Our Impact in Numbers
+            CareVision Project Impact
           </h2>
           <p className="text-sm xs:text-base sm:text-lg text-blue-100 max-w-xl sm:max-w-2xl mx-auto leading-relaxed">
-            Transforming healthcare worldwide through innovative AI diagnostics
+            Addressing healthcare challenges through AI-powered early detection
           </p>
         </div>
 
-        {/* Stats Container - Grid ki jagah flex use kiya */}
+        {/* Stats Container - Converted from grid to flex */}
         <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 lg:gap-8 justify-center">
           {stats.map((stat, index) => {
-            const count = counters[index] || 0
+            const count = counters[index] || 0  // Get current counter value
             return (
               <div
                 key={index}
@@ -115,14 +116,14 @@ export default function AboutStatsSection() {
                   className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mb-4 sm:mb-6 rounded-lg sm:rounded-xl flex items-center justify-center text-lg sm:text-xl md:text-2xl text-white transition-all duration-300 group-hover:scale-105 sm:group-hover:scale-110 group-hover:rotate-3 bg-white/20"
                   style={{ color: 'white' }}
                 >
-                  {stat.icon}
+                  {stat.icon}  {/* Render icon component */}
                 </div>
 
                 {/* Number - Responsive */}
                 <div className="mb-2 sm:mb-3">
                   <span className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold text-white transition-all duration-300">
-                    {count}
-                    <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl">{stat.suffix}</span>
+                    {count}  {/* Display animated counter */}
+                    <span className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl">{stat.suffix}</span>  {/* Display suffix */}
                   </span>
                 </div>
 
@@ -144,10 +145,33 @@ export default function AboutStatsSection() {
           })}
         </div>
 
-        {/* Optional Bottom Text */}
+        {/* Additional Project Context - Updated */}
+        <div className="mt-8 sm:mt-12 md:mt-16 p-4 xs:p-5 sm:p-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg sm:rounded-xl">
+          {/* Converted from grid to flex for inner content */}
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 justify-center">
+            <div className="flex-1 min-w-[250px] max-w-[400px] text-center sm:text-left">
+              <h4 className="text-base xs:text-lg sm:text-xl font-bold text-white mb-2">Problem Context</h4>
+              <p className="text-xs xs:text-sm text-blue-100">
+                • 82,800 lung disease deaths in Pakistan annually [2]<br/>
+                • 1 in 9 women at risk of breast cancer in Pakistan [10]<br/>
+                • Limited radiologists in low-resource areas
+              </p>
+            </div>
+            <div className="flex-1 min-w-[250px] max-w-[400px] text-center sm:text-left">
+              <h4 className="text-base xs:text-lg sm:text-xl font-bold text-white mb-2">Project Solution</h4>
+              <p className="text-xs xs:text-sm text-blue-100">
+                • Dual AI system for lung + breast cancer detection<br/>
+                • Explainable AI with Grad-CAM visualizations<br/>
+                • Cloud-based deployment for accessibility
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Optional Bottom Text - Updated */}
         <div className="mt-8 sm:mt-12 md:mt-16 text-center">
           <p className="text-xs sm:text-sm text-blue-100 italic">
-            Real-time impact across global healthcare networks
+            FYP Project addressing SDG 3: Good Health and Well-being
           </p>
         </div>
       </div>

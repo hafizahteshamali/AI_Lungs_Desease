@@ -5,35 +5,51 @@ import { toast } from "react-toastify"
 import { postReq } from "../../../api/axios"
 
 export default function XrayDemoSection() {
+  // State for managing selected file
   const [selectedFile, setSelectedFile] = useState(null)
+  // State for image preview URL
   const [preview, setPreview] = useState(null)
+  // State for upload process status
   const [isUploading, setIsUploading] = useState(false)
+  // State for analysis process status
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  // State for storing analysis results
   const [analysisResult, setAnalysisResult] = useState(null)
+  // State for progress bar percentage
   const [progress, setProgress] = useState(0)
+  // State for storing raw API response
   const [apiResponse, setApiResponse] = useState(null)
+  // State for Grad-CAM heatmap image
   const [gradcamImage, setGradcamImage] = useState(null)
+  // State for showing/hiding heatmap overlay
   const [showHeatmap, setShowHeatmap] = useState(true)
+  // State for controlling heatmap opacity (0-100)
   const [heatmapOpacity, setHeatmapOpacity] = useState(50)
 
+  // Ref for file input element
   const fileInputRef = useRef(null)
+  // Ref for section element for scrolling
   const sectionRef = useRef(null)
 
+  // Function to handle file selection from input
   const handleFileSelect = (event) => {
     const file = event.target.files[0]
     if (!file) return
 
+    // Check if file is an image
     if (!file.type.startsWith("image/")) {
       toast.error("Please upload an image file")
       return
     }
 
+    // Set selected file in state
     setSelectedFile(file)
+    // Create preview URL for the image
     const reader = new FileReader()
     reader.onloadend = () => setPreview(reader.result)
     reader.readAsDataURL(file)
     
-    // Reset previous results
+    // Reset previous analysis results
     setAnalysisResult(null)
     setApiResponse(null)
     setGradcamImage(null)
@@ -41,6 +57,7 @@ export default function XrayDemoSection() {
     setShowHeatmap(true)
   }
 
+  // Function to simulate progress bar animation
   const simulateProgress = () => {
     setProgress(0)
     const interval = setInterval(() => {
@@ -55,30 +72,38 @@ export default function XrayDemoSection() {
     return interval
   }
 
+  // Main function to upload and analyze image
   const handleUpload = async () => {
     if (!selectedFile) return
 
+    // Set loading states
     setIsUploading(true)
     setIsAnalyzing(true)
     setProgress(10)
+    // Start progress animation
     const progressInterval = simulateProgress()
 
     try {
+      // Create FormData for API request
       const formData = new FormData()
       formData.append("image", selectedFile)
 
+      // Make API call to backend
       const response = await postReq("/api/Prediction/GetPrediction", formData)
       
+      // Stop progress animation and set to 100%
       clearInterval(progressInterval)
       setProgress(100)
       
+      // Log and store API response
       console.log("API Response:", response.data)
       setApiResponse(response.data)
 
-      // ✅ Process GradCAM image (dynamic key handling)
+      // 🔍 Process GradCAM image (dynamic key handling)
       let gradcamKey = null
       let gradcamValue = null
       
+      // List of possible API response keys for GradCAM image
       const possibleGradcamKeys = ['gradcam', 'heatmap', 'visualization', 'grad_cam', 'gradCam']
       for (const key of possibleGradcamKeys) {
         if (response.data?.[key] && response.data[key].trim() !== "") {
@@ -88,6 +113,7 @@ export default function XrayDemoSection() {
         }
       }
 
+      // If GradCAM image found, convert to data URL if needed
       if (gradcamValue) {
         let gradcamUrl = gradcamValue
         if (!gradcamUrl.startsWith("data:image")) {
@@ -96,9 +122,10 @@ export default function XrayDemoSection() {
         setGradcamImage(gradcamUrl)
       }
 
-      // ✅ Process predictions dynamically
+      // 🔍 Process predictions dynamically from API response
       let predictionsData = null
       
+      // Possible keys for predictions in API response
       const possiblePredictionKeys = ['predictions', 'results', 'diseases', 'findings', 'prediction']
       for (const key of possiblePredictionKeys) {
         if (response.data?.[key] && typeof response.data[key] === 'object') {
@@ -107,26 +134,28 @@ export default function XrayDemoSection() {
         }
       }
 
-      // ✅ Process status
+      // 🔍 Process status from various possible keys
       const status = response.data?.status || 
                     response.data?.Status || 
                     response.data?.result || 
                     "unknown"
       
-      // ✅ Process visualized_finding
+      // 🔍 Process visualized finding from various possible keys
       const visualized_finding = response.data?.visualized_finding || 
                                 response.data?.visualizedFinding || 
                                 response.data?.finding || 
                                 "None"
 
+      // If predictions data exists, process each disease
       if (predictionsData) {
         const diseases = []
         
-        // ✅ Loop through predictions object (dynamic keys)
+        // Loop through each disease prediction
         for (const [diseaseName, data] of Object.entries(predictionsData)) {
           let score = 0
           let detected = false
           
+          // Extract score and detection status from data
           if (typeof data === 'object' && data !== null) {
             score = data.score || data.Score || data.probability || data.Probability || data.value || 0
             detected = data.detected || data.Detected || data.isDetected || (score > 0.5)
@@ -135,8 +164,10 @@ export default function XrayDemoSection() {
             detected = score > 0.5
           }
           
+          // Convert to percentage
           const probability = Math.round(score * 100)
           
+          // Determine risk level based on probability
           let riskLevel = "low"
           let barColor = "from-green-500 to-emerald-500"
           
@@ -148,6 +179,7 @@ export default function XrayDemoSection() {
             barColor = "from-yellow-500 to-amber-500"
           }
 
+          // Add disease to list
           diseases.push({
             name: diseaseName,
             probability,
@@ -158,13 +190,17 @@ export default function XrayDemoSection() {
           })
         }
         
+        // Sort diseases by probability (highest first)
         diseases.sort((a, b) => b.probability - a.probability)
         
+        // Get top disease
         const topDisease = diseases[0]
         
+        // Generate findings list
         const findings = []
         const recommendations = []
         
+        // Add each disease to findings
         diseases.forEach(d => {
           if (d.detected) {
             findings.push(`${d.name} detected (${d.probability}%, ${d.riskLevel} risk)`)
@@ -173,11 +209,13 @@ export default function XrayDemoSection() {
           }
         })
         
+        // Calculate average confidence
         if (diseases.length > 0) {
           const avgConfidence = Math.round(diseases.reduce((sum, d) => sum + d.probability, 0) / diseases.length)
           findings.push(`Overall confidence: ${avgConfidence}%`)
         }
         
+        // Generate recommendations based on risk levels
         const highRiskDiseases = diseases.filter(d => d.riskLevel === "high")
         if (highRiskDiseases.length > 0) {
           recommendations.push("🚨 Immediate medical consultation required")
@@ -193,18 +231,20 @@ export default function XrayDemoSection() {
           recommendations.push("Maintain healthy lifestyle")
         }
 
+        // Set analysis result with all processed data
         setAnalysisResult({
           disease: topDisease ? `${topDisease.name} ${topDisease.detected ? 'Detected' : 'Not Detected'}` : "No Significant Findings",
           confidence: topDisease ? `${topDisease.probability}%` : "100%",
           topDisease: topDisease?.name || "None",
           topProbability: topDisease?.probability || 0,
-          findings: findings.slice(0, 4),
+          findings: findings.slice(0, 4), // Limit to 4 findings
           recommendations,
           allDiseases: diseases,
           visualized_finding,
           status
         })
       } else {
+        // If no predictions data, create generic analysis result
         setAnalysisResult({
           disease: "Analysis Complete",
           confidence: "95%",
@@ -225,18 +265,22 @@ export default function XrayDemoSection() {
         })
       }
 
+      // Reset loading states
       setIsUploading(false)
       setIsAnalyzing(false)
       toast.success("Analysis completed successfully!")
 
     } catch (error) {
+      // Handle API error
       clearInterval(progressInterval)
       setIsUploading(false)
       setIsAnalyzing(false)
       console.error("API Error:", error)
       
+      // Show error toast
       toast.error(error?.response?.data?.message || "Analysis failed. Please try again.")
       
+      // Show demo results if API fails
       setAnalysisResult({
         disease: "Demo Result",
         confidence: "98.5%",
@@ -258,6 +302,7 @@ export default function XrayDemoSection() {
     }
   }
 
+  // Function to remove selected file and reset states
   const handleRemoveFile = () => {
     setSelectedFile(null)
     setPreview(null)
@@ -265,10 +310,12 @@ export default function XrayDemoSection() {
     setApiResponse(null)
     setGradcamImage(null)
     setProgress(0)
+    // Reset file input value
     if (fileInputRef.current) fileInputRef.current.value = ""
   }
 
   return (
+    // Main section container with id for scrolling
     <section
       ref={sectionRef}
       id="xray-demo"
@@ -276,6 +323,7 @@ export default function XrayDemoSection() {
     >
       <div className="max-w-6xl mx-auto">
 
+        {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
           <div className="inline-block px-4 py-2 bg-[#5056e6]/10 rounded-full mb-4">
             <span className="text-sm font-semibold text-[#5056e6]">TRY OUR DEMO</span>
@@ -289,14 +337,18 @@ export default function XrayDemoSection() {
         </div>
 
         {/* UPLOAD SECTION - FIRST ROW */}
+        {/* Only show upload section if no analysis result yet */}
         {!analysisResult && (
           <div className="w-full">
             <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 sm:p-8 shadow-lg max-w-2xl mx-auto">
+              
+              {/* Upload Area */}
               <div
                 className={`border-2 rounded-xl p-6 sm:p-8 text-center transition-all
                   ${selectedFile ? "border-green-500" : "border-dashed border-gray-300 hover:border-[#5056e6] cursor-pointer"}`}
                 onClick={() => !selectedFile && fileInputRef.current?.click()}
               >
+                {/* Show upload interface if no file selected */}
                 {!selectedFile ? (
                   <>
                     <div className="w-20 h-20 bg-[#5056e6]/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -309,7 +361,9 @@ export default function XrayDemoSection() {
                     </button>
                   </>
                 ) : (
+                  // Show preview if file is selected
                   <div className="relative">
+                    {/* Close button to remove file */}
                     <button
                       onClick={handleRemoveFile}
                       className="absolute -top-2 -right-2 bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center z-10"
@@ -330,6 +384,7 @@ export default function XrayDemoSection() {
                   </div>
                 )}
 
+                {/* Hidden file input */}
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -339,6 +394,7 @@ export default function XrayDemoSection() {
                 />
               </div>
 
+              {/* Progress Bar during upload/analysis */}
               {(isUploading || isAnalyzing) && (
                 <div className="mt-6">
                   <div className="flex justify-between text-sm mb-1">
@@ -359,6 +415,7 @@ export default function XrayDemoSection() {
                 </div>
               )}
 
+              {/* Analyze Button */}
               {selectedFile && !analysisResult && !isUploading && !isAnalyzing && (
                 <button
                   onClick={handleUpload}
@@ -370,6 +427,7 @@ export default function XrayDemoSection() {
                 </button>
               )}
 
+              {/* Disabled button during processing */}
               {selectedFile && (isUploading || isAnalyzing) && (
                 <button
                   disabled
@@ -384,10 +442,13 @@ export default function XrayDemoSection() {
         )}
 
         {/* IMAGES ROW - SECOND ROW (AFTER ANALYSIS) */}
+        {/* Show image comparison after analysis is complete */}
         {analysisResult && gradcamImage && (
           <div className="w-full mb-8">
+            {/* Using grid for two-column layout on large screens */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-              {/* Original Image */}
+              
+              {/* Original Image Card */}
               <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 shadow-lg h-full">
                 <h3 className="text-lg font-bold text-gray-800 mb-4">Original X-ray Image</h3>
                 <div className="bg-black rounded-lg overflow-hidden shadow h-64">
@@ -406,7 +467,7 @@ export default function XrayDemoSection() {
                 </div>
               </div>
 
-              {/* GradCAM Image */}
+              {/* GradCAM Image Card */}
               <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 shadow-lg h-full">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-bold text-gray-800">AI Heatmap Analysis</h3>
@@ -419,14 +480,17 @@ export default function XrayDemoSection() {
                   </button>
                 </div>
 
+                {/* Heatmap display area */}
                 <div className="bg-black rounded-lg overflow-hidden shadow relative h-64">
                   {showHeatmap ? (
+                    // Show pure heatmap image
                     <img
                       src={gradcamImage}
                       alt="AI Heatmap Analysis"
                       className="w-full h-full object-contain"
                     />
                   ) : (
+                    // Show overlay of heatmap on original image
                     preview && (
                       <>
                         <img
@@ -443,6 +507,7 @@ export default function XrayDemoSection() {
                   )}
                 </div>
 
+                {/* Heatmap controls */}
                 <div className="mt-4 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-600">Heatmap Opacity</span>
@@ -459,6 +524,7 @@ export default function XrayDemoSection() {
                     </div>
                   </div>
                   
+                  {/* Heatmap color legend */}
                   <div className="flex gap-3 justify-center">
                     <div className="flex items-center gap-1">
                       <div className="w-3 h-3 rounded bg-red-500"></div>
@@ -486,10 +552,13 @@ export default function XrayDemoSection() {
         )}
 
         {/* RESULTS SECTION - THIRD ROW (AFTER ANALYSIS) */}
+        {/* Show detailed results after analysis */}
         {analysisResult && (
           <div className="w-full">
             <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 md:p-8 shadow-lg">
+              {/* Flex layout for results: diagnosis summary on left, details on right */}
               <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
+                
                 {/* Left Column - Diagnosis Summary */}
                 <div className="lg:w-2/5">
                   <div className="flex justify-between items-center mb-6">
@@ -503,6 +572,7 @@ export default function XrayDemoSection() {
                     </span>
                   </div>
 
+                  {/* Main diagnosis card */}
                   <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-green-200 rounded-xl p-5 mb-6">
                     <p className="text-2xl font-bold text-gray-800 mb-2">{analysisResult.disease}</p>
                     <p className="text-green-600 text-lg font-medium mb-2">
@@ -514,7 +584,7 @@ export default function XrayDemoSection() {
                     </div>
                   </div>
 
-                  {/* Disease Probabilities */}
+                  {/* Disease Probabilities Section */}
                   {analysisResult.allDiseases && analysisResult.allDiseases.length > 0 && (
                     <div className="mb-6">
                       <h4 className="font-bold mb-4 text-gray-800">Disease Probabilities</h4>
@@ -540,6 +610,7 @@ export default function XrayDemoSection() {
                                 {disease.probability}%
                               </span>
                             </div>
+                            {/* Progress bar for disease probability */}
                             <div className="w-full bg-gray-200 rounded-full h-2.5">
                               <div 
                                 className={`h-2.5 rounded-full bg-gradient-to-r ${disease.barColor}`}
@@ -557,7 +628,7 @@ export default function XrayDemoSection() {
                     </div>
                   )}
 
-                  {/* Try Another Button */}
+                  {/* Button to try another image */}
                   <button
                     onClick={handleRemoveFile}
                     className="w-full py-3 border-2 border-[#5056e6] text-[#5056e6] font-bold rounded-lg hover:bg-[#5056e6] hover:text-white transition-all"
@@ -568,8 +639,10 @@ export default function XrayDemoSection() {
 
                 {/* Right Column - Findings & Recommendations */}
                 <div className="lg:w-3/5">
+                  {/* Grid layout for findings and recommendations */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Key Findings */}
+                    
+                    {/* Key Findings Card */}
                     <div className="bg-blue-50 border border-blue-100 rounded-xl p-5">
                       <h4 className="font-bold mb-4 text-gray-800 text-lg">Key Findings</h4>
                       <div className="space-y-3">
@@ -582,7 +655,7 @@ export default function XrayDemoSection() {
                       </div>
                     </div>
 
-                    {/* Recommendations */}
+                    {/* Recommendations Card */}
                     <div className="bg-green-50 border border-green-100 rounded-xl p-5">
                       <h4 className="font-bold mb-4 text-gray-800 text-lg">Recommendations</h4>
                       <div className="space-y-3">
@@ -594,7 +667,7 @@ export default function XrayDemoSection() {
                       </div>
                     </div>
 
-                    {/* API Response Info */}
+                    {/* API Response Details (if available) */}
                     {apiResponse && (
                       <div className="md:col-span-2">
                         <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">

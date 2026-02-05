@@ -8,9 +8,9 @@ export default function TeamContactSection() {
       role: "Team Lead & Backend Developer", // Team member role
       email: "sajjadali1714@gmail.com", // Team member email
       phone: "+92 311 2903664", // Team member phone number
-      expertise: "Project Documentation, Backend Development & System Architecture", // Team member expertise
+      expertise: "AI Model Development and Training, Project Documentation, Backend Development & System Architecture", // Updated expertise
       color: "#5056e6", // Color for styling
-      image: "/assets/images/about/sajjad-ali.jpeg", // Team member image path
+      image: "/assets/images/about/sajjad.png", // Team member image path
       rollNumber: "1077-2022" // University roll number
     },
     {
@@ -46,7 +46,7 @@ export default function TeamContactSection() {
           </div>
           <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-3 sm:mb-4"> {/* Main heading */}
             Connect With
-            <span className="text-[#5056e6]"> CareVision Developers</span> {/* Colored text */}
+            <span className="text-[#5056e6]"> Precision Scan Developers</span> {/* Colored text */}
           </h2>
           <p className="text-sm xs:text-base sm:text-lg text-[#979999] max-w-2xl mx-auto"> {/* Description */}
             Direct contact with FEST BSSE final year project team members
@@ -58,7 +58,7 @@ export default function TeamContactSection() {
           {teamContacts.map((member, index) => ( // Map through team contacts
             <div 
               key={index} // Unique key for React list
-              className="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-500 flex-1 min-w-[300px] max-w-[400px] md:max-w-none" // Card styling
+              className="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2 transition-all duration-500 w-[100%] md:w-[49%] lg:w-[30%] md:max-w-none" // Card styling
             >
               {/* Top color bar for each card */}
               <div 
@@ -132,8 +132,8 @@ export default function TeamContactSection() {
           ))}
         </div>
 
-        {/* Project Supervisor Information section */}
-        <div className="mt-12 p-6 bg-gradient-to-r from-blue-50 to-gray-50 rounded-xl border border-blue-200 max-w-3xl mx-auto"> {/* Supervisor container */}
+        {/* Project Consultant Information section - Updated */}
+        <div className="mt-12 p-6 bg-gradient-to-r from-blue-50 to-gray-50 rounded-xl border border-blue-200 max-w-3xl mx-auto"> {/* Consultant container */}
           <div className="flex flex-col md:flex-row items-center gap-6"> {/* Responsive layout */}
             {/* Icon container */}
             <div className="flex-shrink-0"> {/* Icon wrapper */}
@@ -143,11 +143,14 @@ export default function TeamContactSection() {
             </div>
             {/* Text content */}
             <div className="flex-1 text-center md:text-left"> {/* Text container */}
-              <h3 className="text-xl font-bold text-black mb-2">Project Supervision</h3> {/* Title */}
-              <p className="text-gray-700"> {/* Supervisor details */}
-                <span className="font-semibold">Supervisor:</span> Muhammad Khawaja Hassan Nizami (Assistant Professor, Dept. of Computing)<br/> {/* Main supervisor */}
-                <span className="font-semibold">Co-Supervisors:</span> Mr. Vishal & Ms. Azadi Memon<br/> {/* Co-supervisors */}
+              <h3 className="text-xl font-bold text-black mb-2">Project Consultants</h3> {/* Updated title */}
+              <p className="text-gray-700"> {/* Consultant details */}
+                <span className="font-semibold">Consultant:</span> Muhammad Khawaja Hassan Nizami (Assistant Professor, Dept. of Computing)<br/> {/* Updated to Consultant */}
+                <span className="font-semibold">Co-Consultant:</span> Ms. Azadi Memon<br/> {/* Updated to Co-Consultant */}
                 <span className="text-sm text-gray-600">FEST BSSE Final Year Project 2025</span> {/* Project details */}
+              </p>
+              <p className="text-sm text-gray-500 mt-2 italic">
+                Note: Project also supervised by Mr. Vishal (Co-Supervisor)
               </p>
             </div>
           </div>

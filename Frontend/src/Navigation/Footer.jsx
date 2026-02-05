@@ -13,12 +13,12 @@ export default function Footer() {
               <NavLink to="/">
                 <img 
                   src="/assets/images/home/logo-removebg-preview.png" 
-                  alt="CareVision Logo" 
+                  alt="Precision Scan Logo" 
                   className="h-16 object-contain" 
                 />
               </NavLink>
               <div>
-                <h2 className="text-2xl font-bold text-white">CareVision</h2>
+                <h2 className="text-2xl font-bold text-white">Precision Scan</h2>
                 <p className="text-sm text-[#979999]">FYP Project - FEST BSSE</p>
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm text-slate-500 mb-4 md:mb-0">
-            <p>© 2026 CareVision - Final Year Project</p>
+            <p>© 2026 Precision Scan - Final Year Project</p>
             <p className="mt-1">Department of Computing, FEST BSSE | Group: Sajjad Ali, Muhammad Huzaifa Latif, Hafiz Ahtesham Ali Rehmani</p>
           </div>
         </div>

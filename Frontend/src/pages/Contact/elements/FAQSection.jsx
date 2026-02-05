@@ -8,8 +8,8 @@ export default function FAQSection() {
   // FAQ data array banaya hai FYP project ke context mein
   const faqs = [
     {
-      question: "What diseases does CareVision detect?", // FAQ question
-      answer: "CareVision is a dual AI system that detects lung diseases (COVID-19, pneumonia, lung opacity) and breast cancer from medical images. The system uses chest X-rays for lung diseases and mammograms for breast cancer detection.", // Detailed answer
+      question: "What diseases does Precision Scan detect?", // FAQ question
+      answer: "Precision Scan is a dual AI system that detects lung diseases (COVID-19, pneumonia, lung opacity) and breast cancer from medical images. The system uses chest X-rays for lung diseases and mammograms for breast cancer detection.", // Detailed answer
       category: "Functionality" // FAQ category
     },
     {
@@ -24,11 +24,11 @@ export default function FAQSection() {
     },
     {
       question: "Is this system designed for low-resource areas?", // FAQ question
-      answer: "Yes, CareVision is specifically designed for regions with limited radiologists and healthcare infrastructure, with a focus on Pakistan. The cloud-based deployment makes it accessible via web and mobile platforms.", // Detailed answer
+      answer: "Yes, Precision Scan is specifically designed for regions with limited radiologists and healthcare infrastructure, with a focus on Pakistan. The cloud-based deployment makes it accessible via web and mobile platforms.", // Detailed answer
       category: "Target Users" // FAQ category
     },
     {
-      question: "How accurate is the CareVision system?", // FAQ question
+      question: "How accurate is the Precision Scan system?", // FAQ question
       answer: "Our Custom CNN model achieves 92-95% validation accuracy based on literature review benchmarks. The system is designed to support radiologists, not replace them, providing second opinions for early detection.", // Detailed answer
       category: "Performance" // FAQ category
     },
@@ -49,7 +49,7 @@ export default function FAQSection() {
             <span className="text-xs sm:text-sm font-semibold text-[#5056e6]">PROJECT FAQ</span> {/* Badge text */}
           </div>
           <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-3 sm:mb-4"> {/* Main heading */}
-            CareVision Project
+            Precision Scan Project
             <span className="text-[#5056e6]"> Questions</span> {/* Colored text */}
           </h2>
           <p className="text-sm xs:text-base sm:text-lg text-[#979999] max-w-2xl mx-auto"> {/* Description */}

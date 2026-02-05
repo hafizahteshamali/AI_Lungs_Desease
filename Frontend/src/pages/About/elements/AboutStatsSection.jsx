@@ -95,7 +95,7 @@ export default function AboutStatsSection() {
         {/* Section Header - Updated */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16 px-4">
           <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4 leading-tight">
-            CareVision Project Impact
+            Precision Scan Project Impact
           </h2>
           <p className="text-sm xs:text-base sm:text-lg text-blue-100 max-w-xl sm:max-w-2xl mx-auto leading-relaxed">
             Addressing healthcare challenges through AI-powered early detection

@@ -57,7 +57,7 @@ export default function ContactFormSection() {
               <div className="w-10 h-10 bg-[#5056e6] rounded-lg flex items-center justify-center"> {/* Icon container */}
                 <FaPaperPlane className="text-white text-lg" /> {/* Icon */}
               </div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-black">Contact CareVision Team</h2> {/* Form title */}
+              <h2 className="text-2xl sm:text-3xl font-bold text-black">Contact Precision Scan Team</h2> {/* Form title */}
             </div>
             
             {/* Success message display condition */}
@@ -143,7 +143,7 @@ export default function ContactFormSection() {
                     required
                     rows="6" // Fixed number of rows
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5056e6] focus:border-transparent outline-none transition-all resize-none" // Textarea styling
-                    placeholder="Please describe your interest in CareVision project, potential collaboration, or any questions..." // Placeholder text
+                    placeholder="Please describe your interest in Precision Scan project, potential collaboration, or any questions..." // Placeholder text
                   ></textarea>
                 </div>
 
@@ -183,7 +183,7 @@ export default function ContactFormSection() {
                   </div>
                   <div className="flex-1"> {/* Content container */}
                     <h4 className="font-bold text-black">Project Inquiries</h4> {/* Card title */}
-                    <p className="text-[#979999] text-sm">carevision.fyp@fest.edu.pk</p> {/* Email */}
+                    <p className="text-[#979999] text-sm">Precision Scan.fyp@fest.edu.pk</p> {/* Email */}
                     <p className="text-[#979999] text-sm mt-1">Response time: 24-48 hours</p> {/* Response time */}
                   </div>
                 </div>

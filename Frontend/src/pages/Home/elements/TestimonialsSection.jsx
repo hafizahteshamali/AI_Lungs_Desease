@@ -9,7 +9,7 @@ const TestimonialSlider = () => {
   const testimonials = [
     {
       id: 1,
-      text: "CareVision's dual-disease detection system has significantly reduced diagnosis time in our rural clinic. The Grad-CAM visualizations help our junior radiologists understand AI decisions.",
+      text: "Precision Scan's dual-disease detection system has significantly reduced diagnosis time in our rural clinic. The Grad-CAM visualizations help our junior radiologists understand AI decisions.",
       name: "Dr. Muhammad Ali",
       position: "Radiologist",
       image: "/assets/images/home/Dr-Emily-Rodriguez.jpg",
@@ -18,7 +18,7 @@ const TestimonialSlider = () => {
     },
     {
       id: 2,
-      text: "The integration with local Pakistani datasets makes CareVision particularly effective for our patient population. Early detection of breast cancer cases has improved by 40% since implementation.",
+      text: "The integration with local Pakistani datasets makes Precision Scan particularly effective for our patient population. Early detection of breast cancer cases has improved by 40% since implementation.",
       name: "Dr. Fatima Zohra",
       position: "Oncologist",
       image: "/assets/images/home/Dr-Robert-Kim.jpg",
@@ -27,7 +27,7 @@ const TestimonialSlider = () => {
     },
     {
       id: 3,
-      text: "As a medical director in a low-resource setting, CareVision's cloud-based system has been invaluable. It supports our limited radiologist staff with accurate second opinions.",
+      text: "As a medical director in a low-resource setting, Precision Scan's cloud-based system has been invaluable. It supports our limited radiologist staff with accurate second opinions.",
       name: "Dr. Ahmed Hassan",
       position: "Medical Director",
       image: "/assets/images/home/Dr-Lisa-Wang.jpg",
@@ -78,7 +78,7 @@ const TestimonialSlider = () => {
       <div className="max-w-7xl mx-auto">
         {/* Section heading */}
         <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
-          Healthcare Professionals on CareVision
+          Healthcare Professionals on Precision Scan
         </h2>
         
         {/* Testimonial slider container */}

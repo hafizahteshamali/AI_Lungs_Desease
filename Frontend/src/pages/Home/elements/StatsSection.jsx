@@ -112,7 +112,7 @@ export default function StatsSection() {
         {/* Section Header with project title */}
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-black mb-4">
-            CareVision Impact & Performance
+            Precision Scan Impact & Performance
           </h2>
           <p className="text-lg text-[#979999] max-w-2xl mx-auto">
             Dual disease detection system designed for low-resource healthcare settings in Pakistan

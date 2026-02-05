@@ -70,7 +70,7 @@ export default function MissionSection() {
               {/* Mission image with hover effect */}
               <img
                 src="/assets/images/home/mission.jpg"
-                alt="CareVision Mission - AI Diagnostic System"
+                alt="Precision Scan Mission - AI Diagnostic System"
                 className="w-full h-[250px] xs:h-[300px] sm:h-[350px] md:h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
                 onError={(e) => {
                   // Fallback image if original fails to load
@@ -109,7 +109,7 @@ export default function MissionSection() {
             {/* Vision Description */}
             <div className="space-y-3 sm:space-y-4">
               <p className="text-sm xs:text-base sm:text-lg text-[#979999] leading-relaxed">
-                We envision CareVision as a scalable solution that can be deployed in hospitals across Pakistan and similar developing regions, supporting Sustainable Development Goal 3 (Good Health and Well-being).
+                We envision Precision Scan as a scalable solution that can be deployed in hospitals across Pakistan and similar developing regions, supporting Sustainable Development Goal 3 (Good Health and Well-being).
               </p>
               <p className="text-sm xs:text-base sm:text-lg text-[#979999] leading-relaxed">
                 Future expansion includes integrating more imaging modalities (CT, MRI), covering additional diseases, and creating mobile applications for rural healthcare workers to improve accessibility in remote areas.
@@ -123,7 +123,7 @@ export default function MissionSection() {
               {/* Vision image with hover effect */}
               <img
                 src="/assets/images/home/mission.jpg"
-                alt="CareVision Future Vision - Healthcare Innovation"
+                alt="Precision Scan Future Vision - Healthcare Innovation"
                 className="w-full h-[250px] xs:h-[300px] sm:h-[350px] md:h-[400px] object-cover transition-transform duration-700 group-hover:scale-110"
                 onError={(e) => {
                   // Fallback image if original fails to load

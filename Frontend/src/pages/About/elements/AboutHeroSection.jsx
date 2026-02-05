@@ -31,7 +31,7 @@ export default function AboutHeroSection() {
           {/* Project Badge - FYP identification */}
           <div className={`inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full mb-4 md:mb-6 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
             <IoSparkles className="text-white text-sm md:text-base" />
-            <span className="text-xs md:text-sm font-medium text-white">About CareVision FYP</span>
+            <span className="text-xs md:text-sm font-medium text-white">About Precision Scan FYP</span>
           </div>
 
           {/* Main Heading and Description Section */}
@@ -47,7 +47,7 @@ export default function AboutHeroSection() {
             </h1>
             {/* Project description */}
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 max-w-2xl md:max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
-              CareVision is a dual AI system for early detection of lung diseases and breast cancer from medical images, designed specifically for regions with limited healthcare infrastructure.
+              Precision Scan is a dual AI system for early detection of lung diseases and breast cancer from medical images, designed specifically for regions with limited healthcare infrastructure.
             </p>
           </div>
 

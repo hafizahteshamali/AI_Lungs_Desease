@@ -52,7 +52,7 @@ export default function HeroSection() {
               </h1>
               {/* Project description */}
               <p className="text-lg lg:text-xl text-[#979999] leading-relaxed max-w-xl">
-                CareVision: A dual AI system for early detection of lung diseases (COVID-19, pneumonia, opacity) and breast cancer from X-rays & mammograms, designed for low-resource areas.
+                Precision Scan: A dual AI system for early detection of lung diseases (COVID-19, pneumonia, opacity) and breast cancer from X-rays & mammograms, designed for low-resource areas.
               </p>
             </div>
 
@@ -111,7 +111,7 @@ export default function HeroSection() {
               {/* Project logo/visualization */}
               <img
                 src="/assets/images/crop-logo-removebg-preview.png"
-                alt="CareVision AI System"
+                alt="Precision Scan AI System"
                 className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
               />
               

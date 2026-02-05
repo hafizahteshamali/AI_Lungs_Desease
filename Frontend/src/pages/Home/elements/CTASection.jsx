@@ -5,7 +5,7 @@ export default function CTASection() {
   // State for tracking button hover effect
   const [isHovered, setIsHovered] = useState(false)
 
-  // REAL PROJECT BENEFITS from your PDF - Key features of CareVision
+  // REAL PROJECT BENEFITS from your PDF - Key features of Precision Scan
   const benefits = [
     "Dual Disease Detection",
     "Explainable AI (Grad-CAM)",
@@ -57,7 +57,7 @@ export default function CTASection() {
 
         {/* Project Description */}
         <p className="text-xl lg:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-          CareVision: AI-powered early detection of lung diseases and breast cancer for hospitals and clinics in Pakistan and similar regions
+          Precision Scan: AI-powered early detection of lung diseases and breast cancer for hospitals and clinics in Pakistan and similar regions
         </p>
 
         {/* Benefits List - Using flex for horizontal layout */}

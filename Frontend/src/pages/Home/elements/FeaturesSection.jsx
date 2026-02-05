@@ -71,7 +71,7 @@ export default function FeaturesSection() {
         <div className="text-center mb-16">
           {/* Feature badge */}
           <div className="inline-block px-4 py-2 bg-[#5056e6]/10 rounded-full mb-4">
-            <span className="text-sm font-semibold text-[#5056e6]">CAREVISION FEATURES</span>
+            <span className="text-sm font-semibold text-[#5056e6]">PRECISION SCAN FEATURES</span>
           </div>
           {/* Main heading */}
           <h2 className="text-4xl lg:text-5xl font-bold text-black mb-4">

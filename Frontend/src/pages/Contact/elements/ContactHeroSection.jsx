@@ -21,7 +21,7 @@ export default function ContactHeroSection() {
           {/* Left: Main Content - Updated */}
           <div className="flex-1 text-center lg:text-left">
             <div className={`inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full mb-4 md:mb-6 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
-              <span className="text-xs md:text-sm font-medium text-white">CONTACT CAREVISION TEAM</span>
+              <span className="text-xs md:text-sm font-medium text-white">CONTACT Precision Scan TEAM</span>
             </div>
 
             <div className={`space-y-4 md:space-y-6 mb-6 md:mb-8 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`} style={{ animationDelay: '0.2s' }}>

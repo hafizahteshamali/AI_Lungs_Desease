@@ -71,7 +71,7 @@ export default function HowItWorksSection() {
         <div className="text-center mb-16">
           {/* Workflow badge */}
           <div className="inline-block px-4 py-2 bg-[#5056e6]/10 rounded-full mb-4">
-            <span className="text-sm font-semibold text-[#5056e6]">CAREVISION WORKFLOW</span>
+            <span className="text-sm font-semibold text-[#5056e6]">PRECISION SCAN WORKFLOW</span>
           </div>
           {/* Main heading */}
           <h2 className="text-4xl lg:text-5xl font-bold text-black mb-4">

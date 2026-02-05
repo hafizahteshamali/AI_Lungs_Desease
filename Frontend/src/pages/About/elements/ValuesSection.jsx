@@ -7,7 +7,7 @@ export default function ValuesSection() {
   // Ref for observing section intersection
   const sectionRef = useRef(null)
 
-  // REAL PROJECT VALUES from your PDF context - Core principles of CareVision
+  // REAL PROJECT VALUES from your PDF context - Core principles of Precision Scan
   const values = [
     {
       icon: <FaLightbulb />,
@@ -91,7 +91,7 @@ export default function ValuesSection() {
           
           {/* Main heading */}
           <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-3 sm:mb-4">
-            CareVision Guiding Principles
+            Precision Scan Guiding Principles
           </h2>
           
           {/* Section description */}

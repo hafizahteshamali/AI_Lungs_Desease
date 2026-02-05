@@ -51,8 +51,20 @@ export default function Navigation() {
 
   return (
     <>
+      {/* Add padding to body to prevent content from hiding behind fixed header */}
+      <style>{`
+        body {
+          padding-top: 4rem; /* 64px for h-16 */
+        }
+        @media (min-width: 1024px) {
+          body {
+            padding-top: 5rem; /* 80px for lg:h-20 */
+          }
+        }
+      `}</style>
+      
       <nav
-        className={`sticky top-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
             ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200"
             : "bg-white border-b border-gray-200"
@@ -181,7 +193,7 @@ export default function Navigation() {
 
         {/* Mobile Menu Overlay */}
         <div
-          className={`md:hidden fixed inset-0 z-40 transition-all duration-300 ${
+          className={`md:hidden inset-0 z-40 transition-all duration-300 ${
             isOpen ? "opacity-100 visible" : "opacity-0 invisible"
           }`}
         >
@@ -195,11 +207,11 @@ export default function Navigation() {
 
           {/* Slide-in Menu */}
           <div
-            className={`absolute top-0 right-0 h-full w-full sm:w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-out ${
+            className={`fixed top-0 !bottom-0 right-0 h-[100vh] w-full sm:w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-out ${
               isOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            <div className="flex flex-col h-full">
+            <div className="flex flex-col h-full"> {/* Added pt-16 for header height */}
               {/* Menu Header - FIXED: Remove duplicate text */}
               <div className="flex justify-between items-center p-6 border-b border-gray-200 bg-gradient-to-r from-[#5056e6] to-[#008059]">
                 <div className="flex items-center gap-3">
@@ -239,7 +251,7 @@ export default function Navigation() {
               </div>
 
               {/* Mobile CTA Buttons */}
-              <div className="p-6 border-t border-gray-200 space-y-3 bg-gray-50">
+              <div className="p-6 mb-10 border-t border-gray-200 space-y-3 bg-gray-50">
                 {isLoggedIn ? (
                   <button
                     onClick={() => {

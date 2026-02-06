@@ -14,7 +14,6 @@ export default function Home() {
       <FeaturesSection />
       <StatsSection />
       <HowItWorksSection />
-      <TestimonialsSection />
       <CTASection />
     </div>
   )

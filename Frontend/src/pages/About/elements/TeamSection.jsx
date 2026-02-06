@@ -301,19 +301,6 @@ export default function TeamSection() {
             </div>
           </div>
         </div>
-
-        {/* Optional: View All Button or Additional Text - Updated */}
-        <div className="mt-12 sm:mt-16 text-center">
-          <p className="text-xs sm:text-sm text-[#979999] italic mb-4">
-            Project also supervised by: Mr. Vishal (Co-Supervisor)
-          </p>
-          <a 
-            href="#" 
-            className="inline-block px-6 py-2 sm:px-8 sm:py-3 bg-[#5056e6] text-white text-sm sm:text-base font-medium rounded-lg hover:bg-[#3a25b8] transition-colors duration-200"
-          >
-            View Project Documentation
-          </a>
-        </div>
       </div>
     </section>
   )

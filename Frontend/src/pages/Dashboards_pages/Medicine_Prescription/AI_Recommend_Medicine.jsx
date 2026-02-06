@@ -27,7 +27,14 @@ import {
   FaCapsules,
   FaFlask,
   FaChartLine,
-  FaExchangeAlt
+  FaExchangeAlt,
+  FaPlus,
+  FaTrash,
+  FaDownload,
+  FaPrint,
+  FaSort,
+  FaSortUp,
+  FaSortDown
 } from 'react-icons/fa';
 
 const AI_Recommend_Medicine = () => {
@@ -50,7 +57,12 @@ const AI_Recommend_Medicine = () => {
       doctorApproved: false,
       doctorNotes: "",
       aiScore: 8.9,
-      patientAllergy: false
+      patientAllergy: false,
+      category: "Diabetes",
+      alternativeMedicines: ["Glipizide", "Sitagliptin"],
+      patientAgeGroup: "Adult",
+      renalFunction: "Normal",
+      liverFunction: "Normal"
     },
     {
       id: 2,
@@ -69,7 +81,12 @@ const AI_Recommend_Medicine = () => {
       doctorApproved: false,
       doctorNotes: "",
       aiScore: 7.8,
-      patientAllergy: false
+      patientAllergy: false,
+      category: "Cardiology",
+      alternativeMedicines: ["Rosuvastatin", "Simvastatin"],
+      patientAgeGroup: "Adult",
+      renalFunction: "Normal",
+      liverFunction: "Mild Impairment"
     },
     {
       id: 3,
@@ -88,7 +105,12 @@ const AI_Recommend_Medicine = () => {
       doctorApproved: false,
       doctorNotes: "",
       aiScore: 6.5,
-      patientAllergy: false
+      patientAllergy: false,
+      category: "Hypertension",
+      alternativeMedicines: ["Losartan", "Amlodipine"],
+      patientAgeGroup: "Adult",
+      renalFunction: "Mild Impairment",
+      liverFunction: "Normal"
     },
     {
       id: 4,
@@ -107,9 +129,30 @@ const AI_Recommend_Medicine = () => {
       doctorApproved: false,
       doctorNotes: "",
       aiScore: 4.2,
-      patientAllergy: true
+      patientAllergy: true,
+      category: "Psychiatry",
+      alternativeMedicines: ["Bupropion", "Duloxetine"],
+      patientAgeGroup: "Adult",
+      renalFunction: "Normal",
+      liverFunction: "Normal"
     }
   ]);
+
+  // State for new medicine form
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newMedicine, setNewMedicine] = useState({
+    name: "",
+    brand: "",
+    dosage: "",
+    frequency: "Once Daily",
+    duration: "",
+    reason: "",
+    category: "General",
+    interactions: "",
+    sideEffects: "",
+    cost: "",
+    doctorNotes: ""
+  });
 
   // State for editing
   const [editingId, setEditingId] = useState(null);
@@ -119,6 +162,7 @@ const AI_Recommend_Medicine = () => {
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
   const [prescriptionHistory, setPrescriptionHistory] = useState([]);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
   // Initialize prescription history
   useEffect(() => {
@@ -160,9 +204,39 @@ const AI_Recommend_Medicine = () => {
     
     const matchesSearch = medicine.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          medicine.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         medicine.reason.toLowerCase().includes(searchTerm.toLowerCase());
+                         medicine.reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         medicine.category.toLowerCase().includes(searchTerm.toLowerCase());
     
     return matchesFilter && matchesSearch;
+  });
+
+  // Handle sort
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Get sort icon
+  const getSortIcon = (key) => {
+    if (sortConfig.key !== key) return <FaSort className="text-gray-400" />;
+    if (sortConfig.direction === 'asc') return <FaSortUp className="text-blue-500" />;
+    return <FaSortDown className="text-blue-500" />;
+  };
+
+  // Sort medicines (now using filteredMedicines which is already declared)
+  const sortedMedicines = [...filteredMedicines].sort((a, b) => {
+    if (!sortConfig.key) return 0;
+    
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
   });
 
   // Start editing a medicine
@@ -173,7 +247,8 @@ const AI_Recommend_Medicine = () => {
       frequency: medicine.frequency,
       duration: medicine.duration,
       doctorNotes: medicine.doctorNotes,
-      status: medicine.status
+      status: medicine.status,
+      category: medicine.category
     });
   };
 
@@ -226,28 +301,62 @@ const AI_Recommend_Medicine = () => {
     ));
   };
 
-  // Add custom medicine
-  const addCustomMedicine = () => {
-    const newMedicine = {
+  // Add new medicine form
+  const handleAddMedicine = () => {
+    const medicineToAdd = {
       id: medicines.length + 1,
-      name: "Custom Medicine",
-      brand: "Custom Brand",
-      dosage: "Custom Dosage",
-      frequency: "Custom Frequency",
-      duration: "Custom Duration",
+      name: newMedicine.name,
+      brand: newMedicine.brand,
+      dosage: newMedicine.dosage,
+      frequency: newMedicine.frequency,
+      duration: newMedicine.duration,
       aiConfidence: 0,
       status: "pending",
-      reason: "Doctor's custom prescription",
-      interactions: ["To be reviewed"],
-      sideEffects: ["To be monitored"],
-      cost: "Custom",
+      reason: newMedicine.reason,
+      interactions: [newMedicine.interactions],
+      sideEffects: [newMedicine.sideEffects],
+      cost: newMedicine.cost,
       lastUpdated: new Date().toISOString().split('T')[0],
       doctorApproved: true,
-      doctorNotes: "Custom prescription added by doctor",
+      doctorNotes: newMedicine.doctorNotes,
       aiScore: 0,
-      patientAllergy: false
+      patientAllergy: false,
+      category: newMedicine.category
     };
-    setMedicines([newMedicine, ...medicines]);
+    
+    setMedicines([medicineToAdd, ...medicines]);
+    setNewMedicine({
+      name: "",
+      brand: "",
+      dosage: "",
+      frequency: "Once Daily",
+      duration: "",
+      reason: "",
+      category: "General",
+      interactions: "",
+      sideEffects: "",
+      cost: "",
+      doctorNotes: ""
+    });
+    setShowAddForm(false);
+  };
+
+  // Delete medicine
+  const deleteMedicine = (id) => {
+    if (window.confirm("Are you sure you want to delete this medicine?")) {
+      setMedicines(prev => prev.filter(medicine => medicine.id !== id));
+    }
+  };
+
+  // Export to PDF (simulated)
+  const exportToPDF = () => {
+    alert("Exporting prescription to PDF...");
+    // In real implementation, you would use a PDF generation library
+  };
+
+  // Print prescription
+  const printPrescription = () => {
+    window.print();
   };
 
   // Get status color
@@ -275,6 +384,18 @@ const AI_Recommend_Medicine = () => {
     return 'text-red-600';
   };
 
+  // Get category color
+  const getCategoryColor = (category) => {
+    const colors = {
+      Diabetes: 'bg-blue-100 text-blue-800',
+      Cardiology: 'bg-red-100 text-red-800',
+      Hypertension: 'bg-purple-100 text-purple-800',
+      Psychiatry: 'bg-yellow-100 text-yellow-800',
+      General: 'bg-gray-100 text-gray-800'
+    };
+    return colors[category] || 'bg-gray-100 text-gray-800';
+  };
+
   // Medicine Detail Modal
   const MedicineDetailModal = ({ medicine, onClose }) => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -284,6 +405,9 @@ const AI_Recommend_Medicine = () => {
             <div>
               <h3 className="text-xl font-bold text-gray-900">{medicine.name}</h3>
               <p className="text-gray-600">{medicine.brand}</p>
+              <span className={`mt-2 inline-block px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(medicine.category)}`}>
+                {medicine.category}
+              </span>
             </div>
             <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
               <FaTimesCircle size={24} />
@@ -339,12 +463,27 @@ const AI_Recommend_Medicine = () => {
                   </div>
                 </div>
               </div>
+
+              {medicine.alternativeMedicines && medicine.alternativeMedicines.length > 0 && (
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                    <FaExchangeAlt /> Alternative Medicines
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {medicine.alternativeMedicines.map((alt, index) => (
+                      <span key={index} className="px-3 py-1 bg-white border border-gray-300 rounded-lg text-sm">
+                        {alt}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="space-y-4">
               <div className="bg-red-50 p-4 rounded-lg">
                 <h4 className="font-semibold text-red-900 mb-2 flex items-center gap-2">
-                  <FaAllergies /> Warnings
+                  <FaAllergies /> Warnings & Interactions
                 </h4>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
@@ -355,7 +494,7 @@ const AI_Recommend_Medicine = () => {
                       <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Low Risk</span>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-start gap-2">
                     <span className="text-gray-600">Interactions:</span>
                     <span className="text-sm">{medicine.interactions.join(', ')}</span>
                   </div>
@@ -477,6 +616,23 @@ const AI_Recommend_Medicine = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
+            Category
+          </label>
+          <select
+            value={editForm.category || ''}
+            onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="Diabetes">Diabetes</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Hypertension">Hypertension</option>
+            <option value="Psychiatry">Psychiatry</option>
+            <option value="General">General</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Status
           </label>
           <select
@@ -521,24 +677,201 @@ const AI_Recommend_Medicine = () => {
     </div>
   );
 
+  // Add Medicine Form Component
+  const AddMedicineForm = () => (
+    <div className="bg-white rounded-xl p-6 shadow-sm border-2 border-green-200 mb-6">
+      <div className="flex items-center justify-between mb-4">
+        <h4 className="text-lg font-bold text-green-900 flex items-center gap-2">
+          <FaPlus /> Add New Medicine
+        </h4>
+        <button
+          onClick={() => setShowAddForm(false)}
+          className="text-gray-400 hover:text-gray-600"
+        >
+          <FaTimesCircle size={20} />
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Medicine Name *
+          </label>
+          <input
+            type="text"
+            value={newMedicine.name}
+            onChange={(e) => setNewMedicine({ ...newMedicine, name: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Enter medicine name"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Brand Name
+          </label>
+          <input
+            type="text"
+            value={newMedicine.brand}
+            onChange={(e) => setNewMedicine({ ...newMedicine, brand: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Enter brand name"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Dosage *
+          </label>
+          <input
+            type="text"
+            value={newMedicine.dosage}
+            onChange={(e) => setNewMedicine({ ...newMedicine, dosage: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., 500mg"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Frequency
+          </label>
+          <select
+            value={newMedicine.frequency}
+            onChange={(e) => setNewMedicine({ ...newMedicine, frequency: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            <option value="Once Daily">Once Daily</option>
+            <option value="Twice Daily">Twice Daily</option>
+            <option value="Three Times Daily">Three Times Daily</option>
+            <option value="Four Times Daily">Four Times Daily</option>
+            <option value="As Needed">As Needed</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Duration
+          </label>
+          <input
+            type="text"
+            value={newMedicine.duration}
+            onChange={(e) => setNewMedicine({ ...newMedicine, duration: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., 30 days"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Category
+          </label>
+          <select
+            value={newMedicine.category}
+            onChange={(e) => setNewMedicine({ ...newMedicine, category: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            <option value="General">General</option>
+            <option value="Diabetes">Diabetes</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Hypertension">Hypertension</option>
+            <option value="Psychiatry">Psychiatry</option>
+          </select>
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Reason for Prescription
+          </label>
+          <textarea
+            value={newMedicine.reason}
+            onChange={(e) => setNewMedicine({ ...newMedicine, reason: e.target.value })}
+            rows="2"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Enter reason for prescribing this medicine..."
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Side Effects
+          </label>
+          <input
+            type="text"
+            value={newMedicine.sideEffects}
+            onChange={(e) => setNewMedicine({ ...newMedicine, sideEffects: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., Nausea, Headache"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Cost
+          </label>
+          <input
+            type="text"
+            value={newMedicine.cost}
+            onChange={(e) => setNewMedicine({ ...newMedicine, cost: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g., $25"
+          />
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Doctor's Notes
+          </label>
+          <textarea
+            value={newMedicine.doctorNotes}
+            onChange={(e) => setNewMedicine({ ...newMedicine, doctorNotes: e.target.value })}
+            rows="3"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Add any additional notes..."
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+        <button
+          onClick={() => setShowAddForm(false)}
+          className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg flex items-center gap-2"
+        >
+          <FaTimesCircle /> Cancel
+        </button>
+        <button
+          onClick={handleAddMedicine}
+          disabled={!newMedicine.name || !newMedicine.dosage}
+          className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
+            !newMedicine.name || !newMedicine.dosage
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-green-600 text-white hover:bg-green-700'
+          }`}
+        >
+          <FaSave /> Add Medicine
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-            <div className=''>
+            <div>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-3">
                 <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg">
                   <FaBrain size={28} />
                 </div>
-                AI-Recommended Medicines
+                Medicine Recommendations
               </h1>
               <p className="text-gray-600 mt-2">
-                Review AI suggestions and customize prescriptions based on your clinical judgment
+                Review and manage AI-generated medicine recommendations with clinical oversight
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 mt-4 md:mt-0">
               <button
                 onClick={() => setShowHistory(!showHistory)}
                 className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 flex items-center gap-2"
@@ -546,10 +879,22 @@ const AI_Recommend_Medicine = () => {
                 <FaHistory /> {showHistory ? 'Hide History' : 'View History'}
               </button>
               <button
-                onClick={addCustomMedicine}
+                onClick={exportToPDF}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              >
+                <FaDownload /> Export PDF
+              </button>
+              <button
+                onClick={printPrescription}
+                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center gap-2"
+              >
+                <FaPrint /> Print
+              </button>
+              <button
+                onClick={() => setShowAddForm(true)}
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
               >
-                <FaPrescriptionBottleAlt /> Add Medicine
+                <FaPlus /> Add Medicine
               </button>
             </div>
           </div>
@@ -559,7 +904,7 @@ const AI_Recommend_Medicine = () => {
             <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Total Suggestions</p>
+                  <p className="text-sm text-gray-600">Total Medicines</p>
                   <p className="text-2xl font-bold text-gray-900">{medicines.length}</p>
                 </div>
                 <div className="p-3 bg-blue-100 text-blue-600 rounded-lg">
@@ -609,6 +954,9 @@ const AI_Recommend_Medicine = () => {
           </div>
         </div>
 
+        {/* Add Medicine Form */}
+        {showAddForm && <AddMedicineForm />}
+
         {/* Search and Filter */}
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 mb-6">
           <div className="flex flex-col md:flex-row gap-4">
@@ -617,7 +965,7 @@ const AI_Recommend_Medicine = () => {
                 <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search medicines by name, brand, or reason..."
+                  placeholder="Search medicines by name, brand, category, or reason..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -629,9 +977,11 @@ const AI_Recommend_Medicine = () => {
                 <button
                   key={filterType}
                   onClick={() => setFilter(filterType)}
-                  className={`px-4 py-2 rounded-lg flex items-center gap-2 ${filter === filterType 
+                  className={`px-4 py-2 rounded-lg flex items-center gap-2 ${
+                    filter === filterType 
                     ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
                 >
                   <FaFilter size={14} />
                   {filterType === 'all' && 'All'}
@@ -661,7 +1011,7 @@ const AI_Recommend_Medicine = () => {
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Date</th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Doctor</th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Status</th>
-                    <th className="px4 py-3 text-left text-sm font-medium text-gray-700">Outcome</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Outcome</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -688,9 +1038,41 @@ const AI_Recommend_Medicine = () => {
           </div>
         )}
 
+        {/* Medicines List Header with Sort */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-4 overflow-hidden">
+          <div className="p-4 border-b border-gray-200 bg-gray-50">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-gray-900">Recommended Medicines ({sortedMedicines.length})</h3>
+              <div className="flex items-center gap-4 text-sm text-gray-600">
+                <span>Sort by:</span>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => handleSort('name')}
+                    className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  >
+                    Name {getSortIcon('name')}
+                  </button>
+                  <button 
+                    onClick={() => handleSort('aiConfidence')}
+                    className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  >
+                    AI Confidence {getSortIcon('aiConfidence')}
+                  </button>
+                  <button 
+                    onClick={() => handleSort('lastUpdated')}
+                    className="flex items-center gap-1 px-3 py-1 bg-gray-100 rounded-lg hover:bg-gray-200"
+                  >
+                    Last Updated {getSortIcon('lastUpdated')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Medicines List */}
         <div className="space-y-4">
-          {filteredMedicines.map((medicine) => (
+          {sortedMedicines.map((medicine) => (
             <div key={medicine.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               {/* Medicine Header */}
               <div className="p-4 border-b border-gray-200 bg-gray-50">
@@ -700,7 +1082,12 @@ const AI_Recommend_Medicine = () => {
                       {medicine.patientAllergy ? <FaAllergies /> : <FaPills />}
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-900">{medicine.name}</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-bold text-gray-900">{medicine.name}</h3>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(medicine.category)}`}>
+                          {medicine.category}
+                        </span>
+                      </div>
                       <p className="text-sm text-gray-600">{medicine.brand}</p>
                     </div>
                   </div>
@@ -712,6 +1099,13 @@ const AI_Recommend_Medicine = () => {
                     <div className={`px-3 py-1 rounded-full text-sm font-bold ${getConfidenceColor(medicine.aiConfidence)}`}>
                       AI: {medicine.aiConfidence}%
                     </div>
+                    <button
+                      onClick={() => deleteMedicine(medicine.id)}
+                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg"
+                      title="Delete medicine"
+                    >
+                      <FaTrash />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -819,15 +1213,21 @@ const AI_Recommend_Medicine = () => {
         </div>
 
         {/* Empty State */}
-        {filteredMedicines.length === 0 && (
+        {sortedMedicines.length === 0 && (
           <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
             <div className="p-4 bg-blue-50 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
               <FaSearch className="text-blue-600 text-2xl" />
             </div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">No medicines found</h3>
-            <p className="text-gray-600 max-w-md mx-auto">
+            <p className="text-gray-600 max-w-md mx-auto mb-6">
               Try adjusting your search or filter criteria. No AI recommendations match your current selection.
             </p>
+            <button
+              onClick={() => setShowAddForm(true)}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 mx-auto"
+            >
+              <FaPlus /> Add New Medicine
+            </button>
           </div>
         )}
 
@@ -869,6 +1269,23 @@ const AI_Recommend_Medicine = () => {
                 </div>
                 <FaStar className="text-purple-600 text-2xl" />
               </div>
+            </div>
+          </div>
+          
+          {/* Category Distribution */}
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <h4 className="font-semibold text-gray-900 mb-4">Medicine Categories</h4>
+            <div className="flex flex-wrap gap-2">
+              {Array.from(new Set(medicines.map(m => m.category))).map(category => {
+                const count = medicines.filter(m => m.category === category).length;
+                return (
+                  <div key={category} className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg">
+                    <span className={`w-3 h-3 rounded-full ${getCategoryColor(category).split(' ')[0]}`}></span>
+                    <span className="font-medium">{category}</span>
+                    <span className="text-gray-600">({count})</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

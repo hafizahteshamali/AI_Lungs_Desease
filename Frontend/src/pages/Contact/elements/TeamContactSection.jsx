@@ -145,12 +145,9 @@ export default function TeamContactSection() {
             <div className="flex-1 text-center md:text-left"> {/* Text container */}
               <h3 className="text-xl font-bold text-black mb-2">Project Consultants</h3> {/* Updated title */}
               <p className="text-gray-700"> {/* Consultant details */}
-                <span className="font-semibold">Consultant:</span> Muhammad Khawaja Hassan Nizami (Assistant Professor, Dept. of Computing)<br/> {/* Updated to Consultant */}
+                <span className="font-semibold">Consultant:</span> Muhammad Khawaja Hassan Nizami <br/> {/* Updated to Consultant */}
                 <span className="font-semibold">Co-Consultant:</span> Ms. Azadi Memon<br/> {/* Updated to Co-Consultant */}
                 <span className="text-sm text-gray-600">FEST BSSE Final Year Project 2025</span> {/* Project details */}
-              </p>
-              <p className="text-sm text-gray-500 mt-2 italic">
-                Note: Project also supervised by Mr. Vishal (Co-Supervisor)
               </p>
             </div>
           </div>

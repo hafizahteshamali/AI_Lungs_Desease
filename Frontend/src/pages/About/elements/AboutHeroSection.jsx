@@ -76,7 +76,7 @@ export default function AboutHeroSection() {
               // Individual Stat Card - Using flex for horizontal alignment
               <div 
                 key={stat.key}
-                className="flex items-center gap-2 md:gap-3 px-4 py-2 md:px-6 md:py-3 bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl border border-white/20 flex-1 min-w-[150px] max-w-[200px]"
+                className="flex justify-center items-center gap-2 md:gap-3 px-4 py-2 md:px-6 md:py-3 bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl border border-white/20 "
               >
                 {/* Stat Icon */}
                 {stat.icon}

@@ -29,7 +29,7 @@ export default function StorySection() {
     },
     {
       phase: "Frontend Development",
-      title: "UI Development & Mobile Responsiveness",
+      title: "Web & Mobile Responsiveness",
       duration: "60 days",
       period: "Oct 31 - Nov 22, 2026",
       description: "Developing responsive web interface with dashboard, forms, and mobile compatibility.",

@@ -85,11 +85,8 @@ const DashboardLayout = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-xl font-bold text-gray-800">
-                  {userRole} Dashboard
+                  Welcome to Precision Scan Dashboard
                 </h1>
-                <p className="text-sm text-gray-600">
-                  Welcome to Precision Scan {userRole} Panel
-                </p>
               </div>
               
               <div className="flex items-center gap-4">

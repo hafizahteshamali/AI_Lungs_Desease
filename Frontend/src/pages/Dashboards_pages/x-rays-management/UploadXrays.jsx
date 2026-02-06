@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react" // React hooks import kar rahe hain
 import { toast } from "react-toastify" // Toast notifications ke liye import
-import { postReq } from "../../../../api/axios" // API call karne ke liye import
+import { postReq } from "../../../api/axios" // API call karne ke liye import
 import {
   FiRefreshCw,
   FiUpload,

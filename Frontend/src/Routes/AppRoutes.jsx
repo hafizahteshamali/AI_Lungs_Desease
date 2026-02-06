@@ -21,26 +21,23 @@ import Radiographer_Dashboard from '../pages/Dashboards_pages/dashboard/Radiogra
 import Patient_Dashboard from '../pages/Dashboards_pages/dashboard/Patient_Dashboard/Patient_Dashboard';
 
 // X-Ray Management
-import UploadXraysWithPrediction from '../pages/Dashboards_pages/x-rays-management/uploadXrays/UploadXrays';
-import XrayHistory from '../pages/Dashboards_pages/x-rays-management/XrayHistory/XrayHistory';
+import UploadXraysWithPrediction from '../pages/Dashboards_pages/x-rays-management/UploadXrays';
+import XrayHistory from '../pages/Dashboards_pages/x-rays-management/XrayHistory';
 
 // Medicine Prescription
-import AI_Recommend_Medicine from '../pages/Dashboards_pages/Medicine_Prescription/AI_Recommend_Medicine/AI_Recommend_Medicine';
-import Prescription_Expert from '../pages/Dashboards_pages/Medicine_Prescription/Prescription_Expert/Prescription_Expert';
+import AI_Recommend_Medicine from '../pages/Dashboards_pages/Medicine_Prescription/AI_Recommend_Medicine';
+import Prescription_Expert from '../pages/Dashboards_pages/Medicine_Prescription/Prescription_Expert';
 
 // Admin Management
-import User_Managements from '../pages/Dashboards_pages/Admin_Management/User_Managements/User_Managements';
-import Disease_Categories from '../pages/Dashboards_pages/Admin_Management/Disease_Categories/Disease_Categories';
-import Medicine_Library from '../pages/Dashboards_pages/Admin_Management/Medicine_Library/Medicine_Library';
-import System_Logs from '../pages/Dashboards_pages/Admin_Management/System_Logs/System_Logs';
-import Analytical_Reports from '../pages/Dashboards_pages/Admin_Management/Analytical_Reports/Analytical_Reports';
+import User_Managements from '../pages/Dashboards_pages/Admin_Management/User_Managements';
+import Disease_Categories from '../pages/Dashboards_pages/Admin_Management/Disease_Categories';
+import Medicine_Library from '../pages/Dashboards_pages/Admin_Management/Medicine_Library';
+import System_Logs from '../pages/Dashboards_pages/Admin_Management/System_Logs';
+import Analytical_Reports from '../pages/Dashboards_pages/Admin_Management/Analytical_Reports';
 
 // Settings
 import Notifications from '../pages/Dashboards_pages/Notifications/Notifications';
-import Profile_Settings from '../pages/Dashboards_pages/Settings/Profile_Settings/Profile_Settings';
-import Theme from '../pages/Dashboards_pages/Settings/Theme/Theme';
-import Language_Selection from '../pages/Dashboards_pages/Settings/Language_Selection/Language_Selection';
-import Two_FA_Setup from '../pages/Dashboards_pages/Settings/2FA_Setup/Two_FA_Setup';
+import Profile_Settings from '../pages/Dashboards_pages/Settings/Profile_Settings';
 
 // Help & Support
 import FAQs from '../pages/Dashboards_pages/Help_Support/FAQ/FAQs';
@@ -57,6 +54,7 @@ import Unauthorized from '../pages/Authentication/Unauthorized';
 
 // Dashboard Redirect Component
 import DashboardRedirect from '../components/DashboardRedirect';
+import Subscription from '../pages/Subscription/Subscription';
 
 // Helper function for SuperAdmin access
 const getAllowedRoles = (roles) => {
@@ -72,6 +70,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
+          <Route path="subscription" element={<Subscription />} />
           <Route path="contact" element={<Contact />} />
         </Route>
 
@@ -186,24 +185,6 @@ const AppRoutes = () => {
           <Route path="settings/profile" element={
             <ProtectedRoute allowedRoles={getAllowedRoles(['Patient', 'Doctor', 'Radiographer', 'Radiologist', 'Admin'])}>
               <Profile_Settings />
-            </ProtectedRoute>
-          } />
-
-          <Route path="settings/theme" element={
-            <ProtectedRoute allowedRoles={getAllowedRoles(['Patient', 'Doctor', 'Radiographer', 'Radiologist', 'Admin'])}>
-              <Theme />
-            </ProtectedRoute>
-          } />
-
-          <Route path="settings/language" element={
-            <ProtectedRoute allowedRoles={getAllowedRoles(['Patient', 'Doctor', 'Radiographer', 'Radiologist', 'Admin'])}>
-              <Language_Selection />
-            </ProtectedRoute>
-          } />
-
-          <Route path="settings/2fa" element={
-            <ProtectedRoute allowedRoles={getAllowedRoles(['Patient', 'Doctor', 'Radiographer', 'Radiologist', 'Admin'])}>
-              <Two_FA_Setup />
             </ProtectedRoute>
           } />
 

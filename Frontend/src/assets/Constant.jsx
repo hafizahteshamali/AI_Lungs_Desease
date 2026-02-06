@@ -165,25 +165,7 @@ const DashboardUrl = [
             text: "Profile Settings",
             url: "settings/profile",
             roles: ["admin", "doctor", "patient", "radiographer", "radiologist", "superadmin", "super_admin"]
-          },
-          {
-            icon: <MdSmartToy />,
-            text: "Theme",
-            url: "settings/theme",
-            roles: ["admin", "doctor", "patient", "radiographer", "radiologist", "superadmin", "super_admin"]
-          },
-          {
-            icon: <MdMenuBook />,
-            text: "Language Selection",
-            url: "settings/language",
-            roles: ["admin", "doctor", "patient", "radiographer", "radiologist", "superadmin", "super_admin"]
-          },
-          {
-            icon: <MdSmartToy />,
-            text: "2FA Setup",
-            url: "settings/2fa",
-            roles: ["admin", "doctor", "patient", "radiographer", "radiologist", "superadmin", "super_admin"]
-          },
+          }
         ],
       },
     ],

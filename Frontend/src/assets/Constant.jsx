@@ -83,7 +83,7 @@ const DashboardUrl = [
         children: [
           { 
             icon: <MdLocalPharmacy />, 
-            text: "AI-Recommended Medicines", 
+            text: "Recommended Medicines", 
             url: "medicines/ai", 
             roles: ["admin", "superadmin", "super_admin"] 
           },

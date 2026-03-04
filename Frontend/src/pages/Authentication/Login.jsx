@@ -35,7 +35,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await postReq("/api/Account/Authentication", data,{
+      const response = await postReq("/api/Account/Authentication", data, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -48,12 +48,11 @@ const Login = () => {
           return;
         }
         
-        // Save token to session storage
-        sessionStorage.setItem("token", token);
+        // ✅ FIX: Save token to localStorage instead of sessionStorage
+        localStorage.setItem("token", token);
         
         // Get user role from token
         const userRole = getUserRole();
-        
         toast.success(response.data?.message || `Welcome ${userRole || 'User'}!`);
         
         // Redirect based on role
@@ -91,10 +90,10 @@ const Login = () => {
 
   return (
     <div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 p-4">
-      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col lg:flex-row h-auto lg:h-[550px]"> {/* ✅ Height fixed kar di */}
-        {/* Left Section - Compact kiya */}
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col lg:flex-row h-auto lg:h-[550px]">
+        {/* Left Section */}
         <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#5056e6] via-[#3d43d4] to-[#007a9b] text-white p-6 flex-col justify-between relative overflow-hidden">
-          {/* Animated Background Elements - Simplify */}
+          {/* Animated Background Elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute top-10 right-10 w-48 h-48 bg-white opacity-5 rounded-full blur-3xl"></div>
             <div className="absolute bottom-10 left-10 w-48 h-48 bg-white opacity-5 rounded-full blur-3xl"></div>
@@ -133,8 +132,8 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Right Section - Compact kiya */}
-        <div className="w-full lg:w-1/2 p-6 md:p-8 flex flex-col justify-center"> {/* ✅ Center align */}
+        {/* Right Section */}
+        <div className="w-full lg:w-1/2 p-6 md:p-8 flex flex-col justify-center">
           <div className="mb-6 text-center lg:text-left">
             <h2 className="text-2xl font-bold text-gray-900">
               Welcome Back 
@@ -144,7 +143,7 @@ const Login = () => {
             </p>
           </div>
 
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}> {/* ✅ Space reduce */}
+          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -264,7 +263,7 @@ const Login = () => {
             </p>
           </div>
 
-          {/* Security Note - Compact */}
+          {/* Security Note */}
           <div className="mt-6 p-3 bg-blue-50 rounded-xl border border-blue-100">
             <div className="flex items-start gap-2">
               <div className="w-6 h-6 bg-blue-100 rounded flex items-center justify-center flex-shrink-0">

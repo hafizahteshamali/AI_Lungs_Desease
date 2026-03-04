@@ -1,9 +1,13 @@
 import { jwtDecode } from 'jwt-decode';
 
+// ✅ FIX: localStorage use kiya gaya hai
+const TOKEN_KEY = 'token';
+
 // Token decode aur role extract karne ke liye
 export const decodeToken = () => {
   try {
-    const token = sessionStorage.getItem('token');
+    // ✅ FIX: sessionStorage -> localStorage
+    const token = localStorage.getItem(TOKEN_KEY);
     if (!token) return null;
     
     const decoded = jwtDecode(token);
@@ -12,7 +16,6 @@ export const decodeToken = () => {
     // console.log("Full decoded token:", decoded);
     // console.log("Roles property:", decoded.roles);
     // console.log("Role property:", decoded.role);
-    // console.log("Role (capital R):", decoded.Role);
     // console.log("=== END DEBUG ===");
     
     // Extract roles - handle different formats
@@ -49,7 +52,8 @@ export const decodeToken = () => {
     };
   } catch (error) {
     // console.error('Token decode error:', error);
-    sessionStorage.removeItem('token');
+    // ✅ FIX: sessionStorage -> localStorage
+    localStorage.removeItem(TOKEN_KEY);
     return null;
   }
 };
@@ -87,7 +91,8 @@ export const isAuthenticated = () => {
   
   // Check token expiry
   if (userData.exp * 1000 < Date.now()) {
-    sessionStorage.removeItem('token');
+    // ✅ FIX: sessionStorage -> localStorage
+    localStorage.removeItem(TOKEN_KEY);
     return false;
   }
   
@@ -140,8 +145,25 @@ export const hasAllRoles = (requiredRoles) => {
   );
 };
 
-// Logout function
+// ✅ FIX: Logout function updated
 export const logout = () => {
-  sessionStorage.removeItem('token');
+  localStorage.removeItem(TOKEN_KEY);
+  // Saare tabs mein logout ho jaye iske liye
+  localStorage.setItem('logoutEvent', Date.now().toString());
   window.location.href = '/auth/login';
+};
+
+// ✅ NEW: Storage event listener for cross-tab synchronization
+export const setupAuthSync = () => {
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'token' && !event.newValue) {
+      // Kisi aur tab mein logout hua hai
+      window.location.href = '/auth/login';
+    }
+    if (event.key === 'logoutEvent') {
+      // Force logout in current tab
+      localStorage.removeItem(TOKEN_KEY);
+      window.location.href = '/auth/login';
+    }
+  });
 };

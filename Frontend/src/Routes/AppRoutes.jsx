@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -55,6 +55,8 @@ import Unauthorized from '../pages/Authentication/Unauthorized';
 // Dashboard Redirect Component
 import DashboardRedirect from '../components/DashboardRedirect';
 import Subscription from '../pages/Subscription/Subscription';
+import ScrollToTop from '../components/ScrollToTop';
+import { setupAuthSync } from '../utils/auth';
 
 // Helper function for SuperAdmin access
 const getAllowedRoles = (roles) => {
@@ -63,8 +65,15 @@ const getAllowedRoles = (roles) => {
 };
 
 const AppRoutes = () => {
+
+  useEffect(() => {
+    // ✅ FIX: Setup cross-tab synchronization
+    setupAuthSync();
+  }, []);
+
   return (
     <>
+      <ScrollToTop />
       <Routes>
         {/* Home Page with Layout */}
         <Route path="/" element={<Layout />}>

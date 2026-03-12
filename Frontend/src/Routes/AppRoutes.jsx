@@ -51,6 +51,7 @@ import About from '../pages/About/About';
 
 // Unauthorized Page
 import Unauthorized from '../pages/Authentication/Unauthorized';
+import ConfirmEmail from '../pages/Authentication/ConfirmEmail';
 
 // Dashboard Redirect Component
 import DashboardRedirect from '../components/DashboardRedirect';
@@ -87,6 +88,7 @@ const AppRoutes = () => {
         <Route path="/auth">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="confirmation-email" element={<ConfirmEmail />} />
           <Route path="forgot-password" element={<Forgot_Password />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="unauthorized" element={<Unauthorized />} />

@@ -58,6 +58,7 @@ import DashboardRedirect from '../components/DashboardRedirect';
 import Subscription from '../pages/Subscription/Subscription';
 import ScrollToTop from '../components/ScrollToTop';
 import { setupAuthSync } from '../utils/auth';
+import Performance from '../pages/Performance/Performance';
 
 // Helper function for SuperAdmin access
 const getAllowedRoles = (roles) => {
@@ -81,6 +82,7 @@ const AppRoutes = () => {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="subscription" element={<Subscription />} />
+          <Route path="performances" element={<Performance />} />
           <Route path="contact" element={<Contact />} />
         </Route>
 

@@ -16,6 +16,7 @@ export default function Navigation() {
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
     { href: "/subscription", label: "Subscriptions" },
+    { href: "/performances", label: "Performances" },
     { href: "/contact", label: "Contact Us" },
   ]
 
@@ -72,7 +73,7 @@ export default function Navigation() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 lg:h-20">
+          <div className="flex justify-between items-center h-18 lg:h-20">
             {/* Logo - FIXED: Remove nested <a> */}
             <NavLink 
               to="/" 

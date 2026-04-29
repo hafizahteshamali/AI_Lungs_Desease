@@ -15,7 +15,7 @@ import {
   Legend,
   Cell
 } from 'recharts';
-import { FaTrophy, FaChartLine, FaInfoCircle, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaTrophy, FaChartLine, FaInfoCircle } from 'react-icons/fa';
 
 const ModelComparisonRecharts = () => {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
@@ -30,24 +30,22 @@ const ModelComparisonRecharts = () => {
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
 
-  // Radar Chart Data
+  // Radar Chart Data - from notebook test results
   const radarData = [
-    { metric: 'Sensitivity', ours: 86.7, baseline: 67.6, industry: 75.0 },
-    { metric: 'Specificity', ours: 56.4, baseline: 85.5, industry: 75.0 },
-    { metric: 'Accuracy', ours: 69.2, baseline: 77.9, industry: 75.0 },
-    { metric: 'Precision', ours: 59.2, baseline: 74.3, industry: 75.0 },
-    { metric: 'F1-Score', ours: 70.3, baseline: 71.6, industry: 75.0 },
-    { metric: 'AUC-ROC', ours: 83.4, baseline: 83.4, industry: 81.0 }
+    { metric: 'Sensitivity', tuned: 86.7, baseline: 67.6 },
+    { metric: 'Specificity', tuned: 56.4, baseline: 85.5 },
+    { metric: 'Accuracy', tuned: 69.2, baseline: 77.9 },
+    { metric: 'Precision', tuned: 59.2, baseline: 74.3 },
+    { metric: 'F1-Score', tuned: 70.3, baseline: 71.6 },
+    { metric: 'AUC-ROC', tuned: 83.4, baseline: 83.1 }
   ];
 
-  // Detailed Comparison Data
+  // Detailed Comparison Data - using actual notebook results
   const comparisonData = [
-    { model: 'Precision Scan (Ours)', sensitivity: 86.7, specificity: 56.4, accuracy: 69.2, auc: 83.4, f1: 70.3, color: '#3b82f6' },
-    { model: 'Baseline ResNet18', sensitivity: 67.6, specificity: 85.5, accuracy: 77.9, auc: 83.4, f1: 71.6, color: '#9ca3af' },
-    { model: 'Industry Average', sensitivity: 75.0, specificity: 75.0, accuracy: 75.0, auc: 81.0, f1: 75.0, color: '#10b981' }
+    { model: 'Fine-tuned Model (Ours)', sensitivity: 86.7, specificity: 56.4, accuracy: 69.2, auc: 83.4, f1: 70.3, color: '#3b82f6' },
+    { model: 'Baseline Model', sensitivity: 67.6, specificity: 85.5, accuracy: 77.9, auc: 83.1, f1: 71.6, color: '#9ca3af' }
   ];
 
-  // Metric options for mobile comparison selector
   const metricOptions = [
     { key: 'sensitivity', label: 'Sensitivity', color: '#ef4444' },
     { key: 'specificity', label: 'Specificity', color: '#3b82f6' },
@@ -72,14 +70,12 @@ const ModelComparisonRecharts = () => {
     return null;
   };
 
-  // Responsive radar chart outer radius
   const getRadarOuterRadius = () => {
     if (isMobile) return '70%';
     if (isTablet) return '75%';
     return '80%';
   };
 
-  // Responsive bar chart margin
   const getBarChartMargin = () => {
     if (isMobile) {
       return { top: 20, right: 20, left: 80, bottom: 20 };
@@ -91,14 +87,14 @@ const ModelComparisonRecharts = () => {
   const renderMobileComparison = () => {
     const currentMetric = metricOptions.find(m => m.key === activeComparisonMetric);
     const metricData = comparisonData.map(item => ({
-      model: item.model,
+      model: item.model === 'Fine-tuned Model (Ours)' ? 'Ours' : 'Baseline',
       value: item[currentMetric.key],
-      color: item.color
+      color: item.color,
+      fullModel: item.model
     }));
 
     return (
       <div className="mt-4">
-        {/* Metric Selector */}
         <div className="flex flex-wrap gap-2 mb-4">
           {metricOptions.map((metric) => (
             <button
@@ -118,7 +114,6 @@ const ModelComparisonRecharts = () => {
           ))}
         </div>
 
-        {/* Metric Cards */}
         <div className="space-y-3">
           {metricData.map((item, idx) => (
             <div key={idx} className="bg-gray-50 rounded-lg p-3">
@@ -141,7 +136,6 @@ const ModelComparisonRecharts = () => {
     );
   };
 
-  // Desktop bar chart
   const renderDesktopBarChart = () => {
     return (
       <div className="w-full h-[350px] sm:h-[400px]">
@@ -163,14 +157,6 @@ const ModelComparisonRecharts = () => {
               dataKey="model" 
               tick={{ fill: '#6b7280', fontSize: isMobile ? 10 : 11 }}
               width={isMobile ? 100 : 120}
-              tickFormatter={(value) => {
-                if (isMobile) {
-                  if (value === 'Precision Scan (Ours)') return 'Ours';
-                  if (value === 'Baseline ResNet18') return 'Baseline';
-                  return 'Industry';
-                }
-                return value;
-              }}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend 
@@ -191,11 +177,10 @@ const ModelComparisonRecharts = () => {
 
   return (
     <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 border border-gray-100 mb-6 sm:mb-8">
-      {/* Header Section - Responsive */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-4">
         <div>
           <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900">Model Performance Comparison</h3>
-          <p className="text-xs sm:text-sm text-gray-500">Radar Chart & Detailed Metrics Analysis</p>
+          <p className="text-xs sm:text-sm text-gray-500">Baseline vs Fine-tuned Model (Threshold = 0.35)</p>
         </div>
         <FaChartLine className="text-xl sm:text-2xl text-blue-500" />
       </div>
@@ -218,26 +203,18 @@ const ModelComparisonRecharts = () => {
                   tickFormatter={(value) => isMobile ? `${value}` : `${value}%`}
                 />
                 <Radar
-                  name="Precision Scan (Ours)"
-                  dataKey="ours"
+                  name="Fine-tuned Model"
+                  dataKey="tuned"
                   stroke="#3b82f6"
                   fill="#3b82f6"
                   fillOpacity={0.3}
                   strokeWidth={2}
                 />
                 <Radar
-                  name="Baseline ResNet18"
+                  name="Baseline Model"
                   dataKey="baseline"
                   stroke="#9ca3af"
                   fill="#9ca3af"
-                  fillOpacity={0.2}
-                  strokeWidth={2}
-                />
-                <Radar
-                  name="Industry Average"
-                  dataKey="industry"
-                  stroke="#10b981"
-                  fill="#10b981"
                   fillOpacity={0.2}
                   strokeWidth={2}
                 />
@@ -251,28 +228,24 @@ const ModelComparisonRecharts = () => {
             </ResponsiveContainer>
           </div>
           
-          {/* Insight Box - Responsive */}
           <div className="mt-3 sm:mt-4 p-2 sm:p-3 rounded-lg bg-blue-50">
             <div className="flex items-start gap-1.5 sm:gap-2 text-blue-700">
               <FaInfoCircle className="text-xs sm:text-sm flex-shrink-0 mt-0.5" />
               <span className="text-[10px] sm:text-xs md:text-sm">
-                Our model shows superior sensitivity (86.7%) vs industry average (75%)
+                Fine-tuned model improves sensitivity from 67.6% to 86.7% (+19.1%) at threshold 0.35
               </span>
             </div>
           </div>
         </div>
 
-        {/* Bar Chart Comparison - Responsive */}
+        {/* Bar Chart Comparison */}
         <div>
-          {/* Mobile View - Custom Metric Selector + Cards */}
           {isMobile && renderMobileComparison()}
-          
-          {/* Desktop/Tablet View - Full Bar Chart */}
           {!isMobile && renderDesktopBarChart()}
         </div>
       </div>
 
-      {/* Key Achievements - Responsive Grid */}
+      {/* Key Achievements - from notebook */}
       <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-3 sm:p-4 border border-blue-200">
           <FaTrophy className="text-lg sm:text-2xl text-yellow-500 mb-1 sm:mb-2" />
@@ -282,19 +255,18 @@ const ModelComparisonRecharts = () => {
         </div>
         <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-3 sm:p-4 border border-green-200">
           <FaTrophy className="text-lg sm:text-2xl text-yellow-500 mb-1 sm:mb-2" />
-          <p className="text-base sm:text-lg font-bold text-gray-800">86.7%</p>
-          <p className="text-xs sm:text-sm text-gray-600">Cancer Detection Rate</p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Exceeds industry average by 11.7%</p>
+          <p className="text-base sm:text-lg font-bold text-gray-800">1,093 / 1,260</p>
+          <p className="text-xs sm:text-sm text-gray-600">Cancers Detected</p>
+          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">86.7% of malignant cases identified</p>
         </div>
         <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-3 sm:p-4 border border-purple-200 sm:col-span-2 lg:col-span-1">
           <FaTrophy className="text-lg sm:text-2xl text-yellow-500 mb-1 sm:mb-2" />
-          <p className="text-base sm:text-lg font-bold text-gray-800">1,093/1,260</p>
-          <p className="text-xs sm:text-sm text-gray-600">Cancers Detected</p>
-          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Correctly identified 86.7% of malignant cases</p>
+          <p className="text-base sm:text-lg font-bold text-gray-800">AUC: 0.834</p>
+          <p className="text-xs sm:text-sm text-gray-600">Model Discrimination</p>
+          <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Good discrimination ability</p>
         </div>
       </div>
 
-      {/* Mobile Legend for Bar Chart (when not showing bar chart) */}
       {isMobile && (
         <div className="mt-4 pt-3 border-t border-gray-100">
           <p className="text-xs text-gray-500 text-center">Tap metric buttons above to compare different performance measures</p>

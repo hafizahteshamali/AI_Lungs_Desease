@@ -24,7 +24,6 @@ import {
   FaChartBar as FaChartBarIcon, 
   FaInfoCircle, 
   FaEye,
-  FaMousePointer,
   FaExpand,
   FaCompress
 } from 'react-icons/fa';
@@ -45,7 +44,7 @@ const BreastCancerChartsRecharts = () => {
   const isMobile = windowWidth < 640;
   const isTablet = windowWidth >= 640 && windowWidth < 1024;
 
-  // ROC Curve Data
+  // ROC Curve Data (from notebook - based on test results)
   const rocData = [
     { fpr: 0.0000, tpr: 0.0000, label: 'Start' },
     { fpr: 0.0213, tpr: 0.5159, label: 'Point 1' },
@@ -59,7 +58,7 @@ const BreastCancerChartsRecharts = () => {
     { fpr: 0.4012, tpr: 0.8810, label: 'Point 9' },
     { fpr: 0.4678, tpr: 0.8968, label: 'Point 10' },
     { fpr: 0.5345, tpr: 0.9048, label: 'Point 11' },
-    { fpr: 0.5678, tpr: 0.8675, label: 'Clinical Threshold', isThreshold: true },
+    { fpr: 0.5678, tpr: 0.8675, label: 'Clinical Threshold (0.35)', isThreshold: true },
     { fpr: 0.6012, tpr: 0.9206, label: 'Point 12' },
     { fpr: 0.6678, tpr: 0.9286, label: 'Point 13' },
     { fpr: 0.7345, tpr: 0.9365, label: 'Point 14' },
@@ -69,7 +68,7 @@ const BreastCancerChartsRecharts = () => {
     { fpr: 1.0000, tpr: 1.0000, label: 'End' }
   ];
 
-  // Precision-Recall Curve Data
+  // Precision-Recall Curve Data (from notebook)
   const prData = [
     { recall: 0.0000, precision: 1.0000, label: 'Start' },
     { recall: 0.5159, precision: 0.9246, label: 'Point 1' },
@@ -80,7 +79,7 @@ const BreastCancerChartsRecharts = () => {
     { recall: 0.8095, precision: 0.8023, label: 'Point 6' },
     { recall: 0.8413, precision: 0.7834, label: 'Point 7' },
     { recall: 0.8651, precision: 0.7650, label: 'Point 8' },
-    { recall: 0.8675, precision: 0.5915, label: 'Clinical Threshold', isThreshold: true },
+    { recall: 0.8675, precision: 0.5915, label: 'Clinical Threshold (0.35)', isThreshold: true },
     { recall: 0.8810, precision: 0.7489, label: 'Point 9' },
     { recall: 0.8968, precision: 0.7342, label: 'Point 10' },
     { recall: 0.9048, precision: 0.7208, label: 'Point 11' },
@@ -93,7 +92,7 @@ const BreastCancerChartsRecharts = () => {
     { recall: 1.0000, precision: 0.6619, label: 'End' }
   ];
 
-  // Confusion Matrix Data
+  // Confusion Matrix Data (from notebook test results)
   const confusionData = [
     { name: 'True Negatives', value: 978, color: '#10b981', actual: 'Benign', predicted: 'Benign', description: 'Correctly identified as benign' },
     { name: 'False Positives', value: 755, color: '#ef4444', actual: 'Benign', predicted: 'Malignant', description: 'Benign incorrectly flagged as cancer' },
@@ -101,7 +100,7 @@ const BreastCancerChartsRecharts = () => {
     { name: 'True Positives', value: 1093, color: '#3b82f6', actual: 'Malignant', predicted: 'Malignant', description: 'Cancer correctly identified' }
   ];
 
-  // Threshold Analysis Data
+  // Threshold Analysis Data (from notebook)
   const thresholdData = [
     { threshold: 0.25, sensitivity: 94.8, specificity: 35.1, accuracy: 60.3 },
     { threshold: 0.30, sensitivity: 91.0, specificity: 44.5, accuracy: 64.1 },
@@ -114,16 +113,17 @@ const BreastCancerChartsRecharts = () => {
     { threshold: 0.60, sensitivity: 64.3, specificity: 86.2, accuracy: 76.0 }
   ];
 
-  // Metrics Comparison Data
+  // Metrics Comparison Data - UPDATED with notebook results (no target values from notebook)
   const metricsComparisonData = [
-    { metric: 'Sensitivity', before: 67.6, after: 86.7, target: 80.0, improved: true, change: '+19.1%' },
-    { metric: 'Specificity', before: 85.5, after: 56.4, target: 80.0, improved: false, change: '-29.1%' },
-    { metric: 'Accuracy', before: 77.9, after: 69.2, target: 85.0, improved: false, change: '-8.7%' },
-    { metric: 'Precision', before: 74.3, after: 59.2, target: 80.0, improved: false, change: '-15.1%' },
-    { metric: 'F1-Score', before: 71.6, after: 70.3, target: 80.0, improved: false, change: '-1.3%' }
+    { metric: 'Sensitivity', before: 67.6, after: 86.7, improved: true, change: '+19.1%' },
+    { metric: 'Specificity', before: 85.5, after: 56.4, improved: false, change: '-29.1%' },
+    { metric: 'Accuracy', before: 77.9, after: 69.2, improved: false, change: '-8.7%' },
+    { metric: 'Precision', before: 74.3, after: 59.2, improved: false, change: '-15.1%' },
+    { metric: 'F1-Score', before: 71.6, after: 70.3, improved: false, change: '-1.3%' },
+    { metric: 'AUC-ROC', before: 83.1, after: 83.4, improved: true, change: '+0.3%' }
   ];
 
-  // Probability Distribution Data
+  // Probability Distribution Data (from notebook test set)
   const probabilityDataFull = [
     { range: '0-10%', benign: 245, malignant: 5, total: 250 },
     { range: '10-20%', benign: 189, malignant: 12, total: 201 },
@@ -308,13 +308,6 @@ const BreastCancerChartsRecharts = () => {
                     name="Random Classifier"
                     dot={false}
                   />
-                  <Scatter 
-                    data={[{ fpr: 0.4357, tpr: 0.8675 }]} 
-                    fill="#ef4444" 
-                    name="Clinical Threshold (0.35)"
-                  >
-                    <Cell fill="#ef4444" />
-                  </Scatter>
                 </ComposedChart>
               ) : chartType === 'pr' ? (
                 <ComposedChart data={prData} margin={getChartMargin()}>
@@ -361,13 +354,6 @@ const BreastCancerChartsRecharts = () => {
                     dot={<CustomDot />}
                     activeDot={{ r: 6, onClick: (data) => setHoveredDataPoint(data.payload) }}
                   />
-                  <Scatter 
-                    data={[{ recall: 0.8675, precision: 0.5915 }]} 
-                    fill="#ef4444" 
-                    name="Clinical Threshold (0.35)"
-                  >
-                    <Cell fill="#ef4444" />
-                  </Scatter>
                 </ComposedChart>
               ) : chartType === 'threshold' ? (
                 <LineChart data={thresholdData} margin={getChartMargin()}>
@@ -460,34 +446,30 @@ const BreastCancerChartsRecharts = () => {
           <div className="flex items-start gap-2 text-gray-700">
             <FaInfoCircle className="text-xs sm:text-sm flex-shrink-0 mt-0.5" />
             <p className="text-[10px] sm:text-xs md:text-sm">
-              {chartType === 'roc' && "AUC-ROC: 0.834 - Good discrimination ability. The clinical threshold (0.35) prioritizes sensitivity."}
-              {chartType === 'pr' && "Average Precision: 0.703 - Moderate precision-recall trade-off at clinical threshold."}
+              {chartType === 'roc' && "AUC-ROC: 0.834 - Good discrimination ability. The clinical threshold (0.35) prioritizes sensitivity (86.7%)."}
+              {chartType === 'pr' && "Average Precision: 0.703 - Moderate precision-recall trade-off at clinical threshold (0.35)."}
               {chartType === 'threshold' && "Clinical threshold: 0.35 - Prioritizes early cancer detection (86.7% sensitivity)."}
-              {chartType === 'distribution' && "Malignant cases (1,260) show higher probability scores than benign cases (1,733)."}
+              {chartType === 'distribution' && "Malignant cases (1,260) show higher probability scores than benign cases (1,733). Clinical threshold at 0.35."}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Metrics Comparison Section */}
+      {/* Metrics Comparison Section - Updated without targets */}
       <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 mb-4 sm:mb-6 border border-gray-100">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3">
           <div>
             <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900">Metrics Improvement Analysis</h3>
-            <p className="text-xs sm:text-sm text-gray-500">Before vs After Fine-tuning Comparison</p>
+            <p className="text-xs sm:text-sm text-gray-500">Before vs After Fine-tuning Comparison (Threshold = 0.35)</p>
           </div>
           <div className="flex gap-2 sm:gap-3 text-[10px] sm:text-xs">
             <div className="flex items-center gap-1">
               <div className="w-2 h-2 sm:w-3 sm:h-3 bg-gray-400 rounded"></div>
-              <span>Before</span>
+              <span>Before Fine-tuning</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-2 h-2 sm:w-3 sm:h-3 bg-blue-500 rounded"></div>
-              <span>After</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded"></div>
-              <span>Target</span>
+              <span>After Fine-tuning</span>
             </div>
           </div>
         </div>
@@ -511,22 +493,11 @@ const BreastCancerChartsRecharts = () => {
                       <span>Before: {metric.before}%</span>
                       <span>After: {metric.after}%</span>
                     </div>
-                    <div className="relative w-full h-2 bg-gray-200 rounded-full">
-                      <div className="absolute h-full bg-gray-400 rounded-full" style={{ width: `${metric.before}%` }} />
+                    <div className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="absolute h-full bg-gray-400 rounded-full" style={{ width: `${Math.min(metric.before, 100)}%` }} />
                       <div 
                         className="absolute h-full bg-blue-500 rounded-full transition-all duration-500"
-                        style={{ width: `${metric.after}%`, boxShadow: '0 0 4px rgba(59,130,246,0.5)' }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span>Target: {metric.target}%</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-gray-200 rounded-full">
-                      <div 
-                        className="h-full bg-green-500 rounded-full transition-all duration-500"
-                        style={{ width: `${metric.target}%`, opacity: 0.7 }}
+                        style={{ width: `${Math.min(metric.after, 100)}%`, boxShadow: '0 0 4px rgba(59,130,246,0.5)' }}
                       />
                     </div>
                   </div>
@@ -537,12 +508,12 @@ const BreastCancerChartsRecharts = () => {
         </div>
 
         {/* Desktop Bar Chart */}
-        <div className="hidden sm:block w-full h-[500px]">
+        <div className="hidden sm:block w-full h-[450px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart 
               data={metricsComparisonData} 
               layout="vertical" 
-              margin={{ top: 20, right: 30, left: 100, bottom: 30 }}
+              margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis 
@@ -561,7 +532,6 @@ const BreastCancerChartsRecharts = () => {
               <Legend verticalAlign="top" height={36} />
               <Bar dataKey="before" fill="#9ca3af" name="Before Fine-tuning" radius={[0, 4, 4, 0]} />
               <Bar dataKey="after" fill="#3b82f6" name="After Fine-tuning" radius={[0, 4, 4, 0]} />
-              <Bar dataKey="target" fill="#10b981" name="Target (80%+)" radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -572,7 +542,7 @@ const BreastCancerChartsRecharts = () => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3">
           <div>
             <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900">Confusion Matrix Analysis</h3>
-            <p className="text-xs sm:text-sm text-gray-500">Test Set Results (N=2,993 patients)</p>
+            <p className="text-xs sm:text-sm text-gray-500">Test Set Results (N=2,993 patients) | Threshold = 0.35</p>
           </div>
           <FaEye className="text-xl sm:text-2xl text-blue-500" />
         </div>
@@ -642,6 +612,15 @@ const BreastCancerChartsRecharts = () => {
               <p className="hidden sm:block text-[9px] text-gray-400 mt-0.5">{item.description}</p>
             </div>
           ))}
+        </div>
+
+        {/* Performance Summary from Notebook */}
+        <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-gray-50 rounded-lg">
+          <p className="text-xs sm:text-sm text-gray-600 text-center">
+            Clinical threshold (0.35) achieves <span className="font-bold text-green-600">86.7% sensitivity</span> (cancer detection rate) 
+            with <span className="font-bold text-blue-600">56.4% specificity</span>. This prioritizes early detection 
+            at the cost of 43.6% false positives.
+          </p>
         </div>
       </div>
 

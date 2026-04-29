@@ -16,7 +16,7 @@ import { MdOutlinePrecisionManufacturing, MdOutlineSick } from 'react-icons/md';
 import { FiEye, FiCheckCircle } from 'react-icons/fi';
 import { FaInfoCircle, FaTachometerAlt, FaTimes } from 'react-icons/fa';
 
-// --- Data extracted from the provided notebook ---
+// --- Data extracted from the notebook evaluation output ---
 const PERFORMANCE_DATA = {
   classes: [
     'Atelectasis', 'Cardiomegaly', 'Effusion', 'Infiltration', 'Mass', 'Nodule',
@@ -304,7 +304,7 @@ const MetricGauge = ({ value, title, color, max = 1 }) => {
         <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
           <div className="h-2 rounded-full transition-all duration-500" style={{ width: `${percentage}%`, backgroundColor: color }}></div>
         </div>
-        <p className="text-lg sm:text-xl font-bold text-gray-800">{value.toFixed(3)}</p>
+        <p className="text-lg sm:text-xl font-bold text-gray-800">{value.toFixed(4)}</p>
         <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{title}</p>
       </div>
     </div>
@@ -363,6 +363,10 @@ const ClassDetailModal = ({ classData, onClose }) => {
     { label: 'Support', value: classData.support, color: '#ef4444', icon: MdOutlineSick, max: Math.max(...PERFORMANCE_DATA.metrics.support) }
   ];
 
+  // Get optimal threshold for this class
+  const classIndex = PERFORMANCE_DATA.classes.indexOf(classData.class);
+  const optimalThreshold = classIndex !== -1 ? PERFORMANCE_DATA.optimal_thresholds[classIndex] : 0.5;
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4" onClick={onClose}>
       <div className="bg-white rounded-xl sm:rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl mx-3" onClick={e => e.stopPropagation()}>
@@ -385,7 +389,10 @@ const ClassDetailModal = ({ classData, onClose }) => {
         </div>
         <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-gray-100">
           <p className="text-[10px] sm:text-xs text-gray-500">
-            Optimal threshold: {PERFORMANCE_DATA.optimal_thresholds[PERFORMANCE_DATA.classes.indexOf(classData.class)]?.toFixed(3)}
+            Optimal threshold: {optimalThreshold.toFixed(3)}
+          </p>
+          <p className="text-[10px] sm:text-xs text-gray-500 mt-1">
+            TP: {PERFORMANCE_DATA.metrics.tp[classIndex]} | FP: {PERFORMANCE_DATA.metrics.fp[classIndex]} | FN: {PERFORMANCE_DATA.metrics.fn[classIndex]} | TN: {PERFORMANCE_DATA.metrics.tn[classIndex]}
           </p>
         </div>
       </div>
@@ -438,7 +445,7 @@ const LungDiseaseMetrics = () => {
 
   const handleExport = () => {
     const csvContent = [
-      ['Class', 'Precision', 'Recall', 'F1 Score', 'ROC-AUC', 'PR-AUC', 'Support', 'Optimal Threshold'],
+      ['Class', 'Precision', 'Recall', 'F1 Score', 'ROC-AUC', 'PR-AUC', 'Support', 'Optimal Threshold', 'TP', 'FP', 'FN', 'TN'],
       ...PERFORMANCE_DATA.classes.map((cls, idx) => [
         cls,
         PERFORMANCE_DATA.metrics.precision[idx],
@@ -447,7 +454,11 @@ const LungDiseaseMetrics = () => {
         PERFORMANCE_DATA.metrics.roc_auc[idx],
         PERFORMANCE_DATA.metrics.pr_auc[idx],
         PERFORMANCE_DATA.metrics.support[idx],
-        PERFORMANCE_DATA.optimal_thresholds[idx]
+        PERFORMANCE_DATA.optimal_thresholds[idx],
+        PERFORMANCE_DATA.metrics.tp[idx],
+        PERFORMANCE_DATA.metrics.fp[idx],
+        PERFORMANCE_DATA.metrics.fn[idx],
+        PERFORMANCE_DATA.metrics.tn[idx]
       ])
     ].map(row => row.join(',')).join('\n');
     
@@ -472,6 +483,7 @@ const LungDiseaseMetrics = () => {
             <div>
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800">Lung Disease Detection</h1>
               <p className="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1">Multi-label classification (14 pathologies)</p>
+              <p className="text-[10px] sm:text-xs text-gray-400 mt-0.5">Model: Improved Custom CNN with SE Blocks | Progressive Resizing (192→288) | Asymmetric Loss</p>
             </div>
           </div>
           <button
@@ -482,7 +494,7 @@ const LungDiseaseMetrics = () => {
           </button>
         </div>
 
-        {/* Key Metrics Grid */}
+        {/* Key Metrics Grid - Using actual notebook values */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           <MetricCard
             title="Macro F1"
@@ -548,7 +560,7 @@ const LungDiseaseMetrics = () => {
           <div className="space-y-4 sm:space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <div className="bg-white rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-5 border border-green-100">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2"><FaArrowTrendUp className="text-green-500" /> Top Performers</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2"><FaArrowTrendUp className="text-green-500" /> Top Performers (by F1 Score)</h3>
                 <div className="space-y-2 sm:space-y-3">
                   {top5ByF1.map((item, idx) => (
                     <div key={idx} className="flex flex-wrap justify-between items-center p-2 bg-green-50 rounded-lg gap-2">
@@ -556,13 +568,14 @@ const LungDiseaseMetrics = () => {
                       <div className="flex flex-wrap gap-2 sm:gap-4">
                         <span className="text-xs sm:text-sm text-gray-500">F1: <span className="font-semibold text-green-600">{item.f1.toFixed(3)}</span></span>
                         <span className="text-xs sm:text-sm text-gray-500">AUC: <span className="font-semibold text-blue-600">{item.roc_auc.toFixed(3)}</span></span>
+                        <span className="text-xs sm:text-sm text-gray-500">N: <span className="font-semibold text-gray-600">{item.support}</span></span>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
               <div className="bg-white rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-5 border border-red-100">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2"><FaArrowTrendDown className="text-red-500" /> Needs Improvement</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2"><FaArrowTrendDown className="text-red-500" /> Needs Improvement (by F1 Score)</h3>
                 <div className="space-y-2 sm:space-y-3">
                   {bottom5ByF1.map((item, idx) => (
                     <div key={idx} className="flex flex-wrap justify-between items-center p-2 bg-red-50 rounded-lg gap-2">
@@ -579,12 +592,12 @@ const LungDiseaseMetrics = () => {
 
             {/* Bar Chart */}
             <div className="bg-white rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-5 overflow-x-auto">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">F1 Score by Disease Class</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">F1 Score, Precision & Recall by Disease Class</h3>
               <div style={{ minWidth: isMobile ? '600px' : 'auto' }}>
                 <ResponsiveContainer width="100%" height={isMobile ? 400 : 450}>
                   <BarChart data={barData} layout="vertical" margin={{ left: isMobile ? 60 : 80, right: 20, top: 20, bottom: 20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis type="number" domain={[0, 0.6]} tick={{ fill: '#6b7280', fontSize: isMobile ? 10 : 12 }} />
+                    <XAxis type="number" domain={[0, 0.7]} tick={{ fill: '#6b7280', fontSize: isMobile ? 10 : 12 }} />
                     <YAxis type="category" dataKey="name" tick={{ fill: '#4b5563', fontSize: isMobile ? 9 : 11 }} width={isMobile ? 70 : 100} />
                     <Tooltip formatter={(value) => value.toFixed(3)} />
                     <Legend wrapperStyle={{ fontSize: isMobile ? '10px' : '12px' }} />
@@ -603,14 +616,39 @@ const LungDiseaseMetrics = () => {
           <div className="space-y-4 sm:space-y-6">
             <ClassPerformanceTable data={tableData} onRowClick={(className) => setSelectedClass(tableData.find(d => d.class === className))} selectedClass={selectedClass?.class} />
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 sm:gap-4">
-              {['macro_precision', 'macro_recall', 'macro_f1', 'micro_precision', 'micro_recall', 'micro_f1'].map(metric => (
-                <MetricGauge
-                  key={metric}
-                  value={PERFORMANCE_DATA.overall[metric]}
-                  title={metric.replace('_', ' ').toUpperCase()}
-                  color={metric.includes('precision') ? '#3b82f6' : metric.includes('recall') ? '#f59e0b' : '#10b981'}
-                />
-              ))}
+              <MetricGauge
+                value={PERFORMANCE_DATA.overall.macro_precision}
+                title="MACRO PRECISION"
+                color="#3b82f6"
+              />
+              <MetricGauge
+                value={PERFORMANCE_DATA.overall.macro_recall}
+                title="MACRO RECALL"
+                color="#f59e0b"
+              />
+              <MetricGauge
+                value={PERFORMANCE_DATA.overall.macro_f1}
+                title="MACRO F1"
+                color="#10b981"
+              />
+              <MetricGauge
+                value={PERFORMANCE_DATA.overall.micro_precision}
+                title="MICRO PRECISION"
+                color="#3b82f6"
+              />
+              <MetricGauge
+                value={PERFORMANCE_DATA.overall.micro_recall}
+                title="MICRO RECALL"
+                color="#f59e0b"
+              />
+              <MetricGauge
+                value={PERFORMANCE_DATA.overall.micro_f1}
+                title="MICRO F1"
+                color="#10b981"
+              />
+            </div>
+            <div className="bg-gray-50 rounded-xl p-4 text-center">
+              <p className="text-sm text-gray-600">Loss: <span className="font-mono font-semibold">{PERFORMANCE_DATA.overall.loss.toFixed(4)}</span></p>
             </div>
           </div>
         )}
@@ -646,8 +684,8 @@ const LungDiseaseMetrics = () => {
 
         {/* Footer */}
         <div className="text-center text-[10px] sm:text-xs text-gray-500 pt-4 sm:pt-6 border-t border-gray-200">
-          <p>Model: Improved Custom CNN with SE Blocks | Progressive Resizing (192→288) | Asymmetric Loss</p>
-          <p className="mt-1 hidden sm:block">Optimal thresholds optimized per class via F1 maximization</p>
+          <p>Dataset: NIH Chest X-ray (112,120 images) | Train: 78,484 | Val: 16,818 | Test: 16,818</p>
+          <p className="mt-1">Optimal thresholds optimized per class via F1 maximization on validation set</p>
         </div>
       </div>
     </div>

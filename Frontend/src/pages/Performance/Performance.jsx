@@ -1,4 +1,4 @@
-// Performance.jsx
+// Performance.jsx (UPDATED - with GradCAM component)
 import React, { useState } from 'react';
 import {
   FaChartLine,
@@ -8,13 +8,16 @@ import {
   FaDownload,
   FaCalendarAlt,
   FaEye,
-  FaInfoCircle
+  FaInfoCircle,
+  FaBrain,
+  FaMicroscope
 } from 'react-icons/fa';
 import BreastCancerMetrics from './elements/BreastCancerMetrics';
 import BreastCancerChartsRecharts from './elements/BreastCancerChartsRecharts';
 import ModelComparisonRecharts from './elements/ModelComparisonRecharts';
 import PerformanceHeader from './elements/PerformanceHeader';
 import LungDiseaseMetrics from './elements/LungDiseaseMetrics';
+import GradCAMComponent from './elements/GradCAMComponent';  // NEW IMPORT
 
 const Performance = () => {
   const [activeDisease, setActiveDisease] = useState('breast-cancer');
@@ -35,6 +38,9 @@ const Performance = () => {
       <div className="max-w-7xl mx-auto">
         {activeDisease === 'breast-cancer' ? (
           <>
+            {/* Grad-CAM Visualization - NEW SECTION */}
+            <GradCAMComponent />
+            
             {/* Key Metrics Cards */}
             <BreastCancerMetrics />
             

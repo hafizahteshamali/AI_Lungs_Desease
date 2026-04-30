@@ -211,7 +211,7 @@ const PerformanceHeader = ({ activeDisease, setActiveDisease, timeRange, setTime
       </div>
 
       {/* Time Range Filter - Responsive */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
         {/* Desktop Time Range Buttons */}
         <div className="hidden sm:flex gap-2">
           {timeRangeOptions.map((option) => (
@@ -293,27 +293,6 @@ const PerformanceHeader = ({ activeDisease, setActiveDisease, timeRange, setTime
               ))}
             </div>
           )}
-        </div>
-
-        {/* Action Buttons - Responsive with Hover Animations */}
-        <div className="flex gap-3 w-full sm:w-auto">
-          <button 
-            onMouseEnter={() => setHoveredAction('export')}
-            onMouseLeave={() => setHoveredAction(null)}
-            className="group flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 hover:text-gray-800 hover:border-gray-300 hover:shadow-md transition-all duration-300 text-sm md:text-base"
-          >
-            <FiDownload className={`text-base md:text-lg transition-all duration-300 ${hoveredAction === 'export' ? 'scale-110 -translate-y-0.5' : ''}`} />
-            <span className="font-medium">Export</span>
-          </button>
-          <button 
-            onMouseEnter={() => setHoveredAction('range')}
-            onMouseLeave={() => setHoveredAction(null)}
-            className="group flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 hover:text-gray-800 hover:border-gray-300 hover:shadow-md transition-all duration-300 text-sm md:text-base"
-          >
-            <FiCalendar className={`text-base md:text-lg transition-all duration-300 ${hoveredAction === 'range' ? 'scale-110 -translate-y-0.5' : ''}`} />
-            <span className="font-medium hidden xs:inline">Custom Range</span>
-            <span className="font-medium xs:hidden">Range</span>
-          </button>
         </div>
       </div>
 

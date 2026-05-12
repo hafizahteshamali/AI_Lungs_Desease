@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import { FaUpload, FaImage, FaCheckCircle, FaArrowRight, FaEye, FaEyeSlash, FaLungs, FaVenusMars } from "react-icons/fa"
+import { FaUpload, FaImage, FaCheckCircle, FaArrowRight, FaEye, FaEyeSlash, FaLungs, FaVenusMars, FaDownload, FaExpand, FaChartLine } from "react-icons/fa"
 import { IoMdClose } from "react-icons/io"
 import { toast } from "react-toastify"
 import { postReq } from "../../../api/axios"
@@ -28,6 +28,8 @@ export default function XrayDemoSection() {
   const [showHeatmap, setShowHeatmap] = useState(true)
   // State for controlling heatmap opacity (0-100)
   const [heatmapOpacity, setHeatmapOpacity] = useState(50)
+  // State for expanded view modal
+  const [expandedImage, setExpandedImage] = useState(null)
 
   // Ref for file input element
   const fileInputRef = useRef(null)
@@ -88,27 +90,67 @@ export default function XrayDemoSection() {
     return interval
   }
 
-  // Function to process Lung Disease API response
-  const processLungDiseaseResponse = (response) => {
-    console.log("Lung Disease API Response:", response.data)
-    setApiResponse(response.data)
-
-    // Process GradCAM image
+  // Function to process GradCAM image from API response
+  const processGradcamImage = (responseData) => {
+    // Check for gradcam in multiple possible locations
     let gradcamValue = null
-    const possibleGradcamKeys = ['gradcam', 'heatmap', 'visualization', 'grad_cam', 'gradCam']
-    for (const key of possibleGradcamKeys) {
-      if (response.data?.[key] && response.data[key].trim() !== "") {
-        gradcamValue = response.data[key]
-        break
-      }
+    
+    // Direct gradcam field
+    if (responseData?.gradcam && responseData.gradcam.trim() !== "") {
+      gradcamValue = responseData.gradcam
+    }
+    // gradcam_overlay field
+    else if (responseData?.gradcam_overlay && responseData.gradcam_overlay.trim() !== "") {
+      gradcamValue = responseData.gradcam_overlay
+    }
+    // heatmap field
+    else if (responseData?.heatmap && responseData.heatmap.trim() !== "") {
+      gradcamValue = responseData.heatmap
+    }
+    // visualization field
+    else if (responseData?.visualization && responseData.visualization.trim() !== "") {
+      gradcamValue = responseData.visualization
+    }
+    // grad_cam field
+    else if (responseData?.grad_cam && responseData.grad_cam.trim() !== "") {
+      gradcamValue = responseData.grad_cam
+    }
+    // gradCam field
+    else if (responseData?.gradCam && responseData.gradCam.trim() !== "") {
+      gradcamValue = responseData.gradCam
+    }
+    // attention_map field
+    else if (responseData?.attention_map && responseData.attention_map.trim() !== "") {
+      gradcamValue = responseData.attention_map
     }
 
     if (gradcamValue) {
       let gradcamUrl = gradcamValue
+      // Check if it's already a data URL
       if (!gradcamUrl.startsWith("data:image")) {
-        gradcamUrl = `data:image/png;base64,${gradcamValue}`
+        // Check if it's base64 encoded
+        if (gradcamUrl.match(/^[A-Za-z0-9+/=]+$/)) {
+          gradcamUrl = `data:image/png;base64,${gradcamValue}`
+        } else {
+          // If it's a relative path or URL, prepend the API base URL if needed
+          gradcamUrl = gradcamValue
+        }
       }
       setGradcamImage(gradcamUrl)
+      return true
+    }
+    return false
+  }
+
+  // Function to process Lung Disease API response
+  const processLungDiseaseResponse = (response) => {
+    setApiResponse(response.data)
+
+    // Process GradCAM image
+    const hasGradcam = processGradcamImage(response.data)
+
+    if (!hasGradcam) {
+      console.warn("No GradCAM image found in API response")
     }
 
     // Process predictions
@@ -206,7 +248,8 @@ export default function XrayDemoSection() {
         allDiseases: diseases,
         visualized_finding,
         status,
-        diseaseType: "Lung Disease"
+        diseaseType: "Lung Disease",
+        model: response.data?.model || "AI Model"
       })
     } else {
       setAnalysisResult({
@@ -226,7 +269,8 @@ export default function XrayDemoSection() {
         allDiseases: [],
         visualized_finding,
         status,
-        diseaseType: "Lung Disease"
+        diseaseType: "Lung Disease",
+        model: response.data?.model || "AI Model"
       })
     }
   }
@@ -236,22 +280,11 @@ export default function XrayDemoSection() {
     console.log("Breast Cancer API Response:", response.data)
     setApiResponse(response.data)
 
-    // Process GradCAM image for breast cancer
-    let gradcamValue = null
-    const possibleGradcamKeys = ['gradcam', 'heatmap', 'visualization', 'grad_cam', 'gradCam', 'attention_map']
-    for (const key of possibleGradcamKeys) {
-      if (response.data?.[key] && response.data[key].trim() !== "") {
-        gradcamValue = response.data[key]
-        break
-      }
-    }
+    // Process GradCAM image
+    const hasGradcam = processGradcamImage(response.data)
 
-    if (gradcamValue) {
-      let gradcamUrl = gradcamValue
-      if (!gradcamUrl.startsWith("data:image")) {
-        gradcamUrl = `data:image/png;base64,${gradcamValue}`
-      }
-      setGradcamImage(gradcamUrl)
+    if (!hasGradcam) {
+      console.warn("No GradCAM image found in API response")
     }
 
     // Process breast cancer specific predictions
@@ -341,7 +374,8 @@ export default function XrayDemoSection() {
       status,
       diseaseType: "Breast Cancer",
       birads: birads,
-      additionalInfo: response.data?.additional_info || response.data?.notes
+      additionalInfo: response.data?.additional_info || response.data?.notes,
+      model: response.data?.model || "Breast Cancer Detection Model"
     })
   }
 
@@ -463,6 +497,56 @@ export default function XrayDemoSection() {
     setGradcamImage(null)
     setProgress(0)
     if (fileInputRef.current) fileInputRef.current.value = ""
+  }
+
+  // Function to download heatmap image
+  const handleDownloadHeatmap = () => {
+    if (gradcamImage) {
+      const link = document.createElement('a')
+      link.href = gradcamImage
+      link.download = `heatmap_${analysisResult?.diseaseType?.toLowerCase().replace(' ', '_')}_${Date.now()}.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      toast.success("Heatmap image downloaded!")
+    }
+  }
+
+  // Function to open image in expanded view
+  const handleExpandImage = (imageUrl) => {
+    setExpandedImage(imageUrl)
+  }
+
+  // Function to close expanded view
+  const handleCloseExpanded = () => {
+    setExpandedImage(null)
+  }
+
+  // Image Modal Component
+  const ImageModal = () => {
+    if (!expandedImage) return null
+    
+    return (
+      <div 
+        className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+        onClick={handleCloseExpanded}
+      >
+        <div className="relative max-w-5xl w-full max-h-[90vh]">
+          <button
+            onClick={handleCloseExpanded}
+            className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
+          >
+            <IoMdClose className="text-3xl" />
+          </button>
+          <img
+            src={expandedImage}
+            alt="Expanded view"
+            className="w-full h-full object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -645,23 +729,30 @@ export default function XrayDemoSection() {
         )}
 
         {/* IMAGES ROW - AFTER ANALYSIS */}
-        {analysisResult && gradcamImage && (
+        {analysisResult && preview && (
           <div className="w-full mb-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
               
               {/* Original Image Card */}
-              <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 shadow-lg h-full">
-                <h3 className="text-lg font-bold text-gray-800 mb-4">
-                  Original {analysisResult.diseaseType === 'Lung Disease' ? 'X-ray' : 'Mammogram'} Image
-                </h3>
-                <div className="bg-black rounded-lg overflow-hidden shadow h-64">
-                  {preview && (
-                    <img
-                      src={preview}
-                      alt={`Original ${analysisResult.diseaseType === 'Lung Disease' ? 'X-ray' : 'Mammogram'}`}
-                      className="w-full h-full object-contain"
-                    />
-                  )}
+              <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 shadow-lg h-full transition-all hover:shadow-xl">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-bold text-gray-800">
+                    Original {analysisResult.diseaseType === 'Lung Disease' ? 'X-ray' : 'Mammogram'} Image
+                  </h3>
+                  <button
+                    onClick={() => handleExpandImage(preview)}
+                    className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                    title="View full size"
+                  >
+                    <FaExpand className="text-gray-600" />
+                  </button>
+                </div>
+                <div className="bg-black rounded-lg overflow-hidden shadow h-64 cursor-pointer" onClick={() => handleExpandImage(preview)}>
+                  <img
+                    src={preview}
+                    alt={`Original ${analysisResult.diseaseType === 'Lung Disease' ? 'X-ray' : 'Mammogram'}`}
+                    className="w-full h-full object-contain transition-transform hover:scale-105"
+                  />
                 </div>
                 <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
                   <p className="text-xs text-blue-700">
@@ -670,28 +761,52 @@ export default function XrayDemoSection() {
                 </div>
               </div>
 
-              {/* GradCAM Image Card */}
-              <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 shadow-lg h-full">
+              {/* GradCAM Image Card - Enhanced */}
+              <div className="bg-gradient-to-br from-[#f9f9f9] to-white border border-gray-300 rounded-xl p-6 shadow-lg h-full transition-all hover:shadow-xl">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-bold text-gray-800">AI Heatmap Analysis</h3>
-                  <button
-                    onClick={() => setShowHeatmap(!showHeatmap)}
-                    className="flex items-center gap-1 px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors text-sm"
-                  >
-                    {showHeatmap ? <FaEyeSlash className="text-xs" /> : <FaEye className="text-xs" />}
-                    {showHeatmap ? "Hide Heatmap" : "Show Heatmap"}
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <FaChartLine className="text-purple-600" />
+                    <h3 className="text-lg font-bold text-gray-800">AI Heatmap Analysis (Grad-CAM)</h3>
+                  </div>
+                  <div className="flex gap-2">
+                    {gradcamImage && (
+                      <button
+                        onClick={handleDownloadHeatmap}
+                        className="p-2 bg-purple-100 hover:bg-purple-200 rounded-lg transition-colors"
+                        title="Download heatmap"
+                      >
+                        <FaDownload className="text-purple-600" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setShowHeatmap(!showHeatmap)}
+                      className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                      title={showHeatmap ? "Hide overlay" : "Show overlay"}
+                    >
+                      {showHeatmap ? <FaEyeSlash className="text-gray-600" /> : <FaEye className="text-gray-600" />}
+                    </button>
+                    {gradcamImage && (
+                      <button
+                        onClick={() => handleExpandImage(gradcamImage)}
+                        className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                        title="View full size"
+                      >
+                        <FaExpand className="text-gray-600" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="bg-black rounded-lg overflow-hidden shadow relative h-64">
-                  {showHeatmap ? (
-                    <img
-                      src={gradcamImage}
-                      alt="AI Heatmap Analysis"
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    preview && (
+                  {gradcamImage ? (
+                    showHeatmap ? (
+                      <img
+                        src={gradcamImage}
+                        alt="Grad-CAM Heatmap Analysis"
+                        className="w-full h-full object-contain cursor-pointer"
+                        onClick={() => handleExpandImage(gradcamImage)}
+                      />
+                    ) : (
                       <>
                         <img
                           src={preview}
@@ -704,46 +819,67 @@ export default function XrayDemoSection() {
                         ></div>
                       </>
                     )
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-900">
+                      <p className="text-gray-400 text-center p-4">
+                        No heatmap data available from API response
+                      </p>
+                    </div>
                   )}
                 </div>
 
-                <div className="mt-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600">Heatmap Opacity</span>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={heatmapOpacity}
-                        onChange={(e) => setHeatmapOpacity(Number(e.target.value))}
-                        className="w-24 accent-blue-600"
-                      />
-                      <span className="text-xs text-gray-700">{heatmapOpacity}%</span>
+                {gradcamImage && (
+                  <>
+                    <div className="mt-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-600">Overlay Opacity (when hidden)</span>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={heatmapOpacity}
+                            onChange={(e) => setHeatmapOpacity(Number(e.target.value))}
+                            className="w-32 accent-purple-600"
+                          />
+                          <span className="text-xs text-gray-700">{heatmapOpacity}%</span>
+                        </div>
+                      </div>
+                      
+                      {/* Color Legend */}
+                      <div className="flex gap-4 justify-center pt-2">
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-4 h-4 rounded bg-gradient-to-r from-red-500 to-red-600"></div>
+                          <span className="text-xs text-gray-600">High</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-4 h-4 rounded bg-gradient-to-r from-yellow-400 to-orange-500"></div>
+                          <span className="text-xs text-gray-600">Medium</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-4 h-4 rounded bg-gradient-to-r from-green-500 to-emerald-500"></div>
+                          <span className="text-xs text-gray-600">Low</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="flex gap-3 justify-center">
-                    <div className="flex items-center gap-1">
-                      <div className="w-3 h-3 rounded bg-red-500"></div>
-                      <span className="text-xs text-gray-600">High Risk</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <div className="w-3 h-3 rounded bg-yellow-400"></div>
-                      <span className="text-xs text-gray-600">Medium</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <div className="w-3 h-3 rounded bg-green-500"></div>
-                      <span className="text-xs text-gray-600">Low Risk</span>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-100">
-                  <p className="text-xs text-purple-700">
-                    <span className="font-medium">AI Generated Heatmap</span> - Shows areas where AI detected {analysisResult.diseaseType === 'Lung Disease' ? 'abnormalities' : 'potential tumors'}
-                  </p>
-                </div>
+                    <div className="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-100">
+                      <p className="text-xs text-purple-700">
+                        <span className="font-medium">Grad-CAM Explanation</span> - The heatmap highlights regions where the AI model focused most for its diagnosis decision. 
+                        Warmer colors (red/yellow) indicate areas that strongly influenced the prediction.
+                      </p>
+                    </div>
+                  </>
+                )}
+
+                {!gradcamImage && (
+                  <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-100">
+                    <p className="text-xs text-yellow-700">
+                      <span className="font-medium">Note:</span> Heatmap visualization not available in the API response. 
+                      The response may be missing the required 'gradcam', 'gradcam_overlay', or similar field.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -777,6 +913,12 @@ export default function XrayDemoSection() {
                     </span>
                   </div>
 
+                  {analysisResult.model && (
+                    <div className="mb-3 text-xs text-gray-500">
+                      Model: {analysisResult.model}
+                    </div>
+                  )}
+
                   <div className={`bg-gradient-to-r ${
                     analysisResult.diseaseType === 'Lung Disease' 
                       ? 'from-blue-50 to-green-50 border-blue-200' 
@@ -787,7 +929,7 @@ export default function XrayDemoSection() {
                       Confidence: {analysisResult.confidence}
                     </p>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-600">Finding:</span>
+                      <span className="text-sm text-gray-600">AI Finding:</span>
                       <span className="text-sm font-medium text-gray-800">{analysisResult.visualized_finding}</span>
                     </div>
                     {analysisResult.birads && (
@@ -811,7 +953,7 @@ export default function XrayDemoSection() {
                                 <span className="font-medium">{disease.name}</span>
                                 <span className={`text-xs px-2 py-0.5 rounded-full ${
                                   disease.riskLevel === "high" 
-                                    ? "bg-red-100 text-red-800"
+                                    ? "bg-red-100 text-red-800 animate-pulse"
                                     : disease.riskLevel === "medium"
                                       ? "bg-yellow-100 text-yellow-800"
                                       : "bg-green-100 text-green-800"
@@ -825,11 +967,13 @@ export default function XrayDemoSection() {
                                 {disease.probability}%
                               </span>
                             </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2.5">
+                            <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                               <div 
-                                className={`h-2.5 rounded-full bg-gradient-to-r ${disease.barColor}`}
+                                className={`h-2.5 rounded-full bg-gradient-to-r ${disease.barColor} transition-all duration-1000`}
                                 style={{ width: `${disease.probability}%` }}
-                              ></div>
+                              >
+                                <div className="w-full h-full bg-white/20 animate-pulse"></div>
+                              </div>
                             </div>
                           </div>
                         ))}
@@ -860,11 +1004,11 @@ export default function XrayDemoSection() {
                     <div className={`${
                       analysisResult.diseaseType === 'Lung Disease' ? 'bg-blue-50' : 'bg-pink-50'
                     } border border-opacity-20 rounded-xl p-5`}>
-                      <h4 className="font-bold mb-4 text-gray-800 text-lg">Key Findings</h4>
+                      <h4 className="font-bold mb-4 text-gray-800 text-lg">🔍 Key Findings</h4>
                       <div className="space-y-3">
                         {analysisResult.findings.map((f, i) => (
-                          <div key={i} className="flex gap-3">
-                            <FaCheckCircle className="text-green-500 mt-0.5 flex-shrink-0" />
+                          <div key={i} className="flex gap-3 group">
+                            <FaCheckCircle className="text-green-500 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
                             <span className="text-sm">{f}</span>
                           </div>
                         ))}
@@ -874,7 +1018,7 @@ export default function XrayDemoSection() {
                     <div className={`${
                       analysisResult.diseaseType === 'Lung Disease' ? 'bg-green-50' : 'bg-purple-50'
                     } border border-opacity-20 rounded-xl p-5`}>
-                      <h4 className="font-bold mb-4 text-gray-800 text-lg">Recommendations</h4>
+                      <h4 className="font-bold mb-4 text-gray-800 text-lg">💡 Recommendations</h4>
                       <div className="space-y-3">
                         {analysisResult.recommendations.map((r, i) => (
                           <p key={i} className="text-sm">
@@ -883,26 +1027,6 @@ export default function XrayDemoSection() {
                         ))}
                       </div>
                     </div>
-
-                    {apiResponse && (
-                      <div className="md:col-span-2">
-                        <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
-                          <details className="cursor-pointer">
-                            <summary className="text-sm font-medium text-gray-700 list-none">
-                              <span className="flex items-center justify-between">
-                                View API Response Details
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                              </span>
-                            </summary>
-                            <div className="mt-3 p-3 bg-gray-900 text-gray-100 rounded text-xs font-mono overflow-auto max-h-40">
-                              <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
-                            </div>
-                          </details>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
@@ -910,6 +1034,9 @@ export default function XrayDemoSection() {
           </div>
         )}
       </div>
+
+      {/* Image Modal for Expanded View */}
+      <ImageModal />
     </section>
   )
 }

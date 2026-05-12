@@ -14,8 +14,6 @@ import {
   FiImage,
   FiFileText,
   FiActivity,
-  FiWind,
-  FiHeart,
 } from "react-icons/fi"
 import { MdLocalPharmacy, MdMedicalServices } from "react-icons/md"
 import { FaLungs, FaVenusMars } from "react-icons/fa"
@@ -41,16 +39,16 @@ export default function UploadXraysWithPrediction() {
 
   // Mock data for suggested medicines (Lung Disease)
   const lungMedicines = {
-    pneumonia: [
+    infiltration: [
       {
         name: "Amoxicillin",
         dosage: "500mg",
         frequency: "3 times daily",
         duration: "7-10 days",
         type: "Antibiotic",
-        description: "First-line antibiotic for bacterial pneumonia",
+        description: "First-line antibiotic for bacterial infections",
         precautions: "Take with food, avoid alcohol",
-        price: "₹150 - ₹300"
+        price: "Rs.150 - Rs.300"
       },
       {
         name: "Azithromycin",
@@ -60,7 +58,117 @@ export default function UploadXraysWithPrediction() {
         type: "Macrolide Antibiotic",
         description: "Alternative for penicillin-allergic patients",
         precautions: "Take on empty stomach",
-        price: "₹200 - ₹400"
+        price: "Rs.200 - Rs.400"
+      }
+    ],
+    nodule: [
+      {
+        name: "Follow-up CT Scan",
+        dosage: "As recommended",
+        frequency: "Every 3-12 months",
+        duration: "Ongoing monitoring",
+        type: "Monitoring",
+        description: "Regular imaging to track nodule growth",
+        precautions: "Follow doctor's schedule",
+        price: "Rs.2,000 - Rs.5,000"
+      },
+      {
+        name: "Bronchoscopy",
+        dosage: "As needed",
+        frequency: "Once",
+        duration: "Procedure",
+        type: "Diagnostic",
+        description: "For tissue sampling if needed",
+        precautions: "Requires specialist consultation",
+        price: "Rs.15,000 - Rs.30,000"
+      }
+    ],
+    effusion: [
+      {
+        name: "Furosemide",
+        dosage: "40mg",
+        frequency: "Once daily",
+        duration: "As needed",
+        type: "Diuretic",
+        description: "Reduces fluid retention",
+        precautions: "Monitor potassium levels",
+        price: "Rs.50 - Rs.150"
+      },
+      {
+        name: "Spiromide",
+        dosage: "25mg",
+        frequency: "Once daily",
+        duration: "7-14 days",
+        type: "Diuretic",
+        description: "For pleural effusion management",
+        precautions: "Monitor blood pressure",
+        price: "Rs.80 - Rs.200"
+      }
+    ],
+    mass: [
+      {
+        name: "Biopsy Required",
+        dosage: "As needed",
+        frequency: "Once",
+        duration: "Procedure",
+        type: "Diagnostic",
+        description: "Tissue sampling for pathological examination",
+        precautions: "Requires specialist consultation",
+        price: "Rs.10,000 - Rs.25,000"
+      },
+      {
+        name: "PET-CT Scan",
+        dosage: "As recommended",
+        frequency: "Once",
+        duration: "Diagnostic",
+        type: "Imaging",
+        description: "For detailed characterization",
+        precautions: "Requires specialist referral",
+        price: "Rs.15,000 - Rs.30,000"
+      }
+    ],
+    pleural_thickening: [
+      {
+        name: "Anti-inflammatory",
+        dosage: "As prescribed",
+        frequency: "As needed",
+        duration: "Short term",
+        type: "Anti-inflammatory",
+        description: "For symptom management",
+        precautions: "Monitor for side effects",
+        price: "Rs.100 - Rs.300"
+      },
+      {
+        name: "Pulmonary Rehabilitation",
+        dosage: "Regular sessions",
+        frequency: "Weekly",
+        duration: "8-12 weeks",
+        type: "Therapy",
+        description: "Breathing exercises and physical therapy",
+        precautions: "Medical supervision required",
+        price: "Rs.5,000 - Rs.10,000"
+      }
+    ],
+    pneumonia: [
+      {
+        name: "Amoxicillin",
+        dosage: "500mg",
+        frequency: "3 times daily",
+        duration: "7-10 days",
+        type: "Antibiotic",
+        description: "First-line antibiotic for bacterial pneumonia",
+        precautions: "Take with food, avoid alcohol",
+        price: "Rs.150 - Rs.300"
+      },
+      {
+        name: "Azithromycin",
+        dosage: "500mg",
+        frequency: "Once daily",
+        duration: "5 days",
+        type: "Macrolide Antibiotic",
+        description: "Alternative for penicillin-allergic patients",
+        precautions: "Take on empty stomach",
+        price: "Rs.200 - Rs.400"
       }
     ],
     tuberculosis: [
@@ -72,7 +180,7 @@ export default function UploadXraysWithPrediction() {
         type: "Antitubercular",
         description: "First-line TB treatment",
         precautions: "Take with vitamin B6 supplement",
-        price: "₹100 - ₹250"
+        price: "Rs.100 - Rs.250"
       },
       {
         name: "Rifampicin",
@@ -82,7 +190,7 @@ export default function UploadXraysWithPrediction() {
         type: "Antitubercular",
         description: "Essential component of TB regimen",
         precautions: "May discolor body fluids",
-        price: "₹200 - ₹500"
+        price: "Rs.200 - Rs.500"
       }
     ],
     covid: [
@@ -94,7 +202,7 @@ export default function UploadXraysWithPrediction() {
         type: "Corticosteroid",
         description: "For severe COVID-19 with oxygen requirement",
         precautions: "Monitor blood sugar",
-        price: "₹50 - ₹150"
+        price: "Rs.50 - Rs.150"
       },
       {
         name: "Remdesivir",
@@ -104,7 +212,7 @@ export default function UploadXraysWithPrediction() {
         type: "Antiviral",
         description: "For hospitalized COVID-19 patients",
         precautions: "Hospital administration required",
-        price: "₹2,000 - ₹5,000"
+        price: "Rs.2,000 - Rs.5,000"
       }
     ],
     default: [
@@ -116,7 +224,7 @@ export default function UploadXraysWithPrediction() {
         type: "Analgesic",
         description: "For fever and pain relief",
         precautions: "Do not exceed 4g daily",
-        price: "₹10 - ₹50"
+        price: "Rs.10 - Rs.50"
       },
       {
         name: "Ibuprofen",
@@ -126,7 +234,7 @@ export default function UploadXraysWithPrediction() {
         type: "NSAID",
         description: "Anti-inflammatory and pain relief",
         precautions: "Take with food",
-        price: "₹30 - ₹100"
+        price: "Rs.30 - Rs.100"
       }
     ]
   }
@@ -142,7 +250,7 @@ export default function UploadXraysWithPrediction() {
         type: "Hormone Therapy",
         description: "SERM for hormone receptor-positive breast cancer",
         precautions: "Monitor for blood clots, hot flashes",
-        price: "₹500 - ₹1,000"
+        price: "Rs.500 - Rs.1,000"
       },
       {
         name: "Letrozole",
@@ -152,7 +260,7 @@ export default function UploadXraysWithPrediction() {
         type: "Aromatase Inhibitor",
         description: "For postmenopausal women with hormone-positive cancer",
         precautions: "Monitor bone density, joint pain",
-        price: "₹800 - ₹1,500"
+        price: "Rs.800 - Rs.1,500"
       },
       {
         name: "Trastuzumab",
@@ -162,7 +270,7 @@ export default function UploadXraysWithPrediction() {
         type: "Monoclonal Antibody",
         description: "For HER2-positive breast cancer",
         precautions: "Monitor heart function, IV administration",
-        price: "₹30,000 - ₹50,000"
+        price: "Rs.30,000 - Rs.50,000"
       }
     ],
     benign: [
@@ -174,7 +282,7 @@ export default function UploadXraysWithPrediction() {
         type: "Anti-inflammatory",
         description: "For pain and inflammation relief",
         precautions: "Take with food, not for long term",
-        price: "₹50 - ₹150"
+        price: "Rs.50 - Rs.150"
       },
       {
         name: "Vitamin E",
@@ -184,7 +292,7 @@ export default function UploadXraysWithPrediction() {
         type: "Supplement",
         description: "May help with benign breast conditions",
         precautions: "Consult doctor before use",
-        price: "₹200 - ₹400"
+        price: "Rs.200 - Rs.400"
       }
     ],
     default: [
@@ -196,7 +304,7 @@ export default function UploadXraysWithPrediction() {
         type: "Supplement",
         description: "For bone health during treatment",
         precautions: "Take with vitamin D",
-        price: "₹300 - ₹600"
+        price: "Rs.300 - Rs.600"
       },
       {
         name: "Pain Relievers",
@@ -206,7 +314,7 @@ export default function UploadXraysWithPrediction() {
         type: "Analgesic",
         description: "For pain management",
         precautions: "Follow doctor's prescription",
-        price: "₹100 - ₹300"
+        price: "Rs.100 - Rs.300"
       }
     ]
   }
@@ -239,7 +347,9 @@ export default function UploadXraysWithPrediction() {
 
   // Process Lung Disease API Response
   const processLungDiseaseResponse = (response) => {
-    console.log("[Lung Disease] API Response:", response.data)
+    console.log("[Lung Disease] Full API Response:", response)
+    console.log("[Lung Disease] Response Data:", response.data)
+    console.log("[Lung Disease] Response Data Keys:", Object.keys(response.data || {}))
 
     if (response.data?.predictions) {
       const predictions = response.data.predictions
@@ -259,11 +369,11 @@ export default function UploadXraysWithPrediction() {
         }
 
         diseases.push({
-          name: diseaseName,
+          name: diseaseName.replace(/_/g, ' '), // Format disease name
           probability,
           severity,
           color,
-          detected: data.detected,
+          detected: data.detected || probability > 50,
           score: data.score,
           rawScore: data.score,
         })
@@ -274,15 +384,43 @@ export default function UploadXraysWithPrediction() {
       const totalScore = diseases.reduce((sum, d) => sum + d.probability, 0)
       const avgConfidence = diseases.length > 0 ? Math.round(totalScore / diseases.length) : 0
 
+      // FIXED: Check for gradcam_overlay field
       let backendGradcamUrl = null
-      if (response.data.gradcam && response.data.gradcam.trim() !== "") {
-        if (response.data.gradcam.startsWith("data:image")) {
-          backendGradcamUrl = response.data.gradcam
-        } else {
-          backendGradcamUrl = `data:image/png;base64,${response.data.gradcam}`
+      const gradcamData = response.data.gradcam_overlay || response.data.gradcam || response.data.heatmap || response.data.gradcam_image
+      
+      console.log("[Lung Disease] Gradcam Data Found:", !!gradcamData)
+      
+      if (gradcamData && typeof gradcamData === 'string' && gradcamData.trim() !== "") {
+        // Check if it's already a data URL
+        if (gradcamData.startsWith("data:image")) {
+          backendGradcamUrl = gradcamData
+          console.log("[Lung Disease] Gradcam is already data URL")
+        } 
+        // Check if it's base64 JPEG (starts with /9j/)
+        else if (gradcamData.startsWith("/9j/")) {
+          backendGradcamUrl = `data:image/jpeg;base64,${gradcamData}`
+          console.log("[Lung Disease] Converted JPEG base64 to data URL")
         }
+        // Check if it's base64 PNG (starts with iVB)
+        else if (gradcamData.startsWith("iVB")) {
+          backendGradcamUrl = `data:image/png;base64,${gradcamData}`
+          console.log("[Lung Disease] Converted PNG base64 to data URL")
+        }
+        // Check if it's a URL path
+        else if (gradcamData.startsWith("http") || gradcamData.startsWith("/")) {
+          backendGradcamUrl = gradcamData
+          console.log("[Lung Disease] Gradcam is URL path")
+        }
+        // Otherwise treat as raw base64 (default to JPEG)
+        else {
+          backendGradcamUrl = `data:image/jpeg;base64,${gradcamData}`
+          console.log("[Lung Disease] Converted raw base64 to data URL")
+        }
+        
         setGradcamImageUrl(backendGradcamUrl)
+        console.log("[Lung Disease] Gradcam image set successfully")
       } else {
+        console.log("[Lung Disease] No gradcam image found in response")
         setGradcamImageUrl(null)
       }
 
@@ -292,9 +430,16 @@ export default function UploadXraysWithPrediction() {
         confidence: avgConfidence,
         timestamp: new Date().toLocaleString(),
         gradcam: backendGradcamUrl,
-        visualized_finding: response.data.visualized_finding || "None",
+        visualized_finding: response.data.visualized_finding || "Multiple findings detected",
         status: response.data.status || "unknown",
+        model: response.data.model || "chest_xray",
         rawResponse: response.data,
+      })
+      
+      console.log("[Lung Disease] Prediction Data Set:", {
+        diseaseCount: diseases.length,
+        hasGradcam: !!backendGradcamUrl,
+        visualizedFinding: response.data.visualized_finding
       })
     }
   }
@@ -303,22 +448,16 @@ export default function UploadXraysWithPrediction() {
   const processBreastCancerResponse = (response) => {
     console.log("[Breast Cancer] API Response:", response.data)
 
-    // Handle different possible response structures
     let diseases = []
     let avgConfidence = 0
 
-    // Check for prediction/classification
     const prediction = response.data?.prediction || response.data?.result || response.data?.classification
     const probability = response.data?.probability || response.data?.confidence || response.data?.score || 0
     const probabilityPercent = Math.round(probability * 100)
 
-    // Check for BI-RADS score
     const birads = response.data?.birads || response.data?.BI_RADS || response.data?.bi_rads
-    
-    // Check for tumor characteristics
     const tumorCharacteristics = response.data?.characteristics || response.data?.features || {}
     
-    // Determine severity based on probability and BI-RADS
     let severity = "low"
     let color = "bg-green-500"
     
@@ -333,7 +472,6 @@ export default function UploadXraysWithPrediction() {
     const isMalignant = prediction === "Malignant" || prediction === "Cancer" || prediction === "Positive" || probability > 0.5
     const detected = isMalignant
 
-    // Create disease entry
     const diseaseName = isMalignant ? "Malignant Tumor" : "Benign Tumor"
     
     diseases.push({
@@ -350,17 +488,23 @@ export default function UploadXraysWithPrediction() {
 
     avgConfidence = probabilityPercent
 
-    // Process GradCAM image
+    // Process GradCAM image for breast cancer
     let backendGradcamUrl = null
-    const possibleGradcamKeys = ['gradcam', 'heatmap', 'visualization', 'grad_cam', 'gradCam', 'attention_map', 'saliency_map']
+    const possibleGradcamKeys = ['gradcam', 'heatmap', 'visualization', 'grad_cam', 'gradCam', 'attention_map', 'saliency_map', 'gradcam_overlay']
     
     for (const key of possibleGradcamKeys) {
-      if (response.data?.[key] && response.data[key].trim() !== "") {
-        const gradcamValue = response.data[key]
+      const gradcamValue = response.data?.[key]
+      if (gradcamValue && typeof gradcamValue === 'string' && gradcamValue.trim() !== "") {
         if (gradcamValue.startsWith("data:image")) {
           backendGradcamUrl = gradcamValue
-        } else {
+        } else if (gradcamValue.startsWith("/9j/")) {
+          backendGradcamUrl = `data:image/jpeg;base64,${gradcamValue}`
+        } else if (gradcamValue.startsWith("iVB")) {
           backendGradcamUrl = `data:image/png;base64,${gradcamValue}`
+        } else if (gradcamValue.startsWith("http") || gradcamValue.startsWith("/")) {
+          backendGradcamUrl = gradcamValue
+        } else {
+          backendGradcamUrl = `data:image/jpeg;base64,${gradcamValue}`
         }
         break
       }
@@ -406,9 +550,11 @@ export default function UploadXraysWithPrediction() {
       // Call appropriate API based on disease type
       if (diseaseType === 'lung') {
         response = await postReq("/api/Prediction/GetPrediction", formData)
+        console.log("[Lung Disease] Full response object:", response)
+        console.log("[Lung Disease] Response status:", response.status)
+        console.log("[Lung Disease] Response data type:", typeof response.data)
         processLungDiseaseResponse(response)
       } else if (diseaseType === 'breast') {
-        // Update this URL with your actual breast cancer API endpoint
         response = await postReq("/api/BreastCancer/Predict", formData)
         processBreastCancerResponse(response)
       }
@@ -424,13 +570,13 @@ export default function UploadXraysWithPrediction() {
         setPredictionData({
           diseaseType: "lung",
           diseases: [
-            { name: "Pneumonia", probability: 85, severity: "high", color: "bg-red-500", detected: true, score: 0.85, rawScore: 0.85 },
-            { name: "Tuberculosis", probability: 30, severity: "low", color: "bg-green-500", detected: false, score: 0.30, rawScore: 0.30 },
-            { name: "COVID-19", probability: 15, severity: "low", color: "bg-green-500", detected: false, score: 0.15, rawScore: 0.15 }
+            { name: "Infiltration", probability: 85, severity: "high", color: "bg-red-500", detected: true, score: 0.85, rawScore: 0.85 },
+            { name: "Nodule", probability: 30, severity: "low", color: "bg-green-500", detected: false, score: 0.30, rawScore: 0.30 },
+            { name: "Effusion", probability: 15, severity: "low", color: "bg-green-500", detected: false, score: 0.15, rawScore: 0.15 }
           ],
           confidence: 85,
           timestamp: new Date().toLocaleString(),
-          visualized_finding: "Consolidation in lower left lobe",
+          visualized_finding: "Infiltration detected in lung field",
           status: "demo"
         })
       } else {
@@ -460,7 +606,7 @@ export default function UploadXraysWithPrediction() {
     if (predictionData.diseaseType === 'lung') {
       const detectedDiseases = predictionData.diseases
         .filter(d => d.detected || d.probability > 50)
-        .map(d => d.name.toLowerCase())
+        .map(d => d.name.toLowerCase().replace(/\s/g, '_'))
       
       detectedDiseases.forEach(disease => {
         if (lungMedicines[disease]) {
@@ -506,6 +652,7 @@ Generated: ${predictionData.timestamp}
 Status: ${predictionData.status}
 Confidence Score: ${predictionData.confidence}%
 Visualized Finding: ${predictionData.visualized_finding}
+${predictionData.model ? `AI Model: ${predictionData.model}` : ''}
 `
 
     if (predictionData.birads) {
@@ -513,6 +660,7 @@ Visualized Finding: ${predictionData.visualized_finding}
     }
 
     reportContent += `
+
 DISEASE PROBABILITIES:
 ${predictionData.diseases.map((d) => `- ${d.name}: ${d.probability}% (Score: ${d.rawScore.toFixed(4)}, ${d.severity} risk, Detected: ${d.detected ? "Yes" : "No"})`).join("\n")}
 
@@ -775,6 +923,11 @@ All medications must be prescribed by a licensed healthcare provider.
                               BI-RADS: <span className="font-medium">{predictionData.birads}</span>
                             </span>
                           )}
+                          {predictionData.model && (
+                            <span className="text-xs sm:text-sm text-gray-500 break-words">
+                              Model: <span className="font-medium">{predictionData.model}</span>
+                            </span>
+                          )}
                         </div>
                         <button
                           onClick={handleRefresh}
@@ -849,6 +1002,12 @@ All medications must be prescribed by a licensed healthcare provider.
                               src={gradcamImageUrl || "/placeholder.svg"}
                               alt="AI Heatmap Analysis"
                               className="w-full h-48 sm:h-56 md:h-64 object-contain"
+                              onError={(e) => {
+                                console.error("[Heatmap] Image failed to load:", gradcamImageUrl?.substring(0, 100))
+                                e.target.src = "/placeholder.svg"
+                                e.target.alt = "Heatmap failed to load"
+                              }}
+                              onLoad={() => console.log("[Heatmap] Image loaded successfully")}
                             />
                           </div>
                           <div className="mt-3 sm:mt-4 p-3 bg-purple-50 rounded-lg">
@@ -1019,7 +1178,7 @@ All medications must be prescribed by a licensed healthcare provider.
 
                     <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-6">
                       {getSuggestedMedicines().map((medicine, index) => (
-                        <div key={index} className="flex-1 min-w-full sm:min-w-[300px] lg:min-w-[280px] bg-gradient-to-br from-white to-green-50 rounded-xl border border-green-200 shadow-sm hover:shadow-md transition-shadow p-4 sm:p-5">
+                        <div key={index} className="flex flex-wrap w-full lg:w-[48%] bg-gradient-to-br from-white to-green-50 rounded-xl border border-green-200 shadow-sm hover:shadow-md transition-shadow p-4 sm:p-5">
                           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-2">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
